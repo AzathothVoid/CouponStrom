@@ -1,8 +1,8 @@
 .brand {
   display: flex;
   align-self: center;
-  color: #fff;
   gap: 0.5rem;
+  color: #00a8e8;
 }
 
 .hide {
@@ -16,22 +16,25 @@
 
 .brand-name {
   text-transform: uppercase;
-  font-size: 2rem;
-  text-decoration: none;
-  color: #fff;
+  font-size: 1.5rem;
+  font-family: o;
 }
 
-.brand-name:hover,
-.brand-name:visited {
-  color: #fff;
+.navbar {
+  align-self: center;
 }
 
 .header {
   display: flex;
   flex-direction: column;
-  padding: 1rem 2rem;
+  padding: 2rem;
+
   gap: 1rem;
-  background: #00a8e8;
+}
+
+.nav-btn {
+  font-size: 1.25rem;
+  margin-inline: 1rem;
 }
 
 .searchbar {
@@ -47,10 +50,16 @@
   .header {
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding-block: 2rem;
   }
 
+  .searchbar {
+    width: auto;
+  }
+
   #searchbar {
-    width: 20vw;
+    font-size: 1.25rem;
+    width: 100%;
   }
 }

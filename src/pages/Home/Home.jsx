@@ -1,10 +1,24 @@
 import React from "react";
+import { useState } from "react";
+import Coupon from "../../components/Coupon";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+
 export default function Home() {
+  const [currPage, setCurrPage] = useState("");
+
+  const currStatus = window.location.pathname === "/home";
+
+  if (currStatus && !currPage) {
+    setCurrPage("Home");
+  } else if (!currStatus && currPage) {
+    setCurrPage("");
+  }
+
   return (
     <>
-      <Header />
+      <Header currPage={currPage} />
+      <Coupon />
       <Footer />
     </>
   );
