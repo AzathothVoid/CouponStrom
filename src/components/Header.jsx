@@ -8,11 +8,11 @@ export default function Header(props) {
       <li>
         <Link to={`/${navItem.toLowerCase()}`}>
           <button
-            className={`btn navbar-btn btn-p nav-btn ${
-              props.currPage === navItem ? "btn-primary" : null
+            className={`btn navbar-btn btn-p nav-btn nav-font ${
+              props.currPage === navItem ? "text-primary" : null
             }`}
           >
-            {navItem}
+            {navItem.toUpperCase()}
           </button>
         </Link>
       </li>
@@ -27,7 +27,7 @@ export default function Header(props) {
       </div>
       <nav className="navbar">
         <div className="container-fluid">
-          <ul className="nav">{navElements}</ul>
+          <ul className="nav nav-spacing">{navElements}</ul>
         </div>
       </nav>
       <div className="searchbar">

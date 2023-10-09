@@ -3,11 +3,12 @@
   justify-content: center;
   margin-inline: auto;
   align-items: center;
-  max-width: 1600px;
+  max-width: 1620px;
   height: 260px; /* Set a minimum height to take up the full viewport height */
 }
 
 .centered-content {
+  display: inline-block;
   width: 100%; /* Adjust the width of the centered content as needed */
 }
 
@@ -19,4 +20,20 @@
 .slick-prev:before,
 .slick-next:before {
   color: blue !important;
+  font-size: 2rem;
+}
+
+.slick-list {
+  margin-inline: 1rem;
+}
+
+.slider-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.slider-item {
+  width: 100%;
+  height: 260px;
 }

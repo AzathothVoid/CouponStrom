@@ -1,10 +1,11 @@
 import React from "react";
 
 export default function Coupon(props) {
+  //TODO Add pagination
   return (
     <div className="container">
       <div className="container row">
-        <div className="col-9 container my-4 objectsWrapper">
+        <div className="col-12 container my-4 objectsWrapper">
           <div className="container my-3 row object">
             <div className="col-3 img">
               <img
@@ -30,12 +31,6 @@ export default function Coupon(props) {
               <button className="px-5 btn btn-primary">Get Offer</button>
             </div>
           </div>
-        </div>
-
-        <div className="col-3 container sidebarWrapper">
-          <button className="btn btn-secondary" onclick={props.addChild}>
-            Click
-          </button>
         </div>
       </div>
     </div>

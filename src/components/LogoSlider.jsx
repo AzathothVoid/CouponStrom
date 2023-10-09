@@ -56,7 +56,7 @@ const SliderComponent = () => {
           <Slider {...settings}>
             {logosAndNames.map((item) => (
               <div key={item.id} className="slider-item">
-                <img width={"100%"} src={item.logoUrl} alt={item.name} />
+                <img src={item.logoUrl} alt={item.name} />
               </div>
             ))}
           </Slider>
