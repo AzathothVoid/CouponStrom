@@ -1,0 +1,22 @@
+.slider-container {
+  display: flex; /* Use flexbox to center content vertically and horizontally */
+  justify-content: center;
+  margin-inline: auto;
+  align-items: center;
+  max-width: 1600px;
+  height: 260px; /* Set a minimum height to take up the full viewport height */
+}
+
+.centered-content {
+  width: 100%; /* Adjust the width of the centered content as needed */
+}
+
+.slick-track {
+  display: flex;
+  align-items: center;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: blue !important;
+}
