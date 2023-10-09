@@ -18,5 +18,52 @@
 
 .sidebarWrapper {
   background-color: red;
-  height: 100vh;
+  min-height: 100%;
+}
+
+.popupBtn {
+  cursor: pointer;
+}
+
+.popupText {
+  cursor: initial;
+  visibility: hidden;
+  background-color: ghostwhite;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  position: relative;
+  top: 25px;
+  right: 10%;
+  animation: fadeOut 0.3s;
+}
+
+.show {
+  visibility: visible;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    visibility: visible;
+    opacity: 1;
+  }
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .popupText {
+    position: inherit;
+  }
 }

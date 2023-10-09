@@ -49,6 +49,21 @@ const defaultSettings = {
 const SliderComponent = () => {
   const [settings, setSettings] = useState(defaultSettings);
 
+  useEffect(() => {
+    const dispatch = window.addEventListener("resize", sizeListener);
+
+    return () => dispatch;
+  }, []);
+
+  const sizeListener = (e) => {
+    if (window.innerWidth <= 768) {
+      setSettings((prev) => {
+        return { ...prev, arrows: false };
+      });
+    } else {
+      setSettings(defaultSettings);
+    }
+  };
   return (
     <div className="container cust-container">
       <div className="slider-container">
