@@ -1,9 +1,7 @@
 import React from "react";
 
 export default function Coupon(props) {
-  //TODO Add pagination
-
-
+    
   return (
     <div className="container">
       <div className="container objectsWrapper row">

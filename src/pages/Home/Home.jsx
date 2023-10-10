@@ -24,9 +24,7 @@ export default function Home() {
   });
 
   const handlePageChange = (page) => {
-    if (page === Math.ceil(coupons.length / itemsPerPage)) {
-      document.get;
-    }
+
     setCurrCouponPage(page);
   };
 

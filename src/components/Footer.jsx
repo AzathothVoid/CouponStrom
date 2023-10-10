@@ -33,7 +33,7 @@ export default function Footer() {
     );
   });
   return (
-    <footer className="text-center text-white">
+    <footer className="text-center text-white sticky-footer">
       <div className="container pt-4">
         <section className="mb-4">
           <div className="row">
