@@ -23,24 +23,32 @@ export default function Stores() {
   const endIndex = startIndex + itemsPerPage;
   const storesToShow = filterStores.slice(startIndex, endIndex);
 
+  //handler functions for pagination change
+  const handleLetterChange = (letter) => {
+    setLetter(letter);
+    setCurrPage(1);
+  };
+
+  // For automatically lowering page number for alphabet categories with lower no of pages
+  //   if (currPage > Math.ceil(filterStores.length / itemsPerPage)) {
+  //     handlePageChange(Math.ceil(filterStores.length / itemsPerPage));
+  //   }
+
+  const handlePageChange = (page) => {
+    setCurrPage(page);
+  };
+
   // updating store data state whenever storeData.jsx files gets updated
   useEffect(() => {
     setStores(storeData);
   }, [storeData]);
 
   const storeElements = storesToShow.map((store) => (
-    <div className="col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3">
+    <div className="d-flex align-items-center justify-content-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3">
+      <img className="m-2" width={"100x"} src={store.img} alt="" />
       <a href="">{store.name}</a>
     </div>
   ));
-
-  const handleLetterChange = (letter) => {
-    setLetter(letter);
-  };
-
-  const handlePageChange = (page) => {
-    setCurrPage(page);
-  };
 
   return (
     <>
@@ -60,6 +68,7 @@ export default function Stores() {
             totalItems={filterStores.length}
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
+            forcePage={currPage - 1}
           />
         </div>
       </main>
