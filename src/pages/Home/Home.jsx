@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import LogoSlider from "../../components/LogoSlider";
 import { couponsData } from "./couponsData";
-import {Pagination} from "../../utils/Paginate";
+import { Pagination } from "../../utils/Paginate";
 import CallToAction from "../../components/CallToAction";
 
 export default function Home() {
@@ -24,7 +24,6 @@ export default function Home() {
   });
 
   const handlePageChange = (page) => {
-
     setCurrCouponPage(page);
   };
 
@@ -40,17 +39,19 @@ export default function Home() {
           <LogoSlider />
         </section>
         <section className="container mt-5 mb-5">
-          <div className="row">
+          <div style={{ minHeight: "100vh" }} className="row">
             <div className="col-9">
               <h2 className=" text-primary fs-2 text-uppercase">
                 Coupon Deals
               </h2>
               {couponElements}
-              <Pagination
-                totalItems={coupons.length}
-                itemsPerPage={itemsPerPage}
-                onPageChange={handlePageChange}
-              />
+              <div className="sticky-footer">
+                <Pagination
+                  totalItems={coupons.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
             </div>
             <div className="col-3 container sidebarWrapper">
               <button

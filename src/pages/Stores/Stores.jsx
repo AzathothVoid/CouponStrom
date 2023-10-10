@@ -44,7 +44,7 @@ export default function Stores() {
   }, [storeData]);
 
   const storeElements = storesToShow.map((store) => (
-    <div className="d-flex align-items-center justify-content-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3">
+    <div className="justify-self-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3">
       <img className="m-2" width={"100x"} src={store.img} alt="" />
       <a href="">{store.name}</a>
     </div>
