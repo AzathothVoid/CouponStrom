@@ -35,3 +35,24 @@
   background: #ccc;
   cursor: not-allowed;
 }
+
+/* Paginator container */
+.alphabetical-paginator {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* Paginator letters */
+.alphabetical-paginator span {
+  cursor: pointer;
+  margin: 0 10px;
+  font-size: 16px;
+  color: #333; /* Default text color */
+}
+
+/* Active letter */
+.alphabetical-paginator .active {
+  font-weight: bold;
+  color: #007bff; /* Active text color */
+}

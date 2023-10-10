@@ -5,11 +5,10 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import LogoSlider from "../../components/LogoSlider";
 import { couponsData } from "./couponsData";
-import Pagination from "../../utils/Paginate";
+import {Pagination} from "../../utils/Paginate";
 import CallToAction from "../../components/CallToAction";
 
 export default function Home() {
-  const [currPage, setCurrPage] = useState("");
   const [currCouponPage, setCurrCouponPage] = useState(1);
   const [coupons, setCoupons] = useState(couponsData);
 
@@ -30,46 +29,43 @@ export default function Home() {
     }
     setCurrCouponPage(page);
   };
-  const currStatus = window.location.pathname === "/home";
-
-  if (currStatus && !currPage) {
-    setCurrPage("Home");
-  } else if (!currStatus && currPage) {
-    setCurrPage("");
-  }
 
   function addCoupon() {
     console.log("add");
   }
   return (
     <>
-      <Header currPage={currPage} />
+      <Header />
 
-      <div className="slider-container-bg  pt-sm-5 pb-5 mb-5">
-        <LogoSlider />
-      </div>
-      <div className="container mt-5 mb-5">
-        <div className="row">
-          <div className="col-9">
-            <h2 className=" text-primary fs-2 text-uppercase">Coupon Deals</h2>
-            {couponElements}
-            <Pagination
-              totalItems={coupons.length}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-            />
+      <main>
+        <section className="slider-container-bg pt-5 pb-5 mb-5">
+          <LogoSlider />
+        </section>
+        <section className="container mt-5 mb-5">
+          <div className="row">
+            <div className="col-9">
+              <h2 className=" text-primary fs-2 text-uppercase">
+                Coupon Deals
+              </h2>
+              {couponElements}
+              <Pagination
+                totalItems={coupons.length}
+                itemsPerPage={itemsPerPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+            <div className="col-3 container sidebarWrapper">
+              <button
+                className="btn btn-secondary"
+                onClick={() => setCoupons((prev) => [...prev, prev[0]])}
+              >
+                Click
+              </button>
+            </div>
           </div>
-          <div className="col-3 container sidebarWrapper">
-            <button
-              className="btn btn-secondary"
-              onClick={() => setCoupons((prev) => [...prev, prev[0]])}
-            >
-              Click
-            </button>
-          </div>
-        </div>
-      </div>
-      <CallToAction />
+        </section>
+        <CallToAction />
+      </main>
       <Footer />
     </>
   );

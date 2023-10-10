@@ -1,8 +1,9 @@
 // Pagination.js
 import React from "react";
+import { useState } from "react";
 import ReactPaginate from "react-paginate";
 
-const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
+export const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handlePageClick = (data) => {
@@ -27,4 +28,20 @@ const Pagination = ({ totalItems, itemsPerPage, onPageChange }) => {
   );
 };
 
-export default Pagination;
+export const AlphabeticalPaginator = ({ selectedLetter, onPageChange }) => {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  return (
+    <div className="alphabetical-paginator">
+      {alphabet.split("").map((letter) => (
+        <span
+          key={letter}
+          className={selectedLetter === letter ? "active" : ""}
+          onClick={() => onPageChange(letter)}
+        >
+          {letter}
+        </span>
+      ))}
+    </div>
+  );
+};

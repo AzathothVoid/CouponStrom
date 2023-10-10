@@ -1,15 +1,29 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { navData } from "./headerData";
 
 export default function Header(props) {
+  const [currPage, setCurrPage] = useState("");
+  const currStatus = window.location.pathname;
+
+  if (currStatus && !currPage) {
+    setCurrPage(
+      currStatus
+        .slice(1, currStatus.length)
+        .replace(/^[a-z]/, (match) => match.toUpperCase())
+    );
+  } else if (!currStatus && currPage) {
+    setCurrPage("");
+  }
+
   const navElements = navData.map((navItem) => {
     return (
       <li>
         <Link to={`/${navItem.toLowerCase()}`}>
           <button
             className={`btn navbar-btn btn-p nav-btn nav-font ${
-              props.currPage === navItem ? "text-primary" : null
+              currPage === navItem ? "text-primary" : null
             }`}
           >
             {navItem.toUpperCase()}
