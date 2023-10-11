@@ -38,20 +38,23 @@ export const Pagination = ({
 };
 
 export const AlphabeticalPaginator = ({ selectedLetter, onPageChange }) => {
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const alphabet = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0-9";
+  const number = "0-9";
 
   return (
     <div className="container">
       <div className="alphabetical-paginator d-flex justify-content-center d-flex flex-wrap">
-        {alphabet.split("").map((letter) => (
-          <span
-            key={letter}
-            className={`${selectedLetter === letter ? "active" : ""} fs-5`}
-            onClick={() => onPageChange(letter)}
-          >
-            {letter}
-          </span>
-        ))}
+        {alphabet.split(" ").map((letter) =>
+          letter === " " ? null : (
+            <span
+              key={letter}
+              className={`${selectedLetter === letter ? "active" : ""} fs-5`}
+              onClick={() => onPageChange(letter)}
+            >
+              {letter}
+            </span>
+          )
+        )}
       </div>
     </div>
   );

@@ -92,6 +92,9 @@ const storeData = [
     img: "aliexpress.webp",
   },
   {
+    name: "12Ali",
+  },
+  {
     name: "AliExpress",
     img: "aliexpress.webp",
   },

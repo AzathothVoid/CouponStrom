@@ -13,9 +13,15 @@ export default function Stores() {
   const letterCode = currLetter.charCodeAt(0);
 
   // filtering stores based on first letter
-  const filterStores = stores.filter((store) =>
-    store.name.startsWith(currLetter)
-  );
+  var filterStores;
+  if (currLetter.length === 1) {
+    filterStores = stores.filter((store) => store.name.startsWith(currLetter));
+  } else {
+    filterStores = stores.filter((store) =>
+      /^[^a-zA-Z\s]/.test(store.name.charAt(0))
+    );
+    console.log(filterStores);
+  }
 
   //variables for creating paginator for each Alphabetical category
   const itemsPerPage = 24;
@@ -45,8 +51,10 @@ export default function Stores() {
 
   const storeElements = storesToShow.map((store) => (
     <div className="justify-self-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3">
-      <img className="m-2" width={"100x"} src={store.img} alt="" />
-      <a href="">{store.name}</a>
+      <a href="">
+        <img className="m-2" width={"100x"} src={store.img} alt="" />
+        {store.name}
+      </a>
     </div>
   ));
 

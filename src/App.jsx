@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Stores from "./pages/Stores/Stores";
+import Categories from "./pages/Categories/Categories";
 import "./style/index.scss";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route exact path="/home" element={<Home />} />
         <Route path="/stores" element={<Stores />} />
+        <Route path="/categories" element={<Categories />} />
       </Routes>
     </Router>
   );
