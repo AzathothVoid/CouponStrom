@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import Coupon from "../../components/Coupon";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 import LogoSlider from "../../components/LogoSlider";
 import { couponsData } from "./couponsData";
 import { Pagination } from "../../utils/Paginate";

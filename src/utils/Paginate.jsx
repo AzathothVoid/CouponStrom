@@ -39,7 +39,6 @@ export const Pagination = ({
 
 export const AlphabeticalPaginator = ({ selectedLetter, onPageChange }) => {
   const alphabet = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0-9";
-  const number = "0-9";
 
   return (
     <div className="container">

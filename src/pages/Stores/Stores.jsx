@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import { Link } from "react-router-dom";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 import { AlphabeticalPaginator, Pagination } from "../../utils/Paginate";
 import storeData from "./storeData";
 
@@ -20,7 +21,6 @@ export default function Stores() {
     filterStores = stores.filter((store) =>
       /^[^a-zA-Z\s]/.test(store.name.charAt(0))
     );
-    console.log(filterStores);
   }
 
   //variables for creating paginator for each Alphabetical category
@@ -51,10 +51,10 @@ export default function Stores() {
 
   const storeElements = storesToShow.map((store) => (
     <div className="justify-self-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3">
-      <a href="">
+      <Link to={`/stores/${store.id}`} key={store.id}>
         <img className="m-2" width={"100x"} src={store.img} alt="" />
         {store.name}
-      </a>
+      </Link>
     </div>
   ));
 
