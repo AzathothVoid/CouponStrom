@@ -1,6 +1,26 @@
 export const couponsData = [
   {
-    description: "Get 70% off",
-    expiryDate: "10-12-2023",
+    storeId: 81,
+    type: "code",
+    title: "Get 70% off",
+    expiry: "10-12-2023",
+  },
+  {
+    storeId: 81,
+    type: "code",
+    title: "Get 70% off",
+    expiry: "10-12-2023",
+  },
+  {
+    storeId: 81,
+    type: "code",
+    title: "Get 70% off",
+    expiry: "10-12-2023",
+  },
+  {
+    storeId: 82,
+    type: "code",
+    title: "Get 70% off",
+    expiry: "10-12-2023",
   },
 ];

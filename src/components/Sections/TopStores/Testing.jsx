@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TopStoresData from "./TopStoresData";
@@ -18,23 +19,29 @@ export default function TopStoresSection() {
   const filteredData = TopStoresData.slice(0, toDisplay);
 
   const storesElement = filteredData.map((store, index) => {
-    return (
-      <div key={store.id} className="">
-        <Card
-          type={store.type}
-          title={store.title}
-          likes={store.likes}
-          image={store.image}
-        />
-      </div>
+    const storeElement = (
+      <Link to={`/stores/${store.id}`} key={store.id}>
+        <div key={store.id} className="">
+          <Card
+            type={store.type}
+            title={store.title}
+            likes={store.likes}
+            image={store.image}
+          />
+        </div>
+      </Link>
     );
+    if ((index + 1) % max === 0) {
+      return [<div></div>, storeElement];
+    }
+    return storeElement;
   });
 
   return (
     <section className="container-fluid p-2 ms-1 mb-4 mt-4 top-stores">
       <div className="text-center">
         <h2 className="mb-3 text-primary-custom">Top Stores</h2>
-        <div className="d-flex justify-content-center flex-wrap gap-3">
+        <div className="d-flex flex-xs-column flex-md-row justify-content-center flex-wrap gap-3">
           {storesElement}
         </div>
       </div>

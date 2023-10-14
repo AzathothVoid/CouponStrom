@@ -61,7 +61,7 @@ export default function Categories() {
       <Header />
       <div className="container">
         <h1 className="text-center mb-5 mt-3">Categories</h1>
-        <div className="container mb-5">
+        <div className="container mb-5 border-bottom border-top">
           <AlphabeticalPaginator
             selectedLetter={currLetter}
             onPageChange={handleLetterChange}

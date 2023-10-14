@@ -489,6 +489,7 @@ const storeData = [
     name: "Mcdonalds",
     img: "aliexpress.webp",
     desc: "Testing testing 1 2 3. This is just a test sentence.",
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 82,

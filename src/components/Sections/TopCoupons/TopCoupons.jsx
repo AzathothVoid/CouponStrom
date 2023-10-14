@@ -22,7 +22,7 @@ export default function TopCouponsSection() {
   const filteredData = TopCouponsData.slice(0, toDisplay);
 
   const couponsElement = filteredData.map((coupon, index) => {
-    return (
+    const couponElement = (
       <div key={coupon.id}>
         <Card
           type={coupon.type}
@@ -33,13 +33,18 @@ export default function TopCouponsSection() {
         />
       </div>
     );
+    if ((index + 1) % max === 0) {
+      return [<div></div>, couponElement];
+    }
+    return couponElement;
   });
 
   return (
     <section className="container-fluid p-2 ms-1 mb-4 mt-4 top-stores">
-      <div className="text-center">
+      <div className=" text-center ">
         <h2 className="mb-3 text-primary-custom">Top Coupons</h2>
-        <div className="d-flex justify-content-center flex-wrap gap-3">
+
+        <div className="d-flex flex-xs-column flex-md-row justify-content-center flex-wrap gap-3">
           {couponsElement}
         </div>
       </div>

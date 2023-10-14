@@ -23,7 +23,7 @@
 
 .slick-prev:before,
 .slick-next:before {
-  color: blue !important;
+  color: var(--color-primary) !important;
   font-size: 2rem;
 }
 

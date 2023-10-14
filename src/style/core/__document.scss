@@ -1,5 +1,6 @@
 :root {
   --color-primary: #ffb600;
+  --color-primary-dark: #ff8b00;
   --color-footer: #5b2614;
 }
 
@@ -45,13 +46,39 @@ a:visited {
 }
 
 .bg-primary-custom {
-  background: var(--color-primary);
+  background: var(--color-primary) !important;
+}
+
+.bg-secondary-custom {
+  background: rgba(128, 128, 128, 0.2);
 }
 
 .text-primary-custom {
   color: var(--color-primary);
 }
 
+.text-secondary-custom {
+  color: var(--color-primary-dark);
+}
+
+.padding-inline-long {
+  padding-inline: 2rem;
+}
+
 .bottom-15 {
   bottom: 15%;
+}
+
+.btn-active-primary {
+  background: var(--color-primary) !important;
+  color: #fff;
+}
+
+.btn-custom {
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid #ccc;
+  vertical-align: center;
+  padding: 0.5rem 1rem;
+  background: #fff;
 }

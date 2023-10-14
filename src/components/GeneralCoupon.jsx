@@ -34,7 +34,9 @@ export default function Coupon(props) {
           </div>
 
           <div className="col-xl-3 d-flex align-items-start justify-content-end p-2 container">
-            <button className="px-5 btn btn-primary">Get Offer</button>
+            <button className="px-5 btn text-light bg-primary-custom">
+              Get Offer
+            </button>
           </div>
         </div>
       </div>

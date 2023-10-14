@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import Coupon from "../../components/Coupon";
+import Coupon from "../../components/GeneralCoupon";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import LogoSlider from "../../components/banners/LogoSlider";
@@ -43,7 +43,7 @@ export default function Home() {
         <section className="container mt-5 mb-5">
           <div style={{ minHeight: "100vh" }} className="row">
             <div className="col-9">
-              <h2 className=" text-primary fs-2 text-uppercase">
+              <h2 className="fs-2 text-uppercase text-primary-custom">
                 Coupon Deals
               </h2>
               {couponElements}

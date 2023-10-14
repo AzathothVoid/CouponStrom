@@ -28,7 +28,7 @@ export const Pagination = ({
         onPageChange={handlePageClick}
         forcePage={forcePage}
         containerClassName={"pagination"}
-        activeClassName={"active"}
+        activeClassName={"active-custom"}
         previousClassName="previous"
         nextClassName="next"
         breakClassName="break"
@@ -47,7 +47,9 @@ export const AlphabeticalPaginator = ({ selectedLetter, onPageChange }) => {
           letter === " " ? null : (
             <span
               key={letter}
-              className={`${selectedLetter === letter ? "active" : ""} fs-5`}
+              className={`${
+                selectedLetter === letter ? "active-custom" : ""
+              } fs-5`}
               onClick={() => onPageChange(letter)}
             >
               {letter}
