@@ -1,4 +1,6 @@
 :root {
+  --color-primary: #ffb600;
+  --color-footer: #5b2614;
 }
 
 *,
@@ -13,13 +15,16 @@ body {
   margin: none;
   position: relative;
 }
-
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
 #root {
   min-height: 100vh;
-}
-footer {
-  background: #00509d;
-  width: 100%;
 }
 
 .list {
@@ -37,6 +42,14 @@ a:visited {
 
 .icon-white {
   color: #fff;
+}
+
+.bg-primary-custom {
+  background: var(--color-primary);
+}
+
+.text-primary-custom {
+  color: var(--color-primary);
 }
 
 .bottom-15 {

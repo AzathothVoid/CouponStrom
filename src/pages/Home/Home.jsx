@@ -3,10 +3,12 @@ import { useState } from "react";
 import Coupon from "../../components/Coupon";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import LogoSlider from "../../components/LogoSlider";
+import LogoSlider from "../../components/banners/LogoSlider";
+import Card from "../../components/Cards/Card";
 import { couponsData } from "./couponsData";
 import { Pagination } from "../../utils/Paginate";
-import CallToAction from "../../components/CallToAction";
+import TopStoresSection from "../../components/Sections/TopStores/Testing";
+import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
 
 export default function Home() {
   const [currCouponPage, setCurrCouponPage] = useState(1);
@@ -63,7 +65,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <CallToAction />
+        <TopStoresSection />
+        <TopCouponsSection />
       </main>
       <Footer />
     </>

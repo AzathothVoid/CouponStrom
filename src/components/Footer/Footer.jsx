@@ -48,18 +48,23 @@ export default function Footer() {
       </a>
     );
   });
+
   return (
     <footer className="text-center text-white sticky-footer">
       <div className="container pt-4">
         <section className="mb-4">
           <div className="row">
-            <div className="footer-brand col col-3 d-flex align-items-center">
-              <img style={{ width: "8rem" }} src={reactLogo} alt="" />
+            <div className="footer-brand p-0 col col-sm-6 col-md-4 col-lg-3 d-flex align-items-center">
+              <img style={{ width: "100%" }} src={"logo.svg"} alt="" />
             </div>
-            <div className="col col-lg-9 row">{footerElements}</div>
+            <div className="col col-sm-6 col-lg-9 row">{footerElements}</div>
           </div>
         </section>
-        <section className="mb-4">{iconElements}</section>
+        <section className="mb-4">
+          <div className="d-flex justify-content-center align-items-center">
+            Follow us on {iconElements}
+          </div>
+        </section>
       </div>
 
       <div
