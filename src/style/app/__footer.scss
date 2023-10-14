@@ -2,3 +2,10 @@
   position: sticky;
   top: 100%;
 }
+
+@media screen and (min-width: 576px) {
+  footer .collapsible__content {
+    opacity: 1;
+    max-height: 100%;
+  }
+}

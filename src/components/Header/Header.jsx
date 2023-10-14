@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { navData } from "./headerData";
 
-export default function Header(props) {
+export default function Header() {
   const [currPage, setCurrPage] = useState("");
   const currStatus = window.location.pathname;
 
@@ -34,27 +34,31 @@ export default function Header(props) {
   });
 
   return (
-    <header className="header">
-      <div className="brand hide">
-        <img className="brand-img" src="vite.svg" alt="" />
-        <a className="brand-name">couponstrom</a>
-      </div>
-      <nav className="navbar">
-        <div className="container-fluid">
-          <ul className="nav nav-spacing">{navElements}</ul>
+    <header>
+      <div className="position-relative">
+        <div className="row">
+          <img width={"100%"} src="/nav-bg.jpeg" alt="" />
         </div>
-      </nav>
-      <div className="searchbar">
-        <input
-          id="searchbar"
-          className="form-control mr-sm-2 text-dark"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button className="btn btn-primary" type="submit">
-          Search
-        </button>
+        <div className="row d-flex">
+          <div className="col-lg-4"></div>
+          <div className="container navbar col-lg-8 d-flex flex-md-row-reverse">
+            <ul className="nav nav-spacing list">{navElements}</ul>
+            <div className="searchbar">
+              <input
+                id="searchbar"
+                className="form-control mr-sm-2 text-dark"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button className="btn btn-primary" type="submit">
+                Search
+              </button>
+            </div>
+          </div>
+
+          <div className="d-flex flex-row-reverse position-absolute bottom-15 end-0"></div>
+        </div>
       </div>
     </header>
   );

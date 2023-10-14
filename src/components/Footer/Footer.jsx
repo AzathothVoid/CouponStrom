@@ -4,56 +4,29 @@ import { footerData, iconData } from "./footerData";
 import reactLogo from "../../assets/react.svg";
 
 export default function Footer() {
-  const toggleCollapse = (event) => {
-    event.preventDefault();
-
-    if (window.innerWidth > 600) {
-      if (targetElement.classList.contains("collapse"))
-        targetElement.classList.remove("collapse");
-
-      return;
-    }
-
-    const targetElement = document.getElementById(event.target.text);
-
-    if (targetElement.classList.contains("collapse")) {
-      // Remove the class if it exists
-      targetElement.classList.remove("collapse");
-    } else {
-      // Add the class if it doesn't exist
-      targetElement.classList.add("collapse");
-    }
-  };
-
-  useEffect(() => {
-    const dispatch = window.addEventListener("resize", () => {
-      if (window.innerWidth > 600) {
-        const targets = document.getElementsByClassName("collapse");
-        console.log(targets);
-        targets.map((element) => {
-          element.classList.remove("collapse");
-        });
-      }
-    });
-
-    return () => dispatch;
-  }, []);
-
   const footerElements = footerData.map((item) => {
     return (
-      <div className="col-sm-6 col-md-6 col-lg">
-        <a className="h2" type="button" onClick={toggleCollapse}>
+      <div
+        className="col-sm-6 col-md-6 col-lg collapsible"
+        onClick={(event) => {
+          if (event.currentTarget.classList.contains("collapsible--expanded")) {
+            event.currentTarget.classList.remove("collapsible--expanded");
+          } else {
+            event.currentTarget.classList.add("collapsible--expanded");
+          }
+        }}
+      >
+        <a className="h2 text-decoration-none" type="button">
           {item.heading}
         </a>
-        <div
-          id={item.heading}
-          className={window.innerWidth < 600 ? "collapse" : ""}
-        >
+        <div id={item.heading} className="collapsible__content">
           <ul className="list-group list">
             {item.content.map((itemContent) => {
               return (
                 <li className="list-item mb-2">
-                  <a href="">{itemContent}</a>
+                  <a className="text-decoration-none" href="">
+                    {itemContent}
+                  </a>
                 </li>
               );
             })}

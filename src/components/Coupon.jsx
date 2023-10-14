@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function Coupon(props) {
-    
   return (
     <div className="container">
       <div className="container objectsWrapper row">
@@ -25,7 +24,7 @@ export default function Coupon(props) {
               Expires {props.expiryDate}
             </div>
             <div
-              className="couponDetails display-5 popupBtn"
+              className="couponDetails display-5 fs-5 popupBtn"
               onclick="showPopup()"
             >
               Details:

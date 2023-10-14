@@ -1,0 +1,8 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+$custom-values: (
+  5: 5%,
+  10: 10%,
+);
+
+$position-values: map-merge($position-values, $custom-values);
