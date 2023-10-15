@@ -53,6 +53,10 @@ a:visited {
   background: rgba(128, 128, 128, 0.2);
 }
 
+.bg-transparent-custom {
+  background: rgba(0, 0, 0, 0.7);
+}
+
 .text-primary-custom {
   color: var(--color-primary);
 }
@@ -72,6 +76,10 @@ a:visited {
 .btn-active-primary {
   background: var(--color-primary) !important;
   color: #fff;
+}
+
+.shadow-tb {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .btn-custom {

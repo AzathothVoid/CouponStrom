@@ -4,7 +4,6 @@ import Coupon from "../../components/GeneralCoupon";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import LogoSlider from "../../components/banners/LogoSlider";
-import Card from "../../components/Cards/Card";
 import { couponsData } from "./couponsData";
 import { Pagination } from "../../utils/Paginate";
 import TopStoresSection from "../../components/Sections/TopStores/Testing";

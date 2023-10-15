@@ -5,6 +5,7 @@ import Header from "../../components/Header/OldHeader";
 import Footer from "../../components/Footer/Footer";
 import categoriesData from "./categoriesData";
 import { AlphabeticalPaginator } from "../../utils/Paginate";
+import SimpleSlider from "../../components/Slider";
 
 export default function Categories() {
   const [categories, setCategories] = useState(categoriesData);
@@ -59,6 +60,7 @@ export default function Categories() {
   return (
     <>
       <Header />
+      <SimpleSlider />
       <div className="container">
         <h1 className="text-center mb-5 mt-3">Categories</h1>
         <div className="container mb-5 border-bottom border-top">
