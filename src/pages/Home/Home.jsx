@@ -8,19 +8,23 @@ import { couponsData } from "./couponsData";
 import { Pagination } from "../../utils/Paginate";
 import TopStoresSection from "../../components/Sections/TopStores/Testing";
 import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
+import BlogCard from "../../components/Cards/BlogCard";
+import blogData from "./blogData";
 
 export default function Home() {
   const [currCouponPage, setCurrCouponPage] = useState(1);
   const [coupons, setCoupons] = useState(couponsData);
 
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const startIndex = (currCouponPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const couponsToShow = coupons.slice(startIndex, endIndex);
 
   const couponElements = couponsToShow.map((coupon) => {
     return (
-      <Coupon description={coupon.description} expiryDate={coupon.expiryDate} />
+      <div className="my-2">
+        <Coupon description={coupon.title} expiryDate={coupon.expiry} />
+      </div>
     );
   });
 
@@ -28,9 +32,13 @@ export default function Home() {
     setCurrCouponPage(page);
   };
 
-  function addCoupon() {
-    console.log("add");
-  }
+  const blogElements = blogData.map((blog) => {
+    return (
+      <div className="mb-3">
+        <BlogCard data={blog} />
+      </div>
+    );
+  });
   return (
     <>
       <Header />
@@ -39,9 +47,10 @@ export default function Home() {
         <section className="slider-container-bg pt-5 pb-5 mb-5">
           <LogoSlider />
         </section>
-        <section className="container mt-5 mb-5">
+        <TopStoresSection />
+        <section className="container-md mt-5 mb-5 pe-0">
           <div style={{ minHeight: "100vh" }} className="row">
-            <div className="col-9">
+            <div className="col-12 col-sm-12 col-md-7 col-lg-8">
               <h2 className="fs-2 text-uppercase text-primary-custom">
                 Coupon Deals
               </h2>
@@ -54,17 +63,11 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="col-3 container sidebarWrapper">
-              <button
-                className="btn btn-secondary"
-                onClick={() => setCoupons((prev) => [...prev, prev[0]])}
-              >
-                Click
-              </button>
+            <div className="col-12 col-md-5 col-lg-4 p-0 container sidebarWrapper  me-0 mb-4">
+              {blogElements}
             </div>
           </div>
         </section>
-        <TopStoresSection />
         <TopCouponsSection />
       </main>
       <Footer />

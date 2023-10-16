@@ -90,3 +90,8 @@ a:visited {
   padding: 0.5rem 1rem;
   background: #fff;
 }
+
+.active-custom {
+  color: var(--color-primary-dark);
+  font-weight: bolder;
+}

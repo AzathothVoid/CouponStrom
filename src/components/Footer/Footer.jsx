@@ -7,7 +7,7 @@ export default function Footer() {
   const footerElements = footerData.map((item) => {
     return (
       <div
-        className="col-sm-6 col-md-6 col-lg collapsible"
+        className="col-sm-6 col-md-6 col-lg collapsible text-center"
         onClick={(event) => {
           if (event.currentTarget.classList.contains("collapsible--expanded")) {
             event.currentTarget.classList.remove("collapsible--expanded");
@@ -53,16 +53,17 @@ export default function Footer() {
     <footer className="text-center text-white sticky-footer">
       <div className="container pt-4">
         <section className="mb-4">
-          <div className="row">
-            <div className="footer-brand p-0 col col-sm-6 col-md-4 col-lg-3 d-flex align-items-center">
+          <div className="row ">
+            <div className="footer-brand my-4 p-0 col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-center">
               <img style={{ width: "100%" }} src={"/logo.svg"} alt="" />
             </div>
-            <div className="col col-sm-6 col-lg-9 row">{footerElements}</div>
+            <div className="col-12 col-sm-6 col-lg-9 row">{footerElements}</div>
           </div>
         </section>
         <section className="mb-4">
-          <div className="d-flex justify-content-center align-items-center">
-            Follow us on {iconElements}
+          <div className="d-flex flex-column flex-sm-row justify-content-center align-items-center">
+            Follow us on
+            <div>{iconElements}</div>
           </div>
         </section>
       </div>

@@ -2,22 +2,20 @@ import React from "react";
 
 export default function Coupon(props) {
   return (
-    <div className="container">
-      <div className="container objectsWrapper row">
-        <div className="container my-4 row object">
-          <div className="col-xl-3  img">
+    <div className="container-md pe-0">
+      <div className="container-fluid pe-0 row">
+        <div className="container-fluid row object ">
+          <div className="col-4 col-sm-3 d-flex flex-column justify-content-center img">
             <img
               className=""
-              src="/aliexpress.webp"
+              src="/Hardees-logo.png"
               alt="AliExpress"
               width={"100%"}
-              height={"110px"}
-              style={{ maxWidth: 180 }}
             />
           </div>
 
-          <div className="col-xl-6 container p-2 text-dark">
-            <div className="couponDescription lead my-1">
+          <div className="col-8 col-sm-6 container-fluid p-2 text-dark">
+            <div className="couponDescription my-1 lead">
               {props.description}
             </div>
             <div className="couponExpiry text-muted mb-1">
@@ -33,8 +31,8 @@ export default function Coupon(props) {
             </div>
           </div>
 
-          <div className="col-xl-3 d-flex align-items-start justify-content-end p-2 container">
-            <button className="px-5 btn text-light bg-primary-custom">
+          <div className="col-3 d-none d-sm-flex align-items-start justify-content-end p-2 container">
+            <button className="px-4 btn text-light bg-primary-custom">
               Get Offer
             </button>
           </div>

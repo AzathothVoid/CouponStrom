@@ -3,8 +3,16 @@ import React from "react";
 export default function Card(props) {
   return (
     <div className="card shadow p-1" style={{ width: "200px" }}>
-      <img className="ps-2 pe-2" src={props.image} alt="" />
-      <div className="card-body pb-2  pt-0">
+      <div style={{ height: "98px" }}>
+        <img
+          style={{ width: "100%", height: "100%" }}
+          className="ps-2 pe-2 card-img"
+          src={props.image}
+          alt=""
+        />
+      </div>
+
+      <div className="card-body pb-2  pt-1">
         <div class="row mb-2">
           <div className="col-8">
             <h3 className="fs-6">{props.title}</h3>

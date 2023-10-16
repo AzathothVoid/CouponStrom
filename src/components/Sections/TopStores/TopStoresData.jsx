@@ -52,14 +52,14 @@ const data = [
     id: 8,
     type: "store",
     title: "Hardees",
-    image: "Hardees-logo.png",
+    image: "aliexpress.webp",
     likes: 52,
   },
   {
     id: 9,
     type: "store",
     title: "Hardees",
-    image: "Hardees-logo.png",
+    image: "vite.svg",
     likes: 52,
   },
   {
