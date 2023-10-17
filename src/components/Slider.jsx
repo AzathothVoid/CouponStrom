@@ -43,21 +43,23 @@ export default function SimpleSlider() {
 
   const sliderElements = logosAndNames.map((logo, index) => {
     return (
-        <div className={`card carousel-item ${index === 0 ? "active" : null}`}>
-          <img style={{ width: "100%" }} src={`${logo.logoUrl}`} alt="" />
-        </div>
+      <div className={`card carousel-item ${index === 0 ? "active" : null}`}>
+        <img style={{ width: "100%" }} src={`${logo.logoUrl}`} alt="" />
+      </div>
     );
   });
 
-  //   const indicatorElements = logosAndNames.map((logo, index) => {
-  //     return (
-  //       <li
-  //         data-target="#simpleSlider"
-  //         data-slide-to={index}
-  //         className={index === 0 ? "active" : null}
-  //       ></li>
-  //     );
-  //   });
+  const indicatorElements = logosAndNames.map((logo, index) => {
+    return (
+      <button
+        type="button"
+        data-bs-target="#simpleSlider"
+        data-bs-slide-to={index}
+        className={index === 0 ? "active" : null}
+        aria-label={`Slide ${index + 1}`}
+      ></button>
+    );
+  });
 
   return (
     <div
@@ -65,6 +67,7 @@ export default function SimpleSlider() {
       className="carousel slide carousel-dark"
       data-bs-ride="carousel"
     >
+      <div className="carousel-indicators">{indicatorElements}</div>
       <div className="carousel-inner" role="listbox">
         {sliderElements}
       </div>

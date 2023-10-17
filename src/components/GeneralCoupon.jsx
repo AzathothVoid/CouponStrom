@@ -4,7 +4,7 @@ export default function Coupon(props) {
   return (
     <div className="container-md pe-0">
       <div className="container-fluid pe-0 row">
-        <div className="container-fluid row object ">
+        <div className="container-fluid row shadow">
           <div className="col-4 col-sm-3 d-flex flex-column justify-content-center img">
             <img
               className=""

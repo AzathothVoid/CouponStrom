@@ -2,7 +2,7 @@ import React from "react";
 
 export default function StoreCoupon(props) {
   return (
-    <div className="container p-3 object">
+    <div className="container p-3 shadow">
       <div className="row">
         <div className="col-6 col-md-6 col-lg-3 w-sm-25 p-4">
           <img src={"/generalCoupon.svg"} alt="" />
