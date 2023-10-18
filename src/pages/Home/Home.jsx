@@ -23,7 +23,7 @@ export default function Home() {
   const couponElements = couponsToShow.map((coupon) => {
     return (
       <div className="my-2 my-sm-3">
-        <Coupon description={coupon.title} expiryDate={coupon.expiry} />
+        <Coupon data={coupon} />
       </div>
     );
   });

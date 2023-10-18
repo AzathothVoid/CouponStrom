@@ -22,8 +22,8 @@ export default function Header() {
       <li>
         <Link to={`/${navItem.toLowerCase()}`}>
           <button
-            className={`btn navbar-btn btn-p nav-btn nav-font ${
-              currPage === navItem ? "text-primary" : null
+            className={`btn navbar-btn btn-p nav-btn nav-font text-light ${
+              currPage === navItem ? "text-primary-custom fw-bold" : null
             }`}
           >
             {navItem.toUpperCase()}
@@ -34,15 +34,14 @@ export default function Header() {
   });
 
   return (
-    <header>
-      <div className="position-relative">
-        <div className="row">
-          <img width={"100%"} src="/nav-bg.jpeg" alt="" />
+    <header className="container-fluid px-0">
+      <div className="position-relative row">
+        <div className="col-12">
+          <img width={"100%"} src="/nav-banner.jpg" alt="" />
         </div>
-        <div className="row d-flex">
-          <div className="col-lg-4"></div>
-          <div className="container navbar col-lg-8 d-flex flex-md-row-reverse">
-            <ul className="nav nav-spacing list">{navElements}</ul>
+        <div className="col-12 py-3 shadow bg-nav-custom">
+          <div className="container navbar d-flex justify-content-between">
+            <ul className="nav nav-spacing list ">{navElements}</ul>
             <div className="searchbar">
               <input
                 id="searchbar"
@@ -51,7 +50,10 @@ export default function Header() {
                 placeholder="Search"
                 aria-label="Search"
               />
-              <button className="btn btn-primary" type="submit">
+              <button
+                className="btn bg-primary-custom search-rounded"
+                type="submit"
+              >
                 Search
               </button>
             </div>

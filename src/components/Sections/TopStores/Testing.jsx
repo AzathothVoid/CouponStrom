@@ -41,7 +41,7 @@ export default function TopStoresSection() {
     <section className="container-fluid p-2 ms-1 mb-4 mt-4 top-stores">
       <div className="">
         <div className="container">
-          <h2 className="mb-3 ps-2 ms-1">Top Stores</h2>
+          <h2 className="mb-3 ps-2 ms-1 text-primary-custom">Top Stores</h2>
         </div>
         <div className="d-flex flex-xs-column flex-md-row justify-content-center flex-wrap gap-3">
           {storesElement}

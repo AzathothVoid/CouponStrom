@@ -2,6 +2,8 @@
   --color-primary: #ffb600;
   --color-primary-dark: #ff8b00;
   --color-footer: #5b2614;
+  --color-nav: #cf7d34;
+  --color-logo: #eaa842;
 }
 
 *,
@@ -15,6 +17,7 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin: none;
   position: relative;
+  background: #f1f1f1;
 }
 h1,
 h2,
@@ -49,6 +52,10 @@ a:visited {
   background: var(--color-primary) !important;
 }
 
+.bg-nav-custom {
+  background: var(--color-nav);
+}
+
 .bg-secondary-custom {
   background: rgba(128, 128, 128, 0.2);
 }
@@ -59,6 +66,10 @@ a:visited {
 
 .text-primary-custom {
   color: var(--color-primary);
+}
+
+.text-nav-custom {
+  color: var(--color-nav);
 }
 
 .text-secondary-custom {
