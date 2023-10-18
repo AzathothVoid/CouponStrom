@@ -1,6 +1,8 @@
 import React from "react";
 
 export default function StoreCoupon(props) {
+  const { data } = props;
+
   return (
     <div className="container p-3 shadow">
       <div className="row">
@@ -8,13 +10,13 @@ export default function StoreCoupon(props) {
           <img src={"/generalCoupon.svg"} alt="" />
         </div>
         <div className="col-6 col-md-6 col col-lg-5 pt-4">
-          <h2>{props.title}</h2>
-          <p className="couponExpiry">{props.expiry}</p>
+          <h2>{data.title}</h2>
+          <p className="couponExpiry">{data.expiry}</p>
         </div>
 
         <div className="col-sm-6 col-md-5 col-lg-4 d-flex align-items-start justify-content-end p-2 container pt-4">
           <button className="px-5 btn-custom text-light bg-primary-custom">
-            {props.type === "code" ? "Get Code" : "Get Offer"}
+            {data.type === "code" ? "Get Code" : "Get Offer"}
           </button>
         </div>
       </div>

@@ -1,52 +1,30 @@
 import React from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import TopCouponsData from "../TopCoupons/TopCouponsData";
-import Card from "../../Cards/Card";
+import couponsData from "../../../pages/Home/couponsData";
+import CouponCard from "../../Cards/CouponCard";
 
 export default function TopCouponsSection() {
   const total = 10;
-  const max = 5;
-  var toDisplay;
 
-  if (TopCouponsData.length % max === 0) {
-    toDisplay = TopCouponsData.length;
-  } else {
-    toDisplay = max * Math.floor(TopCouponsData.length / max);
-  }
-
-  if (toDisplay > total) {
-    toDisplay = total;
-  }
-
-  const filteredData = TopCouponsData.slice(0, toDisplay);
+  const filteredData = couponsData.slice(0, total);
 
   const couponsElement = filteredData.map((coupon, index) => {
     const couponElement = (
       <div key={coupon.id}>
-        <Card
-          type={coupon.type}
-          title={coupon.title}
-          likes={coupon.likes}
-          image={coupon.image}
-          expiry={coupon.expiry}
-        />
+        <CouponCard data={coupon} limitedTime={true} />
       </div>
     );
-    if ((index + 1) % max === 0) {
-      return [<div></div>, couponElement];
-    }
+
     return couponElement;
   });
 
   return (
-    <section className="container-fluid p-2 ms-1 mb-4 mt-4 top-stores">
-      <div className=" text-center ">
-        <h2 className="mb-3 text-primary-custom">Limited Time Coupons</h2>
+    <section className="container top-stores">
+      <h2 className="mb-3 ms-1 text-primary-custom">Limited Time Coupons</h2>
 
-        <div className="d-flex flex-xs-column flex-md-row justify-content-center flex-wrap gap-3">
-          {couponsElement}
-        </div>
+      <div className="d-flex flex-xs-column flex-md-row justify-content-center justify-content-lg-start flex-wrap gap-2">
+        {couponsElement}
       </div>
     </section>
   );

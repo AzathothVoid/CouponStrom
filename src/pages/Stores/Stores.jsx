@@ -5,16 +5,15 @@ import Header from "../../components/Header/OldHeader";
 import Footer from "../../components/Footer/Footer";
 import { AlphabeticalPaginator, Pagination } from "../../utils/Paginate";
 import storeData from "./storeData";
-import TopStores from "../../components/Sections/TopStores/Testing";
+import TopStores from "../../components/Sections/TopStores/TopStoresSection";
 
 export default function Stores() {
   const [currLetter, setLetter] = useState("A");
   const [currPage, setCurrPage] = useState(1);
   const [stores, setStores] = useState(storeData);
 
-  const letterCode = currLetter.charCodeAt(0);
-
   // filtering stores based on first letter
+  console.log("Store data", storeData);
   var filterStores;
   if (currLetter.length === 1) {
     filterStores = stores.filter((store) => store.name.startsWith(currLetter));
@@ -63,25 +62,27 @@ export default function Stores() {
     <>
       <Header />
       <main>
-        <div className="container-fluid mb-5">
-          <TopStores />
-          <div style={{ background: "#f1f1f1" }}>
-            <div className="border-bottom border-top">
-              <AlphabeticalPaginator
-                selectedLetter={currLetter}
-                onPageChange={handleLetterChange}
-              />
-            </div>
-            <div style={{ minHeight: "50vh" }} className="container row mt-5">
-              {storeElements}
-            </div>
-            <Pagination
-              totalItems={filterStores.length}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-              forcePage={currPage - 1}
+        <div className="container bg-white rounded  my-5 py-4">
+          <h1 className="text-center mb-5 mt-3">Stores</h1>
+          <div className="container mb-5 border-bottom border-top">
+            <AlphabeticalPaginator
+              selectedLetter={currLetter}
+              onPageChange={handleLetterChange}
             />
           </div>
+          <div style={{ minHeight: "60vh" }} className="container row mt-5">
+            {storeElements}
+          </div>
+          <Pagination
+            totalItems={filterStores.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            forcePage={currPage - 1}
+          />
+        </div>
+
+        <div className="my-3 ">
+          <TopStores />
         </div>
       </main>
       <Footer />

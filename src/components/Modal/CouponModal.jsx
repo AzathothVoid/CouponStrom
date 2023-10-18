@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button";
 
 export default function CouponModal(props) {
   const data = props.data;
-  console.log(data);
 
   return (
     <>

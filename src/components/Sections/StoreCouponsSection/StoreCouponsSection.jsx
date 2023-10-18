@@ -3,20 +3,17 @@ import { useState, useEffect } from "react";
 import StoreCoupon from "../../StoreCoupon";
 
 export default function StoreCouponsSection(props) {
-  const data = props.data;
+  const { data } = props;
 
-  console.log("Data is: ", data);
+  console.log("Data ", data);
+
   const couponElements = data.map((coupon) => {
     return (
       <div className="mb-3">
-        <StoreCoupon
-          type={coupon.type}
-          title={coupon.title}
-          expiry={coupon.expiry}
-        />
+        <StoreCoupon data={coupon} />
       </div>
     );
   });
 
-  return <section className="mb-3">{couponElements}</section>;
+  return <section className="mb-3 bg-white">{couponElements}</section>;
 }

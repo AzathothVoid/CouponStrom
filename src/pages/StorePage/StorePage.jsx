@@ -4,27 +4,38 @@ import { useState, useEffect } from "react";
 import Header from "../../components/Header/OldHeader";
 import Footer from "../../components/Footer/Footer";
 import storesData from "../../pages/Stores/storeData";
-import { couponsData } from "../Home/couponsData";
+import couponsData from "../Home/couponsData";
+import { Pagination } from "../../utils/Paginate";
 import StoreCouponsSection from "../../components/Sections/StoreCouponsSection/StoreCouponsSection";
+import BlogsSection from "../../components/Sections/BlogsSection/BlogsSection";
 
 export default function StorePage(props) {
-  const [couponSection, setCouponSection] = useState("code");
   const { storeId } = useParams();
-  const storeData = storesData.find(
-    (store) => store.id === Number.parseInt(storeId)
+  const [currCouponPage, setCurrCouponPage] = useState(1);
+  const [couponSection, setCouponSection] = useState("coupon");
+  const [storeData, setStoreData] = useState(
+    storesData.find((store) => store.id === Number.parseInt(storeId))
   );
+
+  const likedStores = JSON.parse(localStorage.getItem("likedStores")) || [];
+
+  const itemsPerPage = 5;
+  const startIndex = (currCouponPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
 
   const firstFilter = couponsData.filter(
     (coupon) => coupon.storeId === Number.parseInt(storeId)
   );
 
   const fileteredCoupons = firstFilter.filter(
-    (coupon) => coupon.type === couponSection
+    (coupon) => coupon.type === couponSection.toLowerCase()
   );
+
+  const couponsToShow = fileteredCoupons.slice(startIndex, endIndex);
 
   const keywords = storeData.keywords.map((keyword) => {
     return (
-      <span className="col col-lg-3 px-0 bg-secondary-custom text-center fs-tags text-dark">
+      <span className="col col-lg-3 px-0 bg-white  text-center fs-tags text-dark">
         {keyword}
       </span>
     );
@@ -32,7 +43,31 @@ export default function StorePage(props) {
 
   const couponSectionHandler = (event) => {
     event.preventDefault();
-    setCouponSection((prev) => (prev === "code" ? "deal" : "code"));
+    setCouponSection(event.target.innerHTML);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrCouponPage(page);
+  };
+
+  const likeStore = () => {
+    if (!likedStores.includes(storeId)) {
+      likedStores.push(storeId);
+      localStorage.setItem("likedStores", JSON.stringify(likedStores));
+      setStoreData((prev) => {
+        return { ...prev, likes: prev.likes + 1 };
+      });
+    }
+  };
+
+  const dislikeStore = () => {
+    if (likedStores.includes(storeId)) {
+      likedStores.pop(storeId);
+      localStorage.setItem("likedStores", JSON.stringify(likedStores));
+      setStoreData((prev) => {
+        return { ...prev, likes: prev.likes - 1 };
+      });
+    }
   };
 
   return (
@@ -48,11 +83,7 @@ export default function StorePage(props) {
           </div>
           <div className="col-12 col-sm-4 col-md-5 col-lg-5">
             <h1 className="h1 mb-2 fw-bolder">{storeData.name}</h1>
-            <p className="">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Distinctio consectetur dolorem debitis maxime cupiditate quisquam
-              mollitia atque, iure nihil illo.
-            </p>
+            <p className="">{storeData.desc}</p>
           </div>
           <div className="col col-lg-3">
             <div className="row gx-custom-7 gh-custom-7">
@@ -63,17 +94,17 @@ export default function StorePage(props) {
         </div>
       </div>
 
-      <div className="pt-4" style={{ background: "#f1f1f1" }}>
+      <div className="pt-4">
         <section className="container p-0">
           <div className="d-flex gap-0 mb-2">
             <span>
               <button
                 onClick={couponSectionHandler}
                 className={`btn-custom fs-4 ${
-                  couponSection === "code" ? "btn-active-primary" : null
+                  couponSection === "coupon" ? "btn-active-primary" : null
                 }`}
               >
-                COUPONS
+                COUPON
               </button>
             </span>
             <span>
@@ -83,7 +114,7 @@ export default function StorePage(props) {
                   couponSection === "deal" ? "btn-active-primary" : null
                 }`}
               >
-                DEALS
+                DEAL
               </button>
             </span>
           </div>
@@ -91,8 +122,15 @@ export default function StorePage(props) {
 
         <section className="container p-0">
           <div className="row">
-            <div className="col-12 col-sm-12 col-md-7 col-lg-8">
-              <StoreCouponsSection data={fileteredCoupons} />
+            <div className="col-12 col-sm-12 col-md-7 col-lg-8 mb-4">
+              <StoreCouponsSection data={couponsToShow} />
+              <div className="sticky-footer">
+                <Pagination
+                  totalItems={fileteredCoupons.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
             </div>
             <div className="col-12 col-md-5 col-lg-4 p-0 container sidebarWrapper me-0 mb-4">
               <div className="container p-6 pe-0">
@@ -108,12 +146,18 @@ export default function StorePage(props) {
                     </h3>
                     <div class="row sticky-footer">
                       <div className="col-6 ">
-                        <button className="btn btn-primary padding-inline-long rounded-0 fw-bolder">
+                        <button
+                          onClick={likeStore}
+                          className="btn btn-primary padding-inline-long rounded-0 fw-bolder"
+                        >
                           YES
                         </button>
                       </div>
                       <div className="col-6 fw-bolder">
-                        <button className="btn btn-primary padding-inline-long rounded-0 fw-bolder">
+                        <button
+                          onClick={dislikeStore}
+                          className="btn btn-primary padding-inline-long rounded-0 fw-bolder"
+                        >
                           NO
                         </button>
                       </div>
@@ -124,13 +168,13 @@ export default function StorePage(props) {
                   style={{ height: "200px" }}
                   className="container text-center shadow"
                 >
-                  <div className="row g-4 bg-white">
+                  <div className="row g-4 bg-white pb-2">
                     <div className="col-12 ">Total Coupons: 167</div>
                     <div className="col-12 ">Total Deals: 95</div>
                     <div className="col-12 ">Last Update: 12/10/2023</div>
-                    <div className="col-12 ">
+                    <div className="col-12 d-flex align-items-center justify-content-center gap-2">
                       <i style={{ color: "red" }} className="bi-heart-fill"></i>
-                      <span>158</span>
+                      <span>{storeData.likes}</span>
                     </div>
                   </div>
                 </div>
@@ -138,6 +182,7 @@ export default function StorePage(props) {
             </div>
           </div>
         </section>
+        <BlogsSection />
       </div>
       <Footer />
     </>

@@ -5,11 +5,12 @@ import Header from "../../components/Header/OldHeader";
 import Footer from "../../components/Footer/Footer";
 import categoriesData from "./categoriesData";
 import { AlphabeticalPaginator } from "../../utils/Paginate";
-import SimpleSlider from "../../components/Slider";
 
 export default function Categories() {
-  const [categories, setCategories] = useState(categoriesData);
+  const [categories, setCategories] = useState(categoriesData.categories);
   const [currLetter, setLetter] = useState("A");
+
+  console.log(categories);
 
   var filterCategories;
   if (currLetter.length === 1) {
@@ -30,16 +31,16 @@ export default function Categories() {
         className="col-lg-3 col-md-4 col-sm-6 text-sm-center mb-3"
       >
         <Link to={`/categories/${category.id}`}>
-          <h3 className="border-bottom">{category.name}</h3>
+          <h3 className="border-bottom mb-2">{category.name}</h3>
         </Link>
         <ul className="list list-group">
-          {category.subcats.map((subCat) => {
+          {category.subcategories.map((subCat) => {
             return (
               <Link
                 key={subCat.id}
                 to={`/categories/${category.id}/${subCat.id}`}
               >
-                <li>{subCat.name}</li>
+                <li className="mb-2">{subCat.name}</li>
               </Link>
             );
           })}
@@ -54,14 +55,13 @@ export default function Categories() {
   };
 
   useEffect(() => {
-    setCategories(categoriesData);
+    setCategories(categoriesData.categories);
   }, [categoriesData]);
 
   return (
     <>
       <Header />
-      <SimpleSlider />
-      <div className="container">
+      <div className="container bg-white rounded my-5 py-4">
         <h1 className="text-center mb-5 mt-3">Categories</h1>
         <div className="container mb-5 border-bottom border-top">
           <AlphabeticalPaginator

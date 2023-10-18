@@ -1,13 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import Coupon from "../../components/GeneralCoupon";
-import Header from "../../components/Header/Header";
+import Header from "../../components/Header/OldHeader";
 import Footer from "../../components/Footer/Footer";
-import LogoSlider from "../../components/banners/LogoSlider";
-import { couponsData } from "./couponsData";
+import LogoSlider from "../../components/Slider";
+import couponsData from "./couponsData";
 import { Pagination } from "../../utils/Paginate";
-import TopStoresSection from "../../components/Sections/TopStores/Testing";
+import TopStoresSection from "../../components/Sections/TopStores/TopStoresSection";
 import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
+import LimitedTimeCouponsSection from "../../components/Sections/LimitedTimeCoupons/LimitedTimeCoupons";
 import BlogCard from "../../components/Cards/BlogCard";
 import blogData from "./blogData";
 
@@ -19,6 +20,8 @@ export default function Home() {
   const startIndex = (currCouponPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const couponsToShow = coupons.slice(startIndex, endIndex);
+
+  const filteredBlogs = blogData.slice(0, 3);
 
   const couponElements = couponsToShow.map((coupon) => {
     return (
@@ -32,7 +35,7 @@ export default function Home() {
     setCurrCouponPage(page);
   };
 
-  const blogElements = blogData.map((blog) => {
+  const blogElements = filteredBlogs.map((blog) => {
     return (
       <div className="mb-3">
         <BlogCard data={blog} />
@@ -47,20 +50,24 @@ export default function Home() {
         <section className="slider-container-bg pt-5 pb-5 mb-5">
           <LogoSlider />
         </section>
-        <TopStoresSection />
+        <div className="mb-5">
+          <TopStoresSection />
+        </div>
         <section className="container-md mt-5 mb-5 pe-0">
           <div style={{ minHeight: "100vh" }} className="row">
-            <div className="col-12 col-sm-12 col-md-7 col-lg-8">
+            <div className="col-12 col-sm-12 col-md-7 col-lg-8 mb-4">
               <h2 className="fs-2 text-uppercase text-primary-custom">
                 Coupon Deals
               </h2>
-              {couponElements}
-              <div className="sticky-footer">
-                <Pagination
-                  totalItems={coupons.length}
-                  itemsPerPage={itemsPerPage}
-                  onPageChange={handlePageChange}
-                />
+              <div>
+                {couponElements}
+                <div className="sticky-footer my-4">
+                  <Pagination
+                    totalItems={coupons.length}
+                    itemsPerPage={itemsPerPage}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
               </div>
             </div>
             <div className="col-12 col-md-5 col-lg-4 p-0 container sidebarWrapper  me-0 mb-4">
@@ -68,7 +75,12 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <TopCouponsSection />
+        <div className="my-5">
+          <TopCouponsSection />
+        </div>
+        <div className="my-5">
+          <LimitedTimeCouponsSection />
+        </div>
       </main>
       <Footer />
     </>
