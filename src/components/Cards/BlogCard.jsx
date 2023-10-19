@@ -1,9 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function (props) {
   const [blog, setBlog] = useState(props.data);
-  const viewedBlogs = JSON.parse(localStorage.getItem("viewedBlogs")) || [];
 
   function padTo2Digits(num) {
     return num.toString().padStart(2, "0");
@@ -17,15 +16,7 @@ export default function (props) {
     ].join("/");
   }
 
-  const viewBlog = () => {
-    if (!viewedBlogs.includes(blog.id)) {
-      viewedBlogs.push(blog.id);
-      localStorage.setItem("viewedBlogs", JSON.stringify(viewedBlogs));
-      setBlog((prev) => {
-        return { ...prev, views: prev.views + 1 };
-      });
-    }
-  };
+  const arr = [];
 
   return (
     <div
@@ -43,11 +34,16 @@ export default function (props) {
             />
 
             <div class="card-body">
-              <h4 class="card-title">{blog.title}</h4>
+              <div className="blockquote">
+                <h4 class="card-title">{blog.title}</h4>
+                {/* <p className="blockquote-footer">
+                  <span style={{ fontSize: "0.8rem" }}>by</span> {blog.writer}
+                </p> */}
+              </div>
 
               <p class="card-text">{blog.description}</p>
               <button
-                onClick={viewBlog}
+                onClick={() => props.viewBlog(blog.id, setBlog)}
                 class="btn-custom rounded  bg-primary-custom"
               >
                 Read Now

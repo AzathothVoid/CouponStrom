@@ -11,20 +11,23 @@ import BlogsSection from "../../components/Sections/BlogsSection/BlogsSection";
 
 export default function StorePage(props) {
   const { storeId } = useParams();
+  const storeID = Number.parseInt(storeId);
+
   const [currCouponPage, setCurrCouponPage] = useState(1);
   const [couponSection, setCouponSection] = useState("coupon");
   const [storeData, setStoreData] = useState(
-    storesData.find((store) => store.id === Number.parseInt(storeId))
+    storesData.find((store) => store.id === storeID)
   );
-
-  const likedStores = JSON.parse(localStorage.getItem("likedStores")) || [];
+  const [likedStores, setLikedStores] = useState(
+    JSON.parse(localStorage.getItem("likedStores")) || []
+  );
 
   const itemsPerPage = 5;
   const startIndex = (currCouponPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
   const firstFilter = couponsData.filter(
-    (coupon) => coupon.storeId === Number.parseInt(storeId)
+    (coupon) => coupon.storeId === storeID
   );
 
   const fileteredCoupons = firstFilter.filter(
@@ -41,6 +44,11 @@ export default function StorePage(props) {
     );
   });
 
+  useEffect(() => {
+    console.log("inserting", likedStores);
+    localStorage.setItem("likedStores", JSON.stringify(likedStores));
+  }, [likedStores]);
+
   const couponSectionHandler = (event) => {
     event.preventDefault();
     setCouponSection(event.target.innerHTML);
@@ -51,9 +59,8 @@ export default function StorePage(props) {
   };
 
   const likeStore = () => {
-    if (!likedStores.includes(storeId)) {
-      likedStores.push(storeId);
-      localStorage.setItem("likedStores", JSON.stringify(likedStores));
+    if (!likedStores.includes(storeID)) {
+      setLikedStores((prev) => [...prev, storeID]);
       setStoreData((prev) => {
         return { ...prev, likes: prev.likes + 1 };
       });
@@ -61,9 +68,12 @@ export default function StorePage(props) {
   };
 
   const dislikeStore = () => {
-    if (likedStores.includes(storeId)) {
-      likedStores.pop(storeId);
-      localStorage.setItem("likedStores", JSON.stringify(likedStores));
+    if (likedStores.includes(storeID)) {
+      setLikedStores((prev) => {
+        const res = [...prev];
+        res.pop(storeID);
+        return res;
+      });
       setStoreData((prev) => {
         return { ...prev, likes: prev.likes - 1 };
       });
