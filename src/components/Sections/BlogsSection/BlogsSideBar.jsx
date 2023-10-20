@@ -4,7 +4,7 @@ import BlogCard from "../../Cards/BlogCard";
 export default function BlogsSideBar(props) {
   const blogData = props.data;
 
-  const filteredBlogs = blogData.slice(0, 3);
+  const filteredBlogs = blogData.slice(0, props.max);
   const blogElements = filteredBlogs.map((blog) => {
     return (
       <div className="col-12 col-sm-6 col-md-12 my-3">

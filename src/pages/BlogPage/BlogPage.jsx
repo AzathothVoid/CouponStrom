@@ -33,28 +33,30 @@ export default function BlogPage() {
       <Header />
 
       <main className="container-fluid">
-        <div className="row flex-column-reverse flex-md-row  my-4 ">
-          <BlogsSideBar data={blogData} />
+        <div className="row flex-column-reverse flex-md-row  my-4 flex-wrap flex-md-nowrap gap-3">
+          <BlogsSideBar data={blogData} max={4} />
 
-          <section className="mb-4 col col-12 col-md-7 col-lg-8 bg-white rounded p-3 me-2">
-            <h1>{blog.title}</h1>
-            <div className="blog-short-info">
-              <span className="me-2">
-                <i class="bi bi-person-circle me-1"></i>
-                {blog.writer}
-              </span>
-              {formatDateBlog(blog.date)}
-              <span className="ms-2">
-                <i class="bi bi-eye-fill me-1"></i>
-                {blog.views}
-              </span>
-            </div>
-            <section className="my-3">
-              <div className="mb-3">
-                <img className="w-100 rounded" src={blog.img} alt="" />
+          <section className="mb-4 col col-12 col-md-7 col-lg-8  me-2">
+            <div className="bg-white rounded p-3">
+              <h1>{blog.title}</h1>
+              <div className="blog-short-info">
+                <span className="me-2">
+                  <i class="bi bi-person-circle me-1"></i>
+                  {blog.writer}
+                </span>
+                {formatDateBlog(blog.date)}
+                <span className="ms-2">
+                  <i class="bi bi-eye-fill me-1"></i>
+                  {blog.views}
+                </span>
               </div>
-              <ReactMarkDown>{blog.text}</ReactMarkDown>
-            </section>
+              <section className="my-3">
+                <div className="mb-3">
+                  <img className="w-100 rounded" src={blog.img} alt="" />
+                </div>
+                <ReactMarkDown>{blog.text}</ReactMarkDown>
+              </section>
+            </div>
           </section>
         </div>
       </main>

@@ -61,7 +61,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <BlogsSideBar data={blogData} />
+            <BlogsSideBar data={blogData} max={3} />
           </div>
         </section>
         <div className="my-5">
