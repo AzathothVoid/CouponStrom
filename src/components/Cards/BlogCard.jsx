@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { formatDate } from "../../utils/FormatDate";
+import { formatDate } from "../../utils/DateUtils";
 
 export default function (props) {
   const [blog, setBlog] = useState(props.data);
@@ -28,7 +28,7 @@ export default function (props) {
 
               <p class="card-text">{blog.description}</p>
               <Link to={`/blogs/${blog.id}`}>
-                <button class="btn-custom rounded  bg-primary-custom">
+                <button class="btn-custom rounded  bg-primary-custom text-white">
                   Read Now
                 </button>
               </Link>

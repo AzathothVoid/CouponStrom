@@ -3,7 +3,11 @@ import BlogCard from "../../Cards/BlogCard";
 import blogData from "../../../pages/Home/blogData";
 
 export default function BlogsSection(props) {
-  const blogs = blogData;
+  const [blogs, setBlogs] = useState(blogData);
+
+  useEffect(() => {
+    setBlogs(blogData);
+  }, [blogData]);
 
   const filteredData = blogs.slice(0, 3);
 

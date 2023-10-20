@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Coupon from "../../components/GeneralCoupon";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -10,20 +10,24 @@ import TopStoresSection from "../../components/Sections/TopStores/TopStoresSecti
 import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
 import LimitedTimeCouponsSection from "../../components/Sections/LimitedTimeCoupons/LimitedTimeCoupons";
 import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
-import blogData from "./blogData";
+
 
 export default function Home() {
   const [currCouponPage, setCurrCouponPage] = useState(1);
   const [coupons, setCoupons] = useState(couponsData);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
   const startIndex = (currCouponPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const couponsToShow = coupons.slice(startIndex, endIndex);
 
+  useEffect(() => {
+    setCoupons(couponsData);
+  }, [couponsData]);
+
   const couponElements = couponsToShow.map((coupon) => {
     return (
-      <div className="my-2 my-sm-3">
+      <div className="my-3 my-sm-3">
         <Coupon data={coupon} />
       </div>
     );
@@ -38,36 +42,34 @@ export default function Home() {
       <Header />
 
       <main>
-        <section className="slider-container-bg pt-5 pb-5 mb-5">
+        <section className="slider-container-bg py-5 mb-5">
           <LogoSlider />
         </section>
-        <div className="mb-5">
+        <div className="my-5">
           <TopStoresSection />
         </div>
-        <section className="container-md mt-5 mb-5 pe-0">
+        <section className="container-md my-3 pe-0">
           <div style={{ minHeight: "100vh" }} className="row">
             <div className="col-12 col-sm-12 col-md-7 col-lg-8 mb-4">
               <h2 className="fs-2 text-uppercase text-primary-custom">
                 Coupon Deals
               </h2>
-              <div>
-                {couponElements}
-                <div className="sticky-footer my-4">
-                  <Pagination
-                    totalItems={coupons.length}
-                    itemsPerPage={itemsPerPage}
-                    onPageChange={handlePageChange}
-                  />
-                </div>
+              <div>{couponElements}</div>
+              <div className="sticky-footer my-4">
+                <Pagination
+                  totalItems={coupons.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+                />
               </div>
             </div>
-            <BlogsSideBar data={blogData} max={3} />
+            <BlogsSideBar max={3} />
           </div>
         </section>
-        <div className="my-5">
+        <div className="my-3">
           <TopCouponsSection />
         </div>
-        <div className="my-5">
+        <div className="my-3">
           <LimitedTimeCouponsSection />
         </div>
       </main>

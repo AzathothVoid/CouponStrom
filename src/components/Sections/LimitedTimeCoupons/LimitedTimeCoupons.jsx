@@ -3,6 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import couponsData from "../../../pages/Home/couponsData";
 import CouponCard from "../../Cards/CouponCard";
+import { areDatesOneDayApart } from "../../../utils/DateUtils";
 
 export default function TopCouponsSection() {
   const total = 10;
@@ -10,9 +11,11 @@ export default function TopCouponsSection() {
   const filteredData = couponsData.slice(0, total);
 
   const couponsElement = filteredData.map((coupon, index) => {
+    if (!areDatesOneDayApart(coupon.expiry, new Date().getTime())) return;
+
     const couponElement = (
       <div key={coupon.id}>
-        <CouponCard data={coupon} limitedTime={true} />
+        <CouponCard data={coupon} />
       </div>
     );
 

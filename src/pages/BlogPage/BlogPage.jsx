@@ -4,7 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import { useParams } from "react-router-dom";
 import blogData from "../Home/blogData";
 import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
-import { formatDateBlog } from "../../utils/FormatDate";
+import { formatDateBlog } from "../../utils/DateUtils";
 import ReactMarkDown from "react-markdown";
 
 export default function BlogPage() {

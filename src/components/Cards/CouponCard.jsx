@@ -1,7 +1,15 @@
 import React from "react";
+import { areDatesOneDayApart, formatDate } from "../../utils/DateUtils";
 
 export default function CouponCard(props) {
-  const { data, limitedTime } = props;
+  const { data } = props;
+
+  var limitedTime = false;
+
+  if (areDatesOneDayApart(data.expiry, new Date().getTime())) {
+    limitedTime = true;
+  }
+
   return (
     <div className="card shadow p-1" style={{ width: "200px" }}>
       <div style={{ height: "98px" }}>
@@ -23,21 +31,24 @@ export default function CouponCard(props) {
             <i className="bi-heart-fill" style={{ color: "red" }}></i>
           </div>
         </div>
-      </div>
-
-      <div className="sticky-footer">
-        <div class="row ">
-          <h6
-            style={{ fontSize: "0.8rem", opacity: "0.4" }}
-            className="couponExpiry"
-          >
-            {!limitedTime ? `Expires ${data.expiry}` : "Ends Tommorow"}
-          </h6>
-        </div>
-        <div class="row card-btn-container mt-3">
-          <a href="" className="text-white card-btn bg-primary-custom">
-            Get Offer
-          </a>
+        <div className="sticky-footer">
+          <div class="row">
+            <h6
+              style={{ fontSize: "0.8rem" }}
+              className="couponExpiry opacity-50"
+            >
+              {!limitedTime ? (
+                `Expires ${formatDate(new Date(data.expiry))}`
+              ) : (
+                <span className="badge text-bg-primary ">Limited</span>
+              )}
+            </h6>
+          </div>
+          <div class="row card-btn-container mt-3">
+            <a href="" className="text-white card-btn bg-primary-custom">
+              Get Offer
+            </a>
+          </div>
         </div>
       </div>
     </div>

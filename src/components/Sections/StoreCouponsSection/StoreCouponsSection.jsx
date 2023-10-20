@@ -9,11 +9,11 @@ export default function StoreCouponsSection(props) {
 
   const couponElements = data.map((coupon) => {
     return (
-      <div className="mb-3">
+      <div className="my-3 my-sm-3">
         <StoreCoupon data={coupon} />
       </div>
     );
   });
 
-  return <section className="mb-3 bg-white">{couponElements}</section>;
+  return <section className="mb-3">{couponElements}</section>;
 }

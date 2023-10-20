@@ -26,7 +26,7 @@ export default function Card(props) {
         </div>
         {props.type === "coupon" ? (
           <div className="sticky-footer">
-            <div class="row ">
+            <div class="row text-center">
               <h6
                 style={{ fontSize: "0.8rem", opacity: "0.4" }}
                 className="couponExpiry"

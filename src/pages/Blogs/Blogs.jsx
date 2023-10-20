@@ -6,8 +6,12 @@ import BlogCard from "../../components/Cards/BlogCard";
 import blogData from "../Home/blogData";
 
 export default function Blogs() {
-  const blogs = blogData;
+  const [blogs, setBlogs] = useState(blogData);
   const [currBlogPage, setCurrBlogPage] = useState(1);
+
+  useEffect(() => {
+    setBlogs(blogData);
+  }, [blogData]);
 
   const itemsPerPage = 9;
   const startIndex = (currBlogPage - 1) * itemsPerPage;
@@ -23,7 +27,7 @@ export default function Blogs() {
   });
 
   const handlePageChange = (page) => {
-    setCurrCouponPage(page);
+    setCurrBlogPage(page);
   };
 
   return (
