@@ -27,6 +27,7 @@ function App() {
         />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/:blogId" element={<BlogPage />} />
+        {/* <Route path="/panels/admin" element= {>}/> */}
       </Routes>
     </Router>
   );

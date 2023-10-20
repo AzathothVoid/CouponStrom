@@ -1,13 +1,50 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { navData } from "./headerData";
+import stores from "../../pages/Stores/storeData";
 
 export default function Header() {
   const [currPage, setCurrPage] = useState("");
   const [searchStatus, setSearchStatus] = useState(false);
+  const [storeData, setStoreData] = useState(stores);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const searchedStores = storeData
+    .filter((store) => {
+      return store.name.toLowerCase().includes(searchTerm.toLowerCase());
+    })
+    .slice(0, 10);
+
+  useEffect(() => {
+    const drop = window.addEventListener("resize", lookForSmall);
+
+    return () => drop;
+  }, []);
+
+  const lookForSmall = (event) => {
+    setSearchTerm("");
+  };
+
+  const searchedStoresElements = searchedStores.map((store) => {
+    return (
+      <li className="my-1 border-bottom">
+        <Link to={`/stores/${store.id}`}>
+          <button
+            className={`btn-custom border-0 navbar-btn btn-p nav-btn nav-font text-start search-hover w-100`}
+          >
+            {store.name}
+          </button>
+        </Link>
+      </li>
+    );
+  });
 
   const currStatus = window.location.pathname;
+
+  useEffect(() => {
+    setStoreData(storeData);
+  }, [storeData]);
 
   if (currStatus && !currPage) {
     setCurrPage(
@@ -46,7 +83,9 @@ export default function Header() {
     setSearchStatus(true);
   };
 
-  const handleSearch = () => {};
+  const handleSearching = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <header className="container-fluid px-0">
@@ -87,13 +126,15 @@ export default function Header() {
                       className="form-control text-dark"
                       type="search"
                       placeholder="Search"
+                      value={searchTerm}
+                      onChange={handleSearching}
+                      autoComplete="false"
                       aria-label="Search"
                       autoFocus
                     />
                     <button
                       class="btn bg-primary-custom btn-search-secondary text-white"
                       type="button"
-                      onClick={handleSearch}
                     >
                       <i class="bi-search"></i>
                     </button>
@@ -104,6 +145,13 @@ export default function Header() {
           </div>
         </div>
       </div>
+      {searchTerm ? (
+        <div className="container border mt-3 rounded">
+          <ul className="navbar-nav m-auto mb-2 mb-lg-0">
+            {searchedStoresElements}
+          </ul>
+        </div>
+      ) : null}
     </header>
   );
 }

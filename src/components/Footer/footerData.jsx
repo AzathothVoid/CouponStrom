@@ -9,8 +9,7 @@ export const footerData = [
 ];
 
 export const iconData = [
-  "bi-facebook",
-  "bi-twitter",
-  "bi-google",
-  "bi-instagram",
+  { img: "/socialMediaIcons/facebook.svg", url: "https://www.facebook.com" },
+  { img: "/socialMediaIcons/twitter.svg", url: "https://www.twitter.com" },
+  { img: "/socialMediaIcons/instagram.svg", url: "https://www.instagram.com" },
 ];

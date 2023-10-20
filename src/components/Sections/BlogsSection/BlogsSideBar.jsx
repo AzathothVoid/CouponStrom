@@ -18,7 +18,7 @@ export default function BlogsSideBar(props) {
     );
   });
   return (
-    <div className="row col-12 col-md-5 col-lg-4 py-3 container-fluid sidebarWrapper bg-white rounded me-0 mb-4">
+    <div className="row col-12 col-md-5 col-lg-4 py-3 container-fluid sidebarWrapper  rounded me-0 mb-4">
       {blogElements}
     </div>
   );

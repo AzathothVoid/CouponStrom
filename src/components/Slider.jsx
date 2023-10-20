@@ -19,16 +19,7 @@ const logosAndNames = [
     name: "Company C",
     logoUrl: "/spooky.png",
   },
-  {
-    id: 4,
-    name: "Company D",
-    logoUrl: "/Hardees-logo.png",
-  },
-  {
-    id: 5,
-    name: "Company E",
-    logoUrl: "/Hardees-logo.png",
-  },
+
   // Add more companies here
 ];
 

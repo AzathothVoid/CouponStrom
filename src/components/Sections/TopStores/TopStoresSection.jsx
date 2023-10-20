@@ -27,10 +27,10 @@ export default function TopStoresSection() {
   });
 
   return (
-    <section className="container top-stores">
-      <h2 className="mb-3 ms-1 text-primary-custom">Top Stores</h2>
+    <section className="container top-stores ">
+      <h2 className="mb-3 ms-1 text-center text-primary-custom">Top Stores</h2>
 
-      <div className="d-flex flex-xs-column flex-md-row justify-content-center justify-content-lg-start flex-wrap gap-2">
+      <div className="d-flex flex-xs-column flex-md-row justify-content-center justify-content-lg-center flex-wrap gap-2">
         {storesElement}
       </div>
     </section>

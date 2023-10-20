@@ -11,7 +11,6 @@ import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
 import LimitedTimeCouponsSection from "../../components/Sections/LimitedTimeCoupons/LimitedTimeCoupons";
 import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
 
-
 export default function Home() {
   const [currCouponPage, setCurrCouponPage] = useState(1);
   const [coupons, setCoupons] = useState(couponsData);
@@ -42,10 +41,10 @@ export default function Home() {
       <Header />
 
       <main>
-        <section className="slider-container-bg py-5 mb-5">
+        <section className="container-fluid slider-container-bg  py-5">
           <LogoSlider />
         </section>
-        <div className="my-5">
+        <div className="mb-5">
           <TopStoresSection />
         </div>
         <section className="container-md my-3 pe-0">
@@ -69,7 +68,7 @@ export default function Home() {
         <div className="my-3">
           <TopCouponsSection />
         </div>
-        <div className="my-3">
+        <div className="my-4">
           <LimitedTimeCouponsSection />
         </div>
       </main>

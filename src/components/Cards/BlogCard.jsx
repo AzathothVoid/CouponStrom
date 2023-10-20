@@ -34,7 +34,7 @@ export default function (props) {
               </Link>
             </div>
             <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
-              <div class="views fs-6">{formatDate(blog.date)}</div>
+              <div class="views fs-6">{formatDate(new Date(blog.date))}</div>
               <div class="stats">
                 <i class="bi-eye-fill fs-6"></i> {blog.views}
               </div>

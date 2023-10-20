@@ -40,11 +40,12 @@ export default function Footer() {
     return (
       <a
         className="btn btn-link btn-floating btn-lg text-dark m-1"
-        href="#!"
+        href={`${item.url}`}
         role="button"
+        target="_blank"
         data-mdb-ripple-color="dark"
       >
-        <i className={`fab ${item} icon-white`}></i>
+        <img src={item.img} alt="" />
       </a>
     );
   });
