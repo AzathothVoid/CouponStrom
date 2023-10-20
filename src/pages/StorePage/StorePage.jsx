@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Header from "../../components/Header/OldHeader";
+import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import storesData from "../../pages/Stores/storeData";
 import couponsData from "../Home/couponsData";
@@ -83,7 +83,7 @@ export default function StorePage(props) {
   return (
     <>
       <Header />
-      <div className="container-fluid shadow-tb p-5 bg-primary-custom">
+      <div className="container-fluid shadow-tb p-5 bg-primary-custom ">
         <div className="row d-flex justify-content-center align-content-center">
           <div
             style={{ maxWidth: "250px", height: "100%" }}
@@ -104,7 +104,7 @@ export default function StorePage(props) {
         </div>
       </div>
 
-      <div className="pt-4">
+      <div className="pt-4 ">
         <section className="container p-0">
           <div className="d-flex gap-0 mb-2">
             <span>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Header from "../../components/Header/OldHeader";
+import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import categoriesData from "./categoriesData";
 import { AlphabeticalPaginator } from "../../utils/Paginate";

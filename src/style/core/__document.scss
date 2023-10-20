@@ -4,6 +4,7 @@
   --color-footer: #5b2614;
   --color-nav: #cf7d34;
   --color-logo: #eaa842;
+  --color-experiment: #1c97c8;
 }
 
 *,
@@ -46,6 +47,14 @@ a:visited {
 
 .icon-white {
   color: #fff;
+}
+
+.bg-color-experiment {
+  background: var(--color-experiment);
+}
+
+.text-color-experiment {
+  color: var(--color-experiment);
 }
 
 .bg-primary-custom {

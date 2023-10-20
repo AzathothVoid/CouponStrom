@@ -6,6 +6,8 @@ import Categories from "./pages/Categories/Categories";
 import StorePage from "./pages/StorePage/StorePage";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import SubCatPage from "./pages/SubCatPage/SubCatPage";
+import Blogs from "./pages/Blogs/Blogs";
+import BlogPage from "./pages/BlogPage/BlogPage";
 import "./style/index.scss";
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
           path="/categories/:categoryId/:subCatId"
           element={<SubCatPage />}
         />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blogs/:blogId" element={<BlogPage />} />
       </Routes>
     </Router>
   );

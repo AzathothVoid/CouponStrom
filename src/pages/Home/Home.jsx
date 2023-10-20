@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import Coupon from "../../components/GeneralCoupon";
-import Header from "../../components/Header/OldHeader";
+import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import LogoSlider from "../../components/Slider";
 import couponsData from "./couponsData";
@@ -9,7 +9,7 @@ import { Pagination } from "../../utils/Paginate";
 import TopStoresSection from "../../components/Sections/TopStores/TopStoresSection";
 import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
 import LimitedTimeCouponsSection from "../../components/Sections/LimitedTimeCoupons/LimitedTimeCoupons";
-import BlogCard from "../../components/Cards/BlogCard";
+import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
 import blogData from "./blogData";
 
 export default function Home() {
@@ -20,8 +20,6 @@ export default function Home() {
   const startIndex = (currCouponPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const couponsToShow = coupons.slice(startIndex, endIndex);
-
-  const filteredBlogs = blogData.slice(0, 3);
 
   const couponElements = couponsToShow.map((coupon) => {
     return (
@@ -35,13 +33,6 @@ export default function Home() {
     setCurrCouponPage(page);
   };
 
-  const blogElements = filteredBlogs.map((blog) => {
-    return (
-      <div className="mb-3">
-        <BlogCard data={blog} />
-      </div>
-    );
-  });
   return (
     <>
       <Header />
@@ -70,9 +61,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-12 col-md-5 col-lg-4 p-0 container sidebarWrapper  me-0 mb-4">
-              {blogElements}
-            </div>
+            <BlogsSideBar data={blogData} />
           </div>
         </section>
         <div className="my-5">

@@ -1,22 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { formatDate } from "../../utils/FormatDate";
 
 export default function (props) {
   const [blog, setBlog] = useState(props.data);
-
-  function padTo2Digits(num) {
-    return num.toString().padStart(2, "0");
-  }
-
-  function formatDate(date) {
-    return [
-      padTo2Digits(date.getMonth() + 1),
-      date.getFullYear(),
-      padTo2Digits(date.getDate()),
-    ].join("/");
-  }
-
-  const arr = [];
 
   return (
     <div
@@ -36,18 +24,14 @@ export default function (props) {
             <div class="card-body">
               <div className="blockquote">
                 <h4 class="card-title">{blog.title}</h4>
-                {/* <p className="blockquote-footer">
-                  <span style={{ fontSize: "0.8rem" }}>by</span> {blog.writer}
-                </p> */}
               </div>
 
               <p class="card-text">{blog.description}</p>
-              <button
-                onClick={() => props.viewBlog(blog.id, setBlog)}
-                class="btn-custom rounded  bg-primary-custom"
-              >
-                Read Now
-              </button>
+              <Link to={`/blogs/${blog.id}`}>
+                <button class="btn-custom rounded  bg-primary-custom">
+                  Read Now
+                </button>
+              </Link>
             </div>
             <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
               <div class="views fs-6">{formatDate(blog.date)}</div>
