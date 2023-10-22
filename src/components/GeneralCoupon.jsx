@@ -60,16 +60,15 @@ export default function Coupon(props, { btn = true }) {
             </div>
           </div>
 
-          {!btn ? null : (
-            <div className="col-3 d-none d-sm-flex align-items-start justify-content-end p-2 container">
-              <button
-                onClick={handleShow}
-                className="px-4 btn text-light bg-primary-custom"
-              >
-                Get Offer
-              </button>
-            </div>
-          )}
+          <div className="col-3 d-none d-sm-flex align-items-start justify-content-end p-2 container">
+            <button
+              onClick={handleShow}
+              className="px-4 btn text-light bg-primary-custom"
+            >
+              {data.type === "coupon" ? "Get Code" : "Get Offer"}
+            </button>
+          </div>
+
           <CouponModal
             data={data}
             display={modalDisplay}

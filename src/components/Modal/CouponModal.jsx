@@ -6,11 +6,11 @@ export default function CouponModal(props) {
   const data = props.data;
   const codeToCopyRef = useRef(null);
 
-  const handleCopyClick = () => {
+  const handleCopyClick = (e) => {
     if (codeToCopyRef.current) {
       codeToCopyRef.current.select();
       navigator.clipboard.writeText(codeToCopyRef.current.value).then(() => {
-        alert("Text Copied To Clip Board");
+        e.target.innerHTML = "Text Copied!";
       });
     }
   };
@@ -51,11 +51,36 @@ export default function CouponModal(props) {
           <a className="link-primary fw-bold fs-6" href={data.url}>
             Continue to offer
           </a>
+          <h4 className="my-3">Copy code and continue to offer</h4>
         </Modal.Header>
         <Modal.Body className="px-4">
           <div>
             <h3 className="mb-2">Details</h3>
             <p>{data.details}</p>
+          </div>
+          <div className="d-flex justify-content-center align-items-center gap-3 my-4 border-top pt-4">
+            <p className="m-0">Share on</p>
+            <a
+              href="https://twitter.com/intent/tweet?text=Check%20out%20this%20amazing%20coupon%20on%20MyCouponSite:%20https://couponstrom.com/"
+              target="_blank"
+            >
+              <img src={`/socialMediaIcons/twitter.svg`} alt="" />
+            </a>
+
+            <div
+              className="fb-share-button"
+              data-href="https://couponstrom.com"
+              data-layout=""
+              data-size=""
+            >
+              <a
+                target="_blank"
+                href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcouponstrom.com%2F&amp;src=sdkpreparse"
+                className="fb-xfbml-parse-ignore"
+              >
+                <img src={`/socialMediaIcons/facebook.svg`} alt="" />
+              </a>
+            </div>
           </div>
         </Modal.Body>
 

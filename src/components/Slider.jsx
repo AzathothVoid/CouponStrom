@@ -8,8 +8,15 @@ export default function SimpleSlider(props) {
 
   const sliderElements = data.map((item, index) => {
     return (
-      <div className={`card carousel-item ${index === 0 ? "active" : null}`}>
-        <img style={{ width: "100%" }} src={`${item.img}`} alt="" />
+      <div
+        style={{ height: "50vh" }}
+        className={`card carousel-item ${index === 0 ? "active" : null}`}
+      >
+        <img
+          style={{ width: "100%", height: "100%" }}
+          src={`${item.img}`}
+          alt=""
+        />
       </div>
     );
   });

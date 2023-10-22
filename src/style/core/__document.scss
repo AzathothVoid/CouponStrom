@@ -76,8 +76,12 @@ a:visited {
   background: rgba(0, 0, 0, 0.7);
 }
 
+.bg-footer-custom {
+  background: var(--color-footer);
+}
+
 .text-primary-custom {
-  color: var(--color-primary);
+  color: var(--color-primary) !important;
 }
 
 .text-nav-custom {
@@ -111,7 +115,7 @@ a:visited {
   border: 1px solid #ccc;
   vertical-align: center;
   padding: 0.5rem 1rem;
-  background: #fff;
+  background: inherit;
 }
 
 .active-custom {

@@ -28,15 +28,18 @@ export default function Header() {
 
   const searchedStoresElements = searchedStores.map((store) => {
     return (
-      <li className="my-1 border-bottom">
-        <Link to={`/stores/${store.id}`}>
+      <Link to={`/stores/${store.id}`}>
+        <li className="my-1 border-bottom row flex-nowrap">
+          <div className="col-3 col-md-1">
+            <img className="w-100" src={store.img} alt="" />
+          </div>
           <button
-            className={`btn-custom border-0 navbar-btn btn-p nav-btn nav-font text-start search-hover w-100`}
+            className={`btn-custom col-9 col-md-11 border-0 navbar-btn btn-p nav-btn nav-font text-start search-hover w-100`}
           >
             {store.name}
           </button>
-        </Link>
-      </li>
+        </li>
+      </Link>
     );
   });
 
@@ -61,7 +64,7 @@ export default function Header() {
       <li>
         <Link to={`/${navItem.toLowerCase()}`}>
           <button
-            className={`btn-custom border-0 navbar-btn btn-p nav-btn nav-font ${
+            className={`btn-custom text-white border-0 fs-5 navbar-btn rounded btn-p nav-btn nav-font ${
               currPage === navItem ? "text-primary-custom fw-bold" : null
             }`}
           >
@@ -90,17 +93,17 @@ export default function Header() {
   return (
     <header className="container-fluid px-0">
       <div className="position-relative row">
-        <div className="col-12 px-0">
+        <div className="col-12 px-0 ">
           <img width={"100%"} src="/nav-banner.jpg" alt="" />
         </div>
-        <div className="col-12 py-3 shadow bg-white">
+        <div className="col-12 py-3 shadow bg-footer-custom">
           <div className="navbar navbar-expand-lg ">
             <div className="container-fluid">
               <a href="#" className="navbar-brand">
                 <img className="w-100" src="/logo.svg" alt="" />
               </a>
               <button
-                className="navbar-toggler"
+                className="navbar-toggler bg-white"
                 type="button"
                 onClick={handleHamburger}
               >
@@ -113,7 +116,7 @@ export default function Header() {
 
                 {!searchStatus ? (
                   <button
-                    className="btn text-light btn-search-main"
+                    className="btn text-light btn-search-main fw-bold "
                     type="submit"
                     onClick={handleSearchChange}
                   >
@@ -147,7 +150,7 @@ export default function Header() {
       </div>
       {searchTerm ? (
         <div className="container border mt-3 rounded">
-          <ul className="navbar-nav m-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav m-auto mb-2 mb-lg-0 overflow-hidden">
             {searchedStoresElements}
           </ul>
         </div>

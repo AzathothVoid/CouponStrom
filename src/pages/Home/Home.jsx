@@ -66,7 +66,7 @@ export default function Home() {
             <BlogsSideBar max={3} />
           </div>
         </section>
-        <div className="my-3">
+        <div className="my-4">
           <TopCouponsSection />
         </div>
         <div className="my-4">
