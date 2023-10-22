@@ -5,8 +5,6 @@ import StoreCoupon from "../../StoreCoupon";
 export default function StoreCouponsSection(props) {
   const { data } = props;
 
-  console.log("Data ", data);
-
   const couponElements = data.map((coupon) => {
     return (
       <div className="my-3 my-sm-3">

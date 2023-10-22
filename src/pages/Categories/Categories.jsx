@@ -10,8 +10,6 @@ export default function Categories() {
   const [categories, setCategories] = useState(categoriesData.categories);
   const [currLetter, setLetter] = useState("A");
 
-  console.log(categories);
-
   var filterCategories;
   if (currLetter.length === 1) {
     filterCategories = categories.filter((category) =>

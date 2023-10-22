@@ -25,7 +25,7 @@ export default function Footer() {
               return (
                 <li className="list-item mb-2">
                   <a className="text-decoration-none" href="">
-                    {itemContent}
+                    {itemContent.name}
                   </a>
                 </li>
               );

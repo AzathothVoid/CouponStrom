@@ -10,6 +10,7 @@ import TopStoresSection from "../../components/Sections/TopStores/TopStoresSecti
 import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
 import LimitedTimeCouponsSection from "../../components/Sections/LimitedTimeCoupons/LimitedTimeCoupons";
 import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
+import { logosAndNames } from "./sliderData";
 
 export default function Home() {
   const [currCouponPage, setCurrCouponPage] = useState(1);
@@ -42,7 +43,7 @@ export default function Home() {
 
       <main>
         <section className="container-fluid slider-container-bg  py-5">
-          <LogoSlider />
+          <LogoSlider data={logosAndNames} />
         </section>
         <div className="mb-5">
           <TopStoresSection />

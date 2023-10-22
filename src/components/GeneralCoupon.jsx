@@ -4,7 +4,7 @@ import CouponModal from "./Modal/CouponModal";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/DateUtils";
 
-export default function Coupon(props) {
+export default function Coupon(props, { btn = true }) {
   const [modalDisplay, setModalDisplay] = useState(false);
   const data = props.data;
 
@@ -22,12 +22,12 @@ export default function Coupon(props) {
   };
 
   return (
-    <div className="container-md pe-0">
+    <div className="container-md pe-0 ">
       <div className="container-fluid pe-0 row">
         <div className="container-fluid row shadow bg-white">
           <div className="col-4 col-sm-3 d-flex flex-column justify-content-center img">
             <Link to={`/stores/${data.storeId}`}>
-              <img className="" src={data.image} alt="" width={"100%"} />
+              <img className="" src={`/${data.image}`} alt="" width={"100%"} />
             </Link>
           </div>
 
@@ -60,19 +60,21 @@ export default function Coupon(props) {
             </div>
           </div>
 
-          <div className="col-3 d-none d-sm-flex align-items-start justify-content-end p-2 container">
-            <button
-              onClick={handleShow}
-              className="px-4 btn text-light bg-primary-custom"
-            >
-              Get Offer
-            </button>
-            <CouponModal
-              data={data}
-              display={modalDisplay}
-              handleClose={handleClose}
-            />
-          </div>
+          {!btn ? null : (
+            <div className="col-3 d-none d-sm-flex align-items-start justify-content-end p-2 container">
+              <button
+                onClick={handleShow}
+                className="px-4 btn text-light bg-primary-custom"
+              >
+                Get Offer
+              </button>
+            </div>
+          )}
+          <CouponModal
+            data={data}
+            display={modalDisplay}
+            handleClose={handleClose}
+          />
         </div>
       </div>
     </div>

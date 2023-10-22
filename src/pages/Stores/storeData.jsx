@@ -2,18 +2,24 @@ const storeData = [
   {
     id: 0,
     name: "AliExpress",
-    img: "aliexpress.webp",
+    img: "Hardees-logo.png",
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
+    subCategories: [],
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 1,
+
     name: "AliExpress",
     img: "aliexpress.webp",
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 2,
@@ -22,30 +28,41 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 38,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 3,
+
     name: "AliExpress",
     img: "aliexpress.webp",
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 4,
+
     name: "AliExpress",
     img: "aliexpress.webp",
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 5,
+
     name: "AliExpress",
     img: "aliexpress.webp",
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 6,
@@ -54,6 +71,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 7,
@@ -62,6 +81,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 8,
@@ -70,6 +91,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 9,
@@ -78,6 +101,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 10,
@@ -86,6 +111,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 11,
@@ -94,6 +121,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 12,
@@ -102,6 +131,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 13,
@@ -110,6 +141,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 14,
@@ -118,6 +151,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 15,
@@ -126,6 +161,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 16,
@@ -134,6 +171,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 17,
@@ -142,6 +181,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 18,
@@ -150,6 +191,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 19,
@@ -158,6 +201,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 20,
@@ -166,6 +211,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 21,
@@ -174,6 +221,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 22,
@@ -181,6 +230,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
     desc: "Testing testing 1 2 3. This is just a test sentence.",
   },
   {
@@ -189,6 +240,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 
   {
@@ -197,6 +250,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
     img: "aliexpress.webp",
   },
   {
@@ -206,6 +261,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 26,
@@ -214,6 +271,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 27,
@@ -222,6 +281,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 28,
@@ -229,6 +290,8 @@ const storeData = [
     name: "Mama",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
     img: "aliexpress.webp",
   },
   {
@@ -237,6 +300,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
     img: "aliexpress.webp",
   },
   {
@@ -244,6 +309,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
     name: "Mama",
     img: "aliexpress.webp",
   },
@@ -253,6 +320,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
     img: "aliexpress.webp",
   },
   {
@@ -262,6 +331,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 33,
@@ -270,6 +341,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     desc: "Testing testing 1 2 3. This is just a test sentence.",
@@ -278,6 +351,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 35,
@@ -286,6 +361,8 @@ const storeData = [
     name: "Mama",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 36,
@@ -294,6 +371,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 37,
@@ -302,6 +381,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 38,
@@ -310,6 +391,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 39,
@@ -318,6 +401,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 40,
@@ -325,6 +410,8 @@ const storeData = [
     name: "Mama",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
     img: "aliexpress.webp",
   },
   {
@@ -334,6 +421,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 42,
@@ -342,6 +431,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 43,
@@ -350,6 +441,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 
   {
@@ -359,6 +452,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 46,
@@ -367,6 +462,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 47,
@@ -375,6 +472,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 48,
@@ -383,6 +482,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 49,
@@ -391,6 +492,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 
   {
@@ -400,6 +503,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 51,
@@ -408,6 +513,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 52,
@@ -415,6 +522,8 @@ const storeData = [
     name: "Mcdonalds",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
     img: "aliexpress.webp",
   },
   {
@@ -424,6 +533,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 54,
@@ -432,6 +543,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 55,
@@ -440,6 +553,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     desc: "Testing testing 1 2 3. This is just a test sentence.",
@@ -448,6 +563,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 
   {
@@ -457,6 +574,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 58,
@@ -465,6 +584,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 59,
@@ -473,6 +594,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 60,
@@ -481,6 +604,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 61,
@@ -489,6 +614,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 62,
@@ -497,6 +624,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 63,
@@ -505,6 +634,8 @@ const storeData = [
     name: "Mama",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 64,
@@ -513,6 +644,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 
   {
@@ -522,6 +655,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 
   {
@@ -531,6 +666,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 67,
@@ -539,6 +676,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 68,
@@ -547,6 +686,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 69,
@@ -555,6 +696,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 70,
@@ -563,6 +706,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 71,
@@ -571,6 +716,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 72,
@@ -579,6 +726,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 73,
@@ -587,6 +736,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 74,
@@ -595,6 +746,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 75,
@@ -603,6 +756,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 76,
@@ -611,6 +766,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 
   {
@@ -620,6 +777,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 78,
@@ -628,6 +787,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 79,
@@ -636,6 +797,8 @@ const storeData = [
     desc: "Testing testing 1 2 3. This is just a test sentence.",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 80,
@@ -644,15 +807,19 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 81,
+
     name: "Mcdonalds",
     img: "aliexpress.webp",
     desc: "Testing testing 1 2 3. This is just a test sentence.",
-    keywords: ["Technology", "Processor", "PC", "PC"],
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 82,
@@ -661,6 +828,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 83,
@@ -669,6 +838,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 
   {
@@ -678,6 +849,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
   {
     id: 85,
@@ -686,6 +859,8 @@ const storeData = [
     img: "aliexpress.webp",
     link: "www.google.com",
     likes: 34,
+    categoryIds: [4, 5],
+    keywords: ["Technology", "Processor", "PC", "PC"],
   },
 ];
 

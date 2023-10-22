@@ -2,6 +2,8 @@ const data = [
   {
     id: 1,
     storeId: 81,
+    subCategoryIds: [1, 2],
+    categoryIds: [4, 5],
     type: "deal",
     url: "https://www.example.com",
     deal: "https://www.example.com/affiliateLink",
@@ -15,6 +17,8 @@ const data = [
   {
     id: 2,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -29,6 +33,8 @@ const data = [
   {
     id: 3,
     storeId: 81,
+    subCategoryIds: [1, 15],
+    categoryIds: [4, 5],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -43,6 +49,8 @@ const data = [
   {
     id: 4,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -57,6 +65,8 @@ const data = [
   {
     id: 5,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -71,6 +81,8 @@ const data = [
   {
     id: 6,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -85,6 +97,8 @@ const data = [
   {
     id: 7,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -99,6 +113,8 @@ const data = [
   {
     id: 8,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -113,6 +129,8 @@ const data = [
   {
     id: 9,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -127,6 +145,8 @@ const data = [
   {
     id: 10,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",
@@ -141,6 +161,8 @@ const data = [
   {
     id: 11,
     storeId: 81,
+    categoryIds: [4, 5],
+    subCategoryIds: [1, 2],
     type: "coupon",
     code: "51FGVF",
     url: "https://www.example.com",

@@ -3,44 +3,18 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "bootstrap/js/dist/carousel";
 
-const logosAndNames = [
-  {
-    id: 1,
-    name: "Company A",
-    logoUrl: "/booking-com.webp",
-  },
-  {
-    id: 2,
-    name: "Company B",
-    logoUrl: "/samsung.webp",
-  },
-  {
-    id: 3,
-    name: "Company C",
-    logoUrl: "/spooky.png",
-  },
+export default function SimpleSlider(props) {
+  const data = props.data;
 
-  // Add more companies here
-];
-
-export default function SimpleSlider() {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
-  const sliderElements = logosAndNames.map((logo, index) => {
+  const sliderElements = data.map((item, index) => {
     return (
       <div className={`card carousel-item ${index === 0 ? "active" : null}`}>
-        <img style={{ width: "100%" }} src={`${logo.logoUrl}`} alt="" />
+        <img style={{ width: "100%" }} src={`${item.img}`} alt="" />
       </div>
     );
   });
 
-  const indicatorElements = logosAndNames.map((logo, index) => {
+  const indicatorElements = data.map((item, index) => {
     return (
       <button
         type="button"

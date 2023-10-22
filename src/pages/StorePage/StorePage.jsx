@@ -51,7 +51,7 @@ export default function StorePage(props) {
 
   const couponSectionHandler = (event) => {
     event.preventDefault();
-    setCouponSection(event.target.innerHTML);
+    setCouponSection(event.target.innerHTML.toLowerCase());
   };
 
   const handlePageChange = (page) => {

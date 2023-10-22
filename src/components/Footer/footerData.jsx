@@ -1,10 +1,34 @@
 export const footerData = [
-  { heading: "Company", content: ["Contact", "About us", "Policy"] },
-  { heading: "Site Map", content: ["Top Deals", "Stores", "Categories"] },
-  { heading: "For You", content: ["Add Coupon", "Add Store"] },
+  {
+    heading: "Company",
+    content: [
+      { name: "Contact", href: "/contact" },
+      { name: "About us", href: "/about-us" },
+      { name: "Policy", href: "/about-us" },
+    ],
+  },
+  {
+    heading: "Site Map",
+    content: [
+      { name: "Top Deals", href: "/contact" },
+      { name: "Stores", href: "/contact" },
+      { name: "Categories", href: "/contact" },
+    ],
+  },
+  {
+    heading: "For You",
+    content: [
+      { name: "Add Coupon", href: "/contact" },
+      { name: "Add Store", href: "/contact" },
+    ],
+  },
   {
     heading: "Best Deals",
-    content: ["Top Stores", "Latest Coupons", "Coupons expiring soon"],
+    content: [
+      { name: "Top Stores", href: "/contact" },
+      { name: "Latest Coupons", href: "/contact" },
+      { name: "Coupons Expiring Soon", href: "/contact" },
+    ],
   },
 ];
 
