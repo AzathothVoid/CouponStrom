@@ -14,6 +14,7 @@ import Registration from "./pages/Dashboard/Registration";
 import AdminPanel from "./pages/Dashboard/Admin/Admin";
 import DataEntryPanel from "./pages/Dashboard/DataEntry/DataEntry";
 import { AuthProvider } from "./components/Auth/AuthContext";
+import AdminCoupons from "./pages/Dashboard/Admin/sections/AdminCoupons";
 import "./style/index.scss";
 
 function App() {
@@ -48,15 +49,15 @@ function App() {
             }
           />
           <Route
-            path="/dashboard/data-entry"
+            path="/dashboard/admin"
             element={
               <PrivateRoute
-                path="/dashboard/data-entry"
-                element={<DataEntryPanel />}
-                allowedRoles={["data-entry"]}
+                path="/dashboard/admin"
+                element={<AdminPanel />}
+                allowedRoles={["admin"]}
               />
             }
-          />
+          ></Route>
         </Routes>
       </Router>
     </AuthProvider>

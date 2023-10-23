@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 const initialState = {
   user: null,
   role: null, // Include the user's role
+  data: null,
   login: (userData) => {},
   logout: () => {},
 };
@@ -18,9 +19,8 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const savedUserData = sessionStorage.getItem("userData");
     if (savedUserData) {
-      const { user, role } = JSON.parse(savedUserData);
-      console.log("User: ", user, " Role: ", role);
-      dispatch({ type: "LOGIN", payload: { user, role } });
+      const { user, role, data } = JSON.parse(savedUserData);
+      dispatch({ type: "LOGIN", payload: { user, role, data } });
     }
   }, []);
 
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
       "userData",
       JSON.stringify({ user: token, role, data: user })
     );
-    dispatch({ type: "LOGIN", payload: { user: token, role } });
+    dispatch({ type: "LOGIN", payload: { user: token, role, data: user } });
   };
 
   const logout = () => {
@@ -41,7 +41,13 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: state.user, role: state.role, login, logout }}
+      value={{
+        user: state.user,
+        role: state.role,
+        data: state.data,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -56,12 +62,14 @@ const authReducer = (state, action) => {
         ...state,
         user: action.payload.user,
         role: action.payload.role, // Set the user's role
+        data: action.payload.data,
       };
     case "LOGOUT":
       return {
         ...state,
         user: null,
         role: null, // Clear the user's role
+        data: null,
       };
     default:
       return state;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../Auth/AuthContext";
 import { Navigate } from "react-router-dom";
 
-export default function PrivateRoute({ path, element, allowedRoles }) {
+export default function PrivateRoute({ element, allowedRoles }) {
   const { user, role } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
