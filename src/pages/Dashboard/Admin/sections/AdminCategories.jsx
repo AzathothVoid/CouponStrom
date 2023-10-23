@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { addCategory } from "../../../../api/CategoriesAPI";
+import { addCategory, getAllCategories } from "../../../../api/CategoriesAPI";
 
 export default function AdminCategories(props) {
   const [show, setShow] = useState(false);
@@ -13,7 +13,7 @@ export default function AdminCategories(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  console.log("Blocks: ", blocks);
+  console.log("Categories: ", getAllCategories());
 
   const blockElements = blocks.map((block) => {
     return (

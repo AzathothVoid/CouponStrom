@@ -29,7 +29,7 @@ export default function Registration() {
         confirmPassword
       );
 
-      alert(response.response);
+      console.log(response);
     } catch (error) {
       console.log(error);
       setErrorData(error.response.data.error);

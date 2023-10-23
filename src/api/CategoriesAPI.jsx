@@ -9,3 +9,69 @@ export const addCategory = async (data) => {
     console.log(response);
   }
 };
+
+export const getAllCategories = async (setter) => {
+  const response = await ApiSerivce.get("/get-product-categories");
+
+  if (response.status === 200) {
+    setter(response.data);
+  }
+};
+
+export const getCategoryById = async (setter, categoryID) => {
+  const response = await ApiSerivce.get("/get-product-category-byID", {
+    params: categoryID,
+  });
+
+  if (response.status === 200) {
+    setter(response.data);
+  } else {
+    throw response;
+  }
+};
+
+export const getCategoryByStore = async (setter, storeID) => {
+  const response = await ApiSerivce.get("/get-product-categories-byStore", {
+    params: storeID,
+  });
+
+  if (response.status === 200) {
+    setter(response.data);
+  } else {
+    throw response;
+  }
+};
+
+export const getSubCategoriesByStore = async (setter, storeID) => {
+  const response = await ApiSerivce.get("/get-product-subcategories-byStore", {
+    params: storeID,
+  });
+
+  if (response.status === 200) {
+    setter(response.data);
+  } else {
+    throw response;
+  }
+};
+
+export const getSubCategoriesByCategory = async (setter, categoryID) => {
+  const response = await ApiSerivce.get("/get-subcat-catid", {
+    params: categoryID,
+  });
+
+  if (response.status === 200) {
+    setter(response.data);
+  } else {
+    throw response;
+  }
+};
+
+export const getSubCategoriesByID = async (setter, categoryID) => {
+  const response = await ApiSerivce.get("/get-product-SUBcategory-byID", {
+    params: categoryID,
+  });
+
+  if (response.status === 200) {
+    setter(response.data);
+  }
+};

@@ -9,10 +9,13 @@ import "react-quill/dist/quill.snow.css";
 import TurndownService from "turndown";
 import ReactMarkDown from "react-markdown";
 import Navigation from "../../Navigation";
+import { addBlog } from "../../../../api/BlogsAPI";
 
 export default function AdminBlogs(props) {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogImage, setBlogImage] = useState();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -23,21 +26,27 @@ export default function AdminBlogs(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    var title = document.getElementById("blogTitle").value;
 
-    console.log(markDown);
+    let formData = new FormData();
 
-    const data = {
-      title: title,
-      text: markDown,
-    };
+    formData.append("image", blogImage);
+    formData.append("text", markDown);
+    formData.append("title", blogTitle);
 
-    console.log(data);
+    try {
+      const response = addBlog(formData);
+    } catch (error) {
+      console.log(error);
+    }
     setText("");
+    handleClose();
   };
 
-  const handleChange = (event) => {
-    event.value = event.target.value;
+  const handleBlogImageChange = (event) => {
+    setBlogImage(event.target.files[0]);
+  };
+  const handleBlogTitleChange = (event) => {
+    setBlogTitle(event.target.value);
   };
 
   const handleQuillChange = (value) => {
@@ -49,7 +58,7 @@ export default function AdminBlogs(props) {
       <ReactMarkDown>{markDown}</ReactMarkDown>
 
       <div className="container">
-        <Navigation setSection={props.setSection} section={props.section}/>
+        <Navigation setSection={props.setSection} section={props.section} />
 
         <div className="container border border-warning mainSection px-4">
           <div className="container py-4">
@@ -126,7 +135,8 @@ export default function AdminBlogs(props) {
                 type="text"
                 placeholder="Title"
                 id="blogTitle"
-                onChange={handleChange}
+                value={blogTitle}
+                onChange={handleBlogTitleChange}
                 autoFocus
                 required
               />
@@ -146,7 +156,10 @@ export default function AdminBlogs(props) {
               <Form.Control
                 className="mb-3"
                 type="file"
-                accept=".jpeg,.png,.svg,.webp"
+                accept="image/*"
+                name="blogimage"
+                onChange={handleBlogImageChange}
+                required
               />
             </Form.Group>
           </Form>

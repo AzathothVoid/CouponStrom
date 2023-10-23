@@ -4,6 +4,8 @@ import ApiService from "./ApiService";
 export const UserLogin = async (email, password) => {
   const loginInfo = { email: email, password: password };
 
+  console.log("LoginInfo: ", loginInfo);
+
   const response = await ApiService.post(`/login`, loginInfo);
 
   if (response.status === 200) {
@@ -34,6 +36,6 @@ export const userRegistration = async (
   if (response.status === 201) {
     return { response: "Registration Successful" };
   } else {
-    console.log("Error");
+    return response;
   }
 };

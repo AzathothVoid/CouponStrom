@@ -5,15 +5,29 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Navigation from "../../Navigation";
+import { addAd } from "../../../../api/AdsAPI";
 
 export default function AdminAdvertisements(props) {
   const [show, setShow] = useState(false);
+  const [adImage, setAdImage] = useState();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleSubmit = (even) => {
+  const handleAdImageChange = (e) => {
+    setAdImage(e.target.files[0]);
+  };
+
+  const handleSubmit = (event) => {
     event.preventDefault();
+
+    const formData = new FormData("image", adImage);
+
+    formData.append("image", adImage);
+
+    try {
+      const response = addAd(formData);
+    } catch (error) {}
   };
 
   return (
@@ -78,7 +92,9 @@ export default function AdminAdvertisements(props) {
               <Form.Control
                 className="mb-3"
                 type="file"
-                accept=".jpeg,.png,.svg,.webp"
+                onChange={handleAdImageChange}
+                accept="image/*"
+                required
               />
             </Form.Group>
           </Form>
@@ -88,7 +104,12 @@ export default function AdminAdvertisements(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            variant="primary"
+            type="submit"
+            form="advertForm"
+            onClick={handleClose}
+          >
             Submit
           </Button>
         </Modal.Footer>

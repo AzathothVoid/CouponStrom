@@ -6,10 +6,15 @@ const ApiService = axios.create({
 
 ApiService.interceptors.request.use(
   (config) => {
-    const { user } = JSON.parse(sessionStorage.getItem("userData"));
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
+    var token;
 
-    if (user) {
-      config.headers.Authorization = `Bearer ${user}`;
+    if (userData) {
+      token = userData.user;
+    }
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;

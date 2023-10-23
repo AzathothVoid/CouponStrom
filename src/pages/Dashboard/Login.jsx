@@ -32,11 +32,15 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
+      console.log("Email: ", email, " Password: ", password);
       const userData = await UserLogin(email, password);
+
+      console.log("User Data: ", userData);
 
       if (userData) login(userData);
     } catch (error) {
-      setErrorData(error.response.data.error);
+      console.log(error);
+      setErrorData(error.response);
       setErrorModal(true);
     }
   };

@@ -1,18 +1,68 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Navigation from "../../Navigation";
+import {
+  getAllCategories,
+  getSubCategoriesByCategory,
+} from "../../../../api/CategoriesAPI";
+import { addStore } from "../../../../api/StoresAPI";
 
 export default function AdminStores(props) {
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [subCategoriesData, setSubCategoriesData] = useState([]);
   const [show, setShow] = useState(false);
   const [blocksCategory, setBlocksCategory] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState([]);
+  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState([]);
   const [blocksSubcategory, setBlocksSubcategory] = useState([]);
+  const [storeCategory, setStoreCategory] = useState("");
+  const [storeSubCategory, setStoreSubCategory] = useState("");
+  const [storeName, setStoreName] = useState("");
+  const [storeURL, setStoreURL] = useState("");
+  const [storeDescription, setStoreDescription] = useState("");
+  const [storeImage, setStoreImage] = useState();
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setStoreName("");
+    setStoreURL("");
+    setStoreDescription("");
+    setStoreCategory("");
+    setStoreSubCategory("");
+    setStoreImage();
+    setBlocksCategory([]);
+    setBlocksSubcategory([]);
+    setSelectedCategoryId([]);
+    setSelectedSubCategoryId([]);
+    setShow(false);
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  useEffect(() => {
+    getAllCategories(setCategoriesData);
+  }, []);
+
+  useEffect(() => {
+    if (categoriesData && storeCategory) {
+      const storeCategoryID = categoriesData.find((category) => {
+        return category.name === storeCategory;
+      }).id;
+
+      const data = {
+        "category-id": storeCategoryID,
+      };
+
+      try {
+        getSubCategoriesByCategory(setSubCategoriesData, data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [storeCategory]);
 
   const blockElementsCategory = blocksCategory.map((block) => {
     return (
@@ -23,15 +73,13 @@ export default function AdminStores(props) {
     );
   });
 
-  let addCategory = (e) => {
-    const data = e.target.parentElement.parentElement.firstChild.value;
+  const categorySelectElements = categoriesData.map((category) => {
+    return <option value={category.name}>{category.name}</option>;
+  });
 
-    if (blocksCategory.find((block) => block === data)) return;
-    setBlocksCategory((prev) => [
-      ...prev,
-      e.target.parentElement.parentElement.firstChild.value,
-    ]);
-  };
+  const subCategorySelectElements = subCategoriesData.map((subCategory) => {
+    return <option value={subCategory.name}>{subCategory.name}</option>;
+  });
 
   const blockElementsSubcategory = blocksSubcategory.map((block) => {
     return (
@@ -42,32 +90,85 @@ export default function AdminStores(props) {
     );
   });
 
-  let addSubcategory = (e) => {
-    const data = e.target.parentElement.parentElement.firstChild.value;
+  let addCategory = (e) => {
+    if (!storeCategory) return;
+    if (blocksCategory.find((block) => block === storeCategory)) return;
+    setBlocksCategory((prev) => [...prev, storeCategory]);
+  };
 
-    if (blocksSubcategory.find((block) => block === data)) return;
-    setBlocksSubcategory((prev) => [
-      ...prev,
-      e.target.parentElement.parentElement.firstChild.value,
-    ]);
+  let addSubcategory = (e) => {
+    if (!storeSubCategory) return;
+    if (blocksSubcategory.find((block) => block === storeSubCategory)) return;
+    setBlocksSubcategory((prev) => [...prev, storeSubCategory]);
+    if (blocksCategory.find((block) => block === storeCategory)) return;
+
+    setBlocksCategory((prev) => [...prev, storeCategory]);
+  };
+
+  const handleStoreSubCategoryChange = (e) => {
+    const id = subCategoriesData.find(
+      (category) => category.name === e.target.value
+    ).id;
+
+    setSelectedSubCategoryId((prev) => [...prev, id]);
+    setStoreSubCategory(e.target.value);
+  };
+
+  const handleStoreCategoryChange = (e) => {
+    const id = categoriesData.find(
+      (category) => category.name === e.target.value
+    ).id;
+    setSelectedCategoryId((prev) => [...prev, id]);
+    setStoreCategory(e.target.value);
+  };
+
+  const handleStoreNameChange = (e) => {
+    setStoreName(e.target.value);
+  };
+  const handleStoreURLChange = (e) => {
+    setStoreURL(e.target.value);
+  };
+  const handleStoreDescriptionChange = (e) => {
+    setStoreDescription(e.target.value);
+  };
+  const handleStoreImageChange = (e) => {
+    setStoreImage(e.target.files[0]);
   };
 
   const handleSubmit = (event) => {
-    var name = document.getElementById("storeName").value;
-    var cats = document.querySelectorAll(".categoryAdd");
-    var subCats = document.querySelectorAll(".subCategoryAdd");
-
-    console.log(name);
-
-    cats.forEach((el) => {
-      console.log(el.innerHTML);
-    });
-
-    subCats.forEach((el) => {
-      console.log(el.innerHTML);
-    });
-
     event.preventDefault();
+    if (blocksCategory.length === 0 || blocksSubcategory.length === 0) {
+      alert("Enter atleast one Category and sub category");
+      e;
+    }
+
+    let formData = new FormData();
+
+    console.log("Type of CategoryIDs: ", typeof selectedCategoryId);
+
+    formData.append("name", storeName);
+
+    for (let i = 0; i < selectedCategoryId.length; i++) {
+      formData.append("category[]", selectedCategoryId[i]);
+    }
+    for (let i = 0; i < selectedSubCategoryId.length; i++) {
+      formData.append("sub_category[]", selectedSubCategoryId[i]);
+    }
+
+    formData.append("images", storeImage);
+    formData.append("link", storeURL);
+    formData.append("description", storeDescription);
+
+    console.log("Form Data: ", formData);
+    try {
+      const response = addStore(formData);
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log(response);
+
+    handleClose();
   };
 
   return (
@@ -213,7 +314,33 @@ export default function AdminStores(props) {
                   type="text"
                   placeholder="Name"
                   id="storeName"
+                  value={storeName}
+                  onChange={handleStoreNameChange}
                   autoFocus
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-4">
+                <Form.Label>URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={storeURL}
+                  onChange={handleStoreURLChange}
+                  placeholder="Store URL"
+                  id="storeURL"
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-4">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  value={storeDescription}
+                  onChange={handleStoreDescriptionChange}
+                  as="textarea"
+                  placeholder="Store Description"
+                  id="storeDescription"
                   required
                 />
               </Form.Group>
@@ -223,12 +350,14 @@ export default function AdminStores(props) {
                   name="stores"
                   className="mb-2"
                   id="storeCategory"
-                  required
+                  value={storeCategory}
+                  onChange={handleStoreCategoryChange}
+                  placeholder="Select Category"
                 >
-                  <option>Select Category</option>
-                  <option>{}</option>
-                  <option>{}</option>
-                  <option>{}</option>
+                  <option value="" disabled selected>
+                    Select a category
+                  </option>
+                  {categorySelectElements}
                 </Form.Select>
 
                 <div className="container categoryContainer">
@@ -248,11 +377,15 @@ export default function AdminStores(props) {
                   name="stores"
                   className="mb-2"
                   id="storeSubCategory"
+                  value={storeSubCategory}
+                  onChange={handleStoreSubCategoryChange}
+                  placeholder="Select SubCategory"
                 >
-                  <option>Select SubCategory</option>
-                  <option>{}</option>
-                  <option>{}</option>
-                  <option>{}</option>
+                  {" "}
+                  <option value="" disabled selected>
+                    Select a subcategory
+                  </option>
+                  {subCategorySelectElements}
                 </Form.Select>
 
                 <div className="container subcategoryContainer">
@@ -279,7 +412,9 @@ export default function AdminStores(props) {
                 <Form.Control
                   className="mb-3"
                   type="file"
-                  accept=".jpeg,.png,.svg,.webp"
+                  onChange={handleStoreImageChange}
+                  accept="image/*"
+                  required
                 />
               </Form.Group>
             </Form>
@@ -288,12 +423,7 @@ export default function AdminStores(props) {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button
-              variant="primary"
-              type="submit"
-              form="storeForm"
-              onClick={handleClose}
-            >
+            <Button variant="primary" type="submit" form="storeForm">
               Submit
             </Button>
           </Modal.Footer>
