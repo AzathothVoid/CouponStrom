@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -9,13 +9,18 @@ import "react-quill/dist/quill.snow.css";
 import TurndownService from "turndown";
 import ReactMarkDown from "react-markdown";
 import Navigation from "../../Navigation";
-import { addBlog } from "../../../../api/BlogsAPI";
+import { addBlog, getBlogs } from "../../../../api/BlogsAPI";
+import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminBlogs(props) {
+  const dataState = useDataState();
+  
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
   const [blogTitle, setBlogTitle] = useState("");
   const [blogImage, setBlogImage] = useState();
+
+  const blogData = dataState.blogs || [];
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -23,6 +28,25 @@ export default function AdminBlogs(props) {
   const turnDownService = new TurndownService();
 
   const markDown = turnDownService.turndown(text);
+
+  const blogsElements = blogData.map((blog) => {
+    return (
+      <div className="my-4 row object">
+        <div className="col-8 container p-2 ps-4 text-dark">
+          <div className="blogTitle lead my-1 fs-4">{blog.title}</div>
+          <div className="blogDate text-muted mb-1">
+            Date Modified : {blog.updated_at}
+          </div>
+        </div>
+
+        <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
+          <button className="btn">
+            <i className="bi bi-trash-fill fs-2"></i>
+          </button>
+        </div>
+      </div>
+    );
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -83,41 +107,7 @@ export default function AdminBlogs(props) {
           </div>
 
           <div className="container mb-4">
-            <div className="container objectContainer">
-              <div className="my-4 row object">
-                <div className="col-8 container p-2 ps-4 text-dark">
-                  <div className="blogTitle lead my-1 fs-4">
-                    How To Use a Coupon?
-                  </div>
-                  <div className="blogDate text-muted mb-1">
-                    Date Modified : 24/5/2021
-                  </div>
-                </div>
-
-                <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div className="my-4 row object">
-                <div className="col-8 container p-2 ps-4 text-dark">
-                  <div className="blogTitle lead my-1 fs-4">
-                    How To Use a Coupon?
-                  </div>
-                  <div className="blogDate text-muted mb-1">
-                    Date Modified : 24/5/2021
-                  </div>
-                </div>
-
-                <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+            <div className="container objectContainer">{blogsElements}</div>
           </div>
         </div>
       </div>

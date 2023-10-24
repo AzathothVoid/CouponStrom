@@ -1,19 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navigation from "../../Navigation";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { addCategory, getAllCategories } from "../../../../api/CategoriesAPI";
+import { addCategory } from "../../../../api/CategoriesAPI";
+import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminCategories(props) {
+  const useData = useDataState();
+
   const [show, setShow] = useState(false);
   const [blocks, setBlocks] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
+  const [categoryDescription, setCategoryDescription] = useState("");
 
-  const handleClose = () => setShow(false);
+  const categoriesData = useData.categories || [];
+
+  const handleClose = () => {
+    setBlocks([]);
+    setCategoryName("");
+    setCategoryDescription("");
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
 
-  console.log("Categories: ", getAllCategories());
+  const categoryElements = categoriesData.map((category) => {
+    return (
+      <div className="my-4 row object">
+        <div className="col-8 container p-2 ps-4 text-dark">
+          <div className="storeDescription lead my-1 fs-4">{category.name}</div>
+          <div className="storeExpiry text-muted mb-1">
+            Number of Deals : {category.total_deals}
+          </div>
+          <div className="storeDetails text-muted mb-1">
+            Number of Coupons : {category.total_coupons}
+          </div>
+        </div>
+        <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
+          <button className="btn">
+            <i className="bi bi-trash-fill fs-2"></i>
+          </button>
+        </div>
+      </div>
+    );
+  });
 
   const blockElements = blocks.map((block) => {
     return (
@@ -24,7 +55,12 @@ export default function AdminCategories(props) {
     );
   });
 
-  let addSubcategory = (e) => {
+  const handleCategoryNameChange = (e) => setCategoryName(e.target.value);
+
+  const handleCategoryDescriptionChange = (e) =>
+    setCategoryDescription(e.target.value);
+
+  const addSubcategory = (e) => {
     const subCatInput = document.getElementById("subCategory").value;
 
     if (blocks.find((block) => block === subCatInput)) return;
@@ -33,22 +69,19 @@ export default function AdminCategories(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const category = document.getElementById("category").value;
-    const description = document.getElementById("description").value;
 
     try {
       const response = await addCategory({
-        name: category,
+        name: categoryName,
         sub_categories: blocks,
-        description: description,
+        description: categoryDescription,
       });
     } catch (error) {
       console.log(error);
-      setBlocks([]);
+      return;
     }
 
-    setBlocks([]);
-    setShow(false);
+    handleClose();
   };
 
   return (
@@ -66,45 +99,7 @@ export default function AdminCategories(props) {
             </button>
           </div>
 
-          <div className="container mb-4">
-            <div className="container objectContainer">
-              <div className="my-4 row object">
-                <div className="col-8 container p-2 ps-4 text-dark">
-                  <div className="storeDescription lead my-1 fs-4">FOOD</div>
-                  <div className="storeExpiry text-muted mb-1">
-                    Number of Stores : 48
-                  </div>
-                  <div className="storeDetails text-muted mb-1">
-                    Number of Coupons : 87
-                  </div>
-                </div>
-
-                <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div className="my-4 row object">
-                <div className="col-8 container p-2 ps-4 text-dark">
-                  <div className="categoryDescription lead my-1 fs-4">FOOD</div>
-                  <div className="categoryNumbers text-muted mb-1">
-                    Number of Stores : 48
-                  </div>
-                  <div className="categoryNumbers text-muted mb-1">
-                    Number of Coupons : 87
-                  </div>
-                </div>
-
-                <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div className="container mb-4">{categoryElements}</div>
         </div>
       </div>
 
@@ -119,6 +114,8 @@ export default function AdminCategories(props) {
               <Form.Control
                 type="text"
                 placeholder="Name"
+                value={categoryName}
+                onChange={handleCategoryNameChange}
                 id="category"
                 autoFocus
                 required
@@ -130,6 +127,8 @@ export default function AdminCategories(props) {
                 as="textarea"
                 rows="3"
                 placeholder="Description"
+                value={categoryDescription}
+                onChange={handleCategoryDescriptionChange}
                 id="description"
                 required
               />

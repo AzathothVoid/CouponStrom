@@ -12,11 +12,11 @@ export const addBlog = async (data) => {
   }
 };
 
-export const getBlogs = async (setter) => {
+export const getBlogs = async (dispatch) => {
   const response = await ApiService.get("/get-blog");
 
   if (response.status === 200) {
-    setter(response.data);
+    dispatch({ type: "LOAD_BLOGS", payload: response.data });
   } else {
     throw response;
   }

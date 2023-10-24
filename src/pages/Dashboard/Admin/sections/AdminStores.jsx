@@ -4,19 +4,20 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Navigation from "../../Navigation";
+import { getSubCategoriesByCategory } from "../../../../api/CategoriesAPI";
 import {
-  getAllCategories,
-  getSubCategoriesByCategory,
-} from "../../../../api/CategoriesAPI";
-import { addStore } from "../../../../api/StoresAPI";
+  addStore,
+  getStoreByCategory,
+  getStoreBySubCategory,
+} from "../../../../api/StoresAPI";
+import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminStores(props) {
-  const [categoriesData, setCategoriesData] = useState([]);
+  const dataState = useDataState();
+
   const [subCategoriesData, setSubCategoriesData] = useState([]);
   const [show, setShow] = useState(false);
   const [blocksCategory, setBlocksCategory] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState([]);
-  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState([]);
   const [blocksSubcategory, setBlocksSubcategory] = useState([]);
   const [storeCategory, setStoreCategory] = useState("");
   const [storeSubCategory, setStoreSubCategory] = useState("");
@@ -24,6 +25,11 @@ export default function AdminStores(props) {
   const [storeURL, setStoreURL] = useState("");
   const [storeDescription, setStoreDescription] = useState("");
   const [storeImage, setStoreImage] = useState();
+  const [storesByCategory, setStoresByCategory] = useState();
+  const [storesBySubCategory, setStoresBySubCategory] = useState();
+
+  const categoriesData = dataState.categories;
+  const storesData = dataState.stores;
 
   const handleClose = () => {
     setStoreName("");
@@ -34,8 +40,6 @@ export default function AdminStores(props) {
     setStoreImage();
     setBlocksCategory([]);
     setBlocksSubcategory([]);
-    setSelectedCategoryId([]);
-    setSelectedSubCategoryId([]);
     setShow(false);
   };
   const handleShow = () => {
@@ -43,13 +47,27 @@ export default function AdminStores(props) {
   };
 
   useEffect(() => {
-    getAllCategories(setCategoriesData);
-  }, []);
+    if (storeCategory) {
+      const data = {
+        "category-id": Number.parseInt(storeCategory[1]),
+      };
+      getStoreByCategory(setStoresByCategory, data);
+    }
+  }, [storeCategory]);
+
+  useEffect(() => {
+    if (storeSubCategory) {
+      const data = {
+        "subcategory-id": Number.parseInt(storeSubCategory[1]),
+      };
+      getStoreBySubCategory(setStoresBySubCategory, data);
+    }
+  }, [storeSubCategory]);
 
   useEffect(() => {
     if (categoriesData && storeCategory) {
       const storeCategoryID = categoriesData.find((category) => {
-        return category.name === storeCategory;
+        return category.name === storeCategory[0];
       }).id;
 
       const data = {
@@ -66,24 +84,87 @@ export default function AdminStores(props) {
 
   const blockElementsCategory = blocksCategory.map((block) => {
     return (
-      <div className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd">
+      <div
+        key={block}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd"
+      >
         {" "}
         {block}{" "}
       </div>
     );
   });
 
+  var storesToShow = storesData;
+
+  if (storeCategory) {
+    if (!storesByCategory) {
+      storesToShow = [];
+    } else {
+      storesToShow = storesByCategory;
+    }
+  }
+
+  if (storeSubCategory) {
+    if (!storesBySubCategory) {
+      storesToShow = [];
+    } else {
+      storesToShow = storesBySubCategory;
+    }
+  }
+
+  console.log("Stores to show: ", storesToShow);
+
+  const storeElements = storesToShow.map((store) => {
+    return (
+      <div key={store.id} className="my-4 row object">
+        <div className="col-xl-3 col-lg-3 img">
+          <img
+            className=""
+            src={store.images[0].image}
+            alt="AliExpress"
+            width="180"
+            height="110"
+          ></img>
+        </div>
+
+        <div className="col-xl-6 col-lg-6 container p-2 text-dark">
+          <div className="storeDescription lead my-1 fs-4">{store.name}</div>
+          <div className="storeExpiry text-muted mb-1">
+            Number of Coupons : {store.coupons}
+          </div>
+        </div>
+
+        <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
+          <button className="btn">
+            <i className="bi bi-trash-fill fs-2"></i>
+          </button>
+        </div>
+      </div>
+    );
+  });
+
   const categorySelectElements = categoriesData.map((category) => {
-    return <option value={category.name}>{category.name}</option>;
+    return (
+      <option key={category.id} value={[category.name, category.id]}>
+        {category.name}
+      </option>
+    );
   });
 
   const subCategorySelectElements = subCategoriesData.map((subCategory) => {
-    return <option value={subCategory.name}>{subCategory.name}</option>;
+    return (
+      <option key={subCategory.id} value={[subCategory.name, subCategory.id]}>
+        {subCategory.name}
+      </option>
+    );
   });
 
   const blockElementsSubcategory = blocksSubcategory.map((block) => {
     return (
-      <div className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light subCategoryAdd">
+      <div
+        key={block}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light subCategoryAdd"
+      >
         {" "}
         {block}{" "}
       </div>
@@ -92,34 +173,26 @@ export default function AdminStores(props) {
 
   let addCategory = (e) => {
     if (!storeCategory) return;
-    if (blocksCategory.find((block) => block === storeCategory)) return;
-    setBlocksCategory((prev) => [...prev, storeCategory]);
+    if (blocksCategory.find((block) => block === storeCategory[0])) return;
+    setBlocksCategory((prev) => [...prev, storeCategory[0]]);
   };
 
   let addSubcategory = (e) => {
     if (!storeSubCategory) return;
-    if (blocksSubcategory.find((block) => block === storeSubCategory)) return;
-    setBlocksSubcategory((prev) => [...prev, storeSubCategory]);
-    if (blocksCategory.find((block) => block === storeCategory)) return;
+    if (blocksSubcategory.find((block) => block === storeSubCategory[0]))
+      return;
+    setBlocksSubcategory((prev) => [...prev, storeSubCategory][0]);
+    if (blocksCategory.find((block) => block === storeCategory[0])) return;
 
-    setBlocksCategory((prev) => [...prev, storeCategory]);
+    setBlocksCategory((prev) => [...prev, storeCategory[0]]);
   };
 
   const handleStoreSubCategoryChange = (e) => {
-    const id = subCategoriesData.find(
-      (category) => category.name === e.target.value
-    ).id;
-
-    setSelectedSubCategoryId((prev) => [...prev, id]);
-    setStoreSubCategory(e.target.value);
+    setStoreSubCategory(e.target.value.split(","));
   };
 
   const handleStoreCategoryChange = (e) => {
-    const id = categoriesData.find(
-      (category) => category.name === e.target.value
-    ).id;
-    setSelectedCategoryId((prev) => [...prev, id]);
-    setStoreCategory(e.target.value);
+    setStoreCategory(e.target.value.split(","));
   };
 
   const handleStoreNameChange = (e) => {
@@ -144,15 +217,13 @@ export default function AdminStores(props) {
 
     let formData = new FormData();
 
-    console.log("Type of CategoryIDs: ", typeof selectedCategoryId);
-
     formData.append("name", storeName);
 
-    for (let i = 0; i < selectedCategoryId.length; i++) {
-      formData.append("category[]", selectedCategoryId[i]);
+    for (let i = 0; i < blocksCategory.length; i++) {
+      formData.append("category[]", blocksCategory[i]);
     }
-    for (let i = 0; i < selectedSubCategoryId.length; i++) {
-      formData.append("sub_category[]", selectedSubCategoryId[i]);
+    for (let i = 0; i < blocksSubcategory.length; i++) {
+      formData.append("sub_category[]", blocksSubcategory[i]);
     }
 
     formData.append("images", storeImage);
@@ -165,8 +236,6 @@ export default function AdminStores(props) {
     } catch (error) {
       console.log(error);
     }
-
-    console.log(response);
 
     handleClose();
   };
@@ -185,120 +254,45 @@ export default function AdminStores(props) {
             </button>
           </div>
 
-          <div className="container row py-2">
-            <div className="dropdown mb-3 col-6">
-              <button
-                className="btn btn-outline-secondary lead px-4 dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                SELECT CATEGORY
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    {}
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    {}
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    {}
-                  </a>
-                </li>
-              </ul>
-            </div>
+          <Form>
+            <div className="container row py-2 gap-5 ">
+              <Form.Group className="row mb-3 col-6 ">
+                <Form.Select
+                  name="stores"
+                  className="mb-2"
+                  id="storeCategory"
+                  value={storeCategory}
+                  onChange={handleStoreCategoryChange}
+                  placeholder="Select Category"
+                >
+                  <option value="" disabled selected>
+                    Select a category
+                  </option>
+                  {categorySelectElements}
+                </Form.Select>
+              </Form.Group>
 
-            <div className="dropdown col-6">
-              <button
-                className="btn btn-outline-secondary lead px-4 dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                SELECT SUBCATEGORY
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    {}
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    {}
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    {}
-                  </a>
-                </li>
-              </ul>
+              <Form.Group className="row mb-3 col-6">
+                <Form.Select
+                  name="stores"
+                  className="mb-2"
+                  id="storeSubCategory"
+                  value={storeSubCategory}
+                  onChange={handleStoreSubCategoryChange}
+                  placeholder="Select SubCategory"
+                >
+                  {" "}
+                  <option value="" disabled selected>
+                    Select a subcategory
+                  </option>
+                  {subCategorySelectElements}
+                </Form.Select>
+              </Form.Group>
             </div>
-          </div>
+          </Form>
 
           <div className="container mb-4">
-            <div className="container objectContainer">
-              <div className="my-4 row object">
-                <div className="col-xl-3 col-lg-3 img">
-                  <img
-                    className=""
-                    src="/aliexpress-180x110-1508417884.webp"
-                    alt="AliExpress"
-                    width="180"
-                    height="110"
-                  ></img>
-                </div>
-
-                <div className="col-xl-6 col-lg-6 container p-2 text-dark">
-                  <div className="storeDescription lead my-1 fs-4">
-                    AliExpress
-                  </div>
-                  <div className="storeNumber text-muted mb-1">
-                    Number of Coupons : 55
-                  </div>
-                </div>
-
-                <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div className="my-4 row object">
-                <div className="col-xl-3 col-lg-3 img">
-                  <img
-                    className=""
-                    src="/aliexpress-180x110-1508417884.webp"
-                    alt="AliExpress"
-                    width="180"
-                    height="110"
-                  ></img>
-                </div>
-
-                <div className="col-xl-6 col-lg-6 container p-2 text-dark">
-                  <div className="storeDescription lead my-1 fs-4">
-                    AliExpress
-                  </div>
-                  <div className="storeExpiry text-muted mb-1">
-                    Number of Coupons : 55
-                  </div>
-                </div>
-
-                <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+            <div className="container objectContainer">{storeElements}</div>
           </div>
         </div>
 

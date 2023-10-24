@@ -10,11 +10,11 @@ export const addCopuon = async (data) => {
   }
 };
 
-export const getAllCoupons = async (setter) => {
+export const getAllCoupons = async (dispatch) => {
   const response = await ApiService.get("/get-coupon");
 
   if (response.status === 200) {
-    setter(response.data);
+    dispatch({ type: "LOAD_COUPONS", payload: response.data });
   } else {
     throw response;
   }

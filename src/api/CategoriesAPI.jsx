@@ -10,11 +10,11 @@ export const addCategory = async (data) => {
   }
 };
 
-export const getAllCategories = async (setter) => {
+export const getAllCategories = async (dispatch) => {
   const response = await ApiSerivce.get("/get-product-categories");
 
   if (response.status === 200) {
-    setter(response.data);
+    dispatch({type: "LOAD_CATEGORIES", payload: response.data});
   }
 };
 

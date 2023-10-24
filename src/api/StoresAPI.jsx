@@ -15,11 +15,11 @@ export const addStore = async (store) => {
   }
 };
 
-export const getAllStores = async (setter) => {
+export const getAllStores = async (dispatch) => {
   const response = await ApiService.get("/get-stores");
 
   if (response.status === 200) {
-    setter(response.data);
+    dispatch({ type: "LOAD_STORES", payload: response.data });
   } else {
     throw response;
   }
@@ -31,7 +31,7 @@ export const getStoreById = async (setter, storeID) => {
   });
 
   if (response.status === 200) {
-    setter(response);
+    setter(response.data);
   } else {
     throw response;
   }
@@ -43,7 +43,8 @@ export const getStoreByCategory = async (setter, categoryID) => {
   });
 
   if (response.status === 200) {
-    setter(response);
+    console.log(response);
+    setter(response.data[0]);
   } else {
     throw response;
   }
@@ -55,7 +56,8 @@ export const getStoreBySubCategory = async (setter, subCategoryID) => {
   });
 
   if (response.status === 200) {
-    setter(response);
+    console.log(response);
+    setter(response.data[0]);
   } else {
     throw response;
   }

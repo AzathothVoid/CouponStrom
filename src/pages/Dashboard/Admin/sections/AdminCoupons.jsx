@@ -1,29 +1,93 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navigation from "../../Navigation";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { addCopuon, getAllCoupons } from "../../../../api/CouponsAPI";
 import { useAuth } from "../../../../components/Auth/AuthContext";
+import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminCoupons(props) {
+  const useData = useDataState();
+  const storeData = useData.stores;
+  const couponData = useData.coupons;
+  const categoryData = useData.categories;
+
   const [show, setShow] = useState(false);
   const [blocksCategory, setBlocksCategory] = useState([]);
   const [blocksSubcategory, setBlocksSubcategory] = useState([]);
 
+  const [couponCategory, setCouponCategory] = useState("");
+  const [couponSubCategory, setCouponSubCategory] = useState("");
+
+  const [formData, setFormData] = useState({
+    title: "",
+    store: "",
+    expiry: "",
+    category: [],
+    sub_category: [],
+    deal: "",
+    code: "",
+    details: "",
+    image: "",
+  });
+
+  console.log("Form Data: ", formData);
+
+  // const [couponTitle, setCouponTitle] = useState("");
+  // const [couponDetails, setCouponDetails] = useState("");
+  // const [couponExpiryData, setCouponExpiryData] = useState();
+  // const [couponStore, setCouponStore] = useState();
+  // const [couponCode, setCouponCode] = useState("");
+  // const [couponDeal, setCouponDeal] = useState("");
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  console.log("Stores: ", storeData);
+
+  const storeSelectElements = storeData.map((store) => {
+    return (
+      <option key={store.id} value={[store.name, store.id]}>
+        {store.name}
+      </option>
+    );
+  });
+
+  const categorySelectElements = categoryData.map((category) => {
+    return (
+      <option key={category.id} value={[category.name, category.id]}>
+        {category.name}
+      </option>
+    );
+  });
+
   const blockElementsCategory = blocksCategory.map((block) => {
     return (
-      <div className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd">
+      <div
+        key={store.id}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd"
+      >
         {" "}
         {block}{" "}
       </div>
     );
   });
 
-  let addCategory = (e) => {
+  const blockElementsSubcategory = blocksSubcategory.map((block) => {
+    return (
+      <div
+        key={store.id}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light subCategoryAdd"
+      >
+        {" "}
+        {block}{" "}
+      </div>
+    );
+  });
+
+  const addCategory = (e) => {
     const data = e.target.parentElement.parentElement.firstChild.value;
 
     if (blocksCategory.find((block) => block === data)) return;
@@ -33,16 +97,7 @@ export default function AdminCoupons(props) {
     ]);
   };
 
-  const blockElementsSubcategory = blocksSubcategory.map((block) => {
-    return (
-      <div className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light subCategoryAdd">
-        {" "}
-        {block}{" "}
-      </div>
-    );
-  });
-
-  let addSubcategory = (e) => {
+  const addSubcategory = (e) => {
     const data = e.target.parentElement.parentElement.firstChild.value;
 
     if (blocksSubcategory.find((block) => block === data)) return;
@@ -51,6 +106,50 @@ export default function AdminCoupons(props) {
       e.target.parentElement.parentElement.firstChild.value,
     ]);
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    let change = value;
+
+    if (name === "store") {
+      change = value.split(",");
+    }
+
+    console.log("Values: ", change);
+
+    setFormData((prev) => {
+      return { ...formData, [name]: change };
+    });
+  };
+
+  const handleCouponCategoryChange = (e) => {
+    setCouponCategory(e.target.value.split(","));
+  };
+
+  const handleCouponSubCategoryChange = (e) => {
+    setCouponSubCategory(e.target.value.split(","));
+  };
+
+  // const handleCouponDetailsChange = (e) => {
+  //   setCouponDetails(e.target.value);
+  // };
+
+  // const handleCouponCodeChange = (e) => {
+  //   setCouponCode(e.target.value);
+  // };
+
+  // const handleCouponDealChange = (e) => {
+  //   setCouponDeal(e.target.value);
+  // };
+
+  // const handleCouponExpiryDate = (e) => {
+  //   setCouponExpiryData(e.target.value);
+  // };
+
+  // const handleCouponStoreChange = (e) => {
+  //   setCouponStore(e.target.value);
+  // };
 
   const handleSubmit = (event) => {
     var title = document.getElementById("title").value;
@@ -206,6 +305,9 @@ export default function AdminCoupons(props) {
               <Form.Control
                 type="text"
                 placeholder="Title"
+                value={formData.title}
+                onChange={handleInputChange}
+                name="title"
                 autoFocus
                 size="lg"
                 id="title"
@@ -214,24 +316,53 @@ export default function AdminCoupons(props) {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Select name="store" id="store" required>
-                <option>Select Store</option>
-                <option>{}</option>
-                <option>{}</option>
-                <option>{}</option>
+              <Form.Select
+                value={formData.store}
+                onChange={handleInputChange}
+                name="store"
+                id="store"
+                required
+              >
+                <option value="" disabled selected>
+                  Select a store
+                </option>
+                {storeSelectElements}
               </Form.Select>
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Expiry Date</Form.Label>
-              <Form.Control type="date" id="expiryDate" required />
+              <Form.Control
+                value={formData.expiry}
+                onChange={handleInputChange}
+                name="expiry"
+                type="date"
+                id="expiryDate"
+                required
+              />
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Code</Form.Label>
-              <Form.Control className="mb-4" type="text" id="code" />
+              <Form.Control
+                value={formData.code}
+                onChange={handleInputChange}
+                name="code"
+                className="mb-4"
+                type="text"
+                id="code"
+                disabled={formData.deal.length > 0}
+              />
               <Form.Label>Deal</Form.Label>
-              <Form.Control className="mb-4" type="text" id="deal" />
+              <Form.Control
+                value={formData.deal}
+                name="deal"
+                onChange={handleInputChange}
+                className="mb-4"
+                type="text"
+                id="deal"
+                disabled={formData.code.length > 0}
+              />
             </Form.Group>
 
             <Form.Group className="mb-4">
@@ -239,12 +370,14 @@ export default function AdminCoupons(props) {
                 name="category"
                 className="mb-2"
                 id="category"
+                value={formData.category}
+                onChange={handleCouponCategoryChange}
                 required
               >
-                <option>Select Category</option>
-                <option>{}</option>
-                <option>{}</option>
-                <option>{}</option>
+                <option value="" disabled selected>
+                  Select a category
+                </option>
+                {categorySelectElements}
               </Form.Select>
 
               <div className="container categoryContainer">
@@ -260,11 +393,17 @@ export default function AdminCoupons(props) {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Select name="subCategory" className="mb-2" id="subCategory">
-                <option>Select SubCategory</option>
-                <option>{}</option>
-                <option>{}</option>
-                <option>{}</option>
+              <Form.Select
+                value={formData.sub_category}
+                onChange={handleCouponSubCategoryChange}
+                name="sub_category"
+                className="mb-2"
+                id="subCategory"
+              >
+                <option value="" disabled selected>
+                  Select a subcategory
+                </option>
+                {/* {subCategorySelectElements} */}
               </Form.Select>
 
               <div className="container subcategoryContainer">
@@ -284,13 +423,11 @@ export default function AdminCoupons(props) {
               <Form.Control
                 className="mb-3"
                 as="textarea"
+                name="details"
                 rows={4}
                 id="details"
-              />
-              <Form.Control
-                className="mb-3"
-                type="file"
-                accept=".jpeg,.png,.svg,.webp"
+                value={formData.details}
+                onChange={handleInputChange}
               />
             </Form.Group>
           </Form>

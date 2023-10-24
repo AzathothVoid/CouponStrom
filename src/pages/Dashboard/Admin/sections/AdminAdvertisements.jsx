@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -6,10 +6,15 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Navigation from "../../Navigation";
 import { addAd } from "../../../../api/AdsAPI";
+import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminAdvertisements(props) {
+  const dataState = useDataState();
+
   const [show, setShow] = useState(false);
   const [adImage, setAdImage] = useState();
+
+  const adData = dataState.ads || [];
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -18,17 +23,31 @@ export default function AdminAdvertisements(props) {
     setAdImage(e.target.files[0]);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData("image", adImage);
+    const formData = new FormData();
 
     formData.append("image", adImage);
 
     try {
-      const response = addAd(formData);
+      const response = await addAd(formData);
     } catch (error) {}
   };
+
+  const adElements = adData.map((ad) => {
+    return (
+      <div className="my-4 row object">
+        <img src={ad.images[0].image} alt="advert" className="advertImgs p-0" />
+
+        <div className="d-flex align-items-center justify-content-center p-2 container">
+          <button className="btn">
+            <i className="bi bi-trash-fill fs-2"></i>
+          </button>
+        </div>
+      </div>
+    );
+  });
 
   return (
     <>
@@ -46,35 +65,7 @@ export default function AdminAdvertisements(props) {
           </div>
 
           <div className="container mb-4">
-            <div className="container objectContainer">
-              <div className="my-4 row object">
-                <img
-                  src="/samsung.webp"
-                  alt="advert"
-                  className="advertImgs p-0"
-                />
-
-                <div className="d-flex align-items-center justify-content-center p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div className="my-4 row object">
-                <img
-                  src="/samsung.webp"
-                  alt="advert"
-                  className="advertImgs p-0"
-                />
-
-                <div className="d-flex align-items-center justify-content-center p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+            <div className="container objectContainer">{adElements}</div>
           </div>
         </div>
       </div>

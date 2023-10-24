@@ -12,11 +12,11 @@ export const addAd = async (data) => {
   }
 };
 
-export const getAd = async (setter) => {
+export const getAd = async (dispatch) => {
   const response = await ApiService.get("/get-ad");
 
   if (response.status === 200) {
-    setter(response.data);
+    dispatch({ type: "LOAD_ADS", payload: response.data });
   } else {
     throw response;
   }
