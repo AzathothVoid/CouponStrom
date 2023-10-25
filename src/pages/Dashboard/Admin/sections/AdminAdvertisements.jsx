@@ -52,7 +52,11 @@ export default function AdminAdvertisements(props) {
   return (
     <>
       <div className="container">
-        <Navigation setSection={props.setSection} section={props.section} />
+        <Navigation
+          sections={props.sections}
+          setSection={props.setSection}
+          section={props.section}
+        />
 
         <div className="container border border-warning mainSection px-4">
           <div className="container py-4">

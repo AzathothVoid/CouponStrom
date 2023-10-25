@@ -14,15 +14,45 @@ export default function Admin() {
   var element = null;
 
   if (section === sections[0]) {
-    element = <AdminCoupons setSection={setSection} section={section} />;
+    element = (
+      <AdminCoupons
+        sections={sections}
+        setSection={setSection}
+        section={section}
+      />
+    );
   } else if (section === sections[1]) {
-    element = <AdminStores setSection={setSection} section={section} />;
+    element = (
+      <AdminStores
+        sections={sections}
+        setSection={setSection}
+        section={section}
+      />
+    );
   } else if (section === sections[2]) {
-    element = <AdminCategories setSection={setSection} section={section} />;
+    element = (
+      <AdminCategories
+        sections={sections}
+        setSection={setSection}
+        section={section}
+      />
+    );
   } else if (section === sections[3]) {
-    element = <AdminBlogs setSection={setSection} section={section} />;
+    element = (
+      <AdminBlogs
+        sections={sections}
+        setSection={setSection}
+        section={section}
+      />
+    );
   } else {
-    element = <AdminAdvertisements setSection={setSection} section={section} />;
+    element = (
+      <AdminAdvertisements
+        sections={sections}
+        setSection={setSection}
+        section={section}
+      />
+    );
   }
 
   return (

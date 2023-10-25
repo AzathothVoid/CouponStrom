@@ -50,12 +50,12 @@ function App() {
               }
             />
             <Route
-              path="/dashboard/admin"
+              path="/dashboard/data-entry"
               element={
                 <PrivateRoute
-                  path="/dashboard/admin"
-                  element={<AdminPanel />}
-                  allowedRoles={["admin"]}
+                  path="/dashboard/data-entry"
+                  element={<DataEntryPanel />}
+                  allowedRoles={["data-entry"]}
                 />
               }
             ></Route>

@@ -1,8 +1,8 @@
 import React from "react";
 
-const sections = ["coupons", "stores", "categories", "blogs", "advertisements"];
 
-export default function Navigation({ setSection, section }) {
+
+export default function Navigation({ setSection, section, sections }) {
   const handleSection = (e) => {
     setSection(e.target.innerHTML.toLowerCase());
   };

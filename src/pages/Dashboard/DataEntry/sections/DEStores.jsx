@@ -111,7 +111,7 @@ export default function AdminStores(props) {
   const storeElements = storesToShow.map((store) => {
     return (
       <div key={store.id} className="my-4 row object">
-        <div className="col-xl-3 col-lg-3 img">
+        <div className="col-xl-3 col-lg-4 img">
           <img
             className=""
             src={store.images[0].image}
@@ -121,17 +121,11 @@ export default function AdminStores(props) {
           ></img>
         </div>
 
-        <div className="col-xl-6 col-lg-6 container p-2 text-dark">
+        <div className="col-xl-9 col-lg-8 container p-2 text-dark">
           <div className="storeDescription lead my-1 fs-4">{store.name}</div>
           <div className="storeExpiry text-muted mb-1">
             Number of Coupons : {store.coupons}
           </div>
-        </div>
-
-        <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
-          <button className="btn">
-            <i className="bi bi-trash-fill fs-2"></i>
-          </button>
         </div>
       </div>
     );
@@ -237,11 +231,7 @@ export default function AdminStores(props) {
   return (
     <>
       <div className="container">
-        <Navigation
-          sections={props.sections}
-          setSection={props.setSection}
-          section={props.section}
-        />
+        <Navigation sections={props.sections} setSection={props.setSection} section={props.section} />
         <div className="container border border-warning mainSection px-4">
           <div className="container py-4">
             <button

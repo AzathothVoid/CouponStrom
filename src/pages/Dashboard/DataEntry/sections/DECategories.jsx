@@ -37,11 +37,6 @@ export default function AdminCategories(props) {
             Number of Coupons : {category.total_coupons}
           </div>
         </div>
-        <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
-          <button className="btn">
-            <i className="bi bi-trash-fill fs-2"></i>
-          </button>
-        </div>
       </div>
     );
   });

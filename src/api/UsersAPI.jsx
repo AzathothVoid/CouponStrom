@@ -11,7 +11,7 @@ export const UserLogin = async (email, password) => {
   if (response.status === 200) {
     return response.data;
   } else {
-    console.log(response);
+    throw "UnAuthorized Access";
   }
 };
 
@@ -29,13 +29,26 @@ export const userRegistration = async (
     password_confirmation: confirmPassword,
   };
 
-  console.log("Registration info: ", registrationInfo);
-
   const response = await ApiService.post(`/add-user`, registrationInfo);
 
   if (response.status === 201) {
-    return { response: "Registration Successful" };
-  } else {
+    console.log("Registration Successful");
     return response;
+  } else if (response.status === 200) {
+    return response.data[0];
+  } else {
+    throw response;
+  }
+};
+
+export const verifyEmail = async (data) => {
+  const response = await ApiService.post(`/verify-email`, data);
+
+  if (response.status === 200) {
+    return response;
+  } else if (response.status === 500) {
+    return response.data.data.message;
+  } else {
+    console.log("ERROR: ", response);
   }
 };

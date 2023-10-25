@@ -39,8 +39,7 @@ export default function Login() {
 
       if (userData) login(userData);
     } catch (error) {
-      console.log(error);
-      setErrorData(error.response);
+      setErrorData("UnAuthorized");
       setErrorModal(true);
     }
   };

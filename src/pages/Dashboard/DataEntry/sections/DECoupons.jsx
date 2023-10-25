@@ -123,7 +123,7 @@ export default function AdminCoupons(props) {
   const couponElements = couponsToShow.map((coupon) => {
     return (
       <div className="my-4 row object">
-        <div className="col-xl-3 col-lg-3 img">
+        <div className="col-xl-2 col-lg-3 img">
           <img
             className=""
             src={coupon.images[0].image}
@@ -133,7 +133,7 @@ export default function AdminCoupons(props) {
           ></img>
         </div>
 
-        <div className="col-xl-6 col-lg-6 container p-2 text-dark">
+        <div className="col-xl-9 col-lg-6 container p-2 text-dark">
           <div className="couponDescription lead fs-4 my-1">{coupon.name}</div>
           <div className="couponExpiry text-muted mb-1">
             Expires {coupon.expiry}
@@ -153,12 +153,6 @@ export default function AdminCoupons(props) {
               {coupon.details}
             </p>
           </div>
-        </div>
-
-        <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
-          <button className="btn">
-            <i className="bi bi-trash-fill fs-2"></i>
-          </button>
         </div>
       </div>
     );
