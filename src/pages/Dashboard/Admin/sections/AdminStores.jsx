@@ -186,6 +186,7 @@ export default function AdminStores(props) {
   };
 
   const handleStoreCategoryChange = (e) => {
+    setStoreSubCategory("");
     setStoreCategory(e.target.value.split(","));
   };
 
@@ -206,7 +207,6 @@ export default function AdminStores(props) {
     event.preventDefault();
     if (blocksCategory.length === 0 || blocksSubcategory.length === 0) {
       alert("Enter atleast one Category and sub category");
-      e;
     }
 
     let formData = new FormData();

@@ -27,7 +27,7 @@ export default function AdminCategories(props) {
 
   const categoryElements = categoriesData.map((category) => {
     return (
-      <div className="my-4 row object">
+      <div key={category.id} className="my-4 row object">
         <div className="col-8 container p-2 ps-4 text-dark">
           <div className="storeDescription lead my-1 fs-4">{category.name}</div>
           <div className="storeExpiry text-muted mb-1">
@@ -48,7 +48,10 @@ export default function AdminCategories(props) {
 
   const blockElements = blocks.map((block) => {
     return (
-      <div className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd">
+      <div
+        key={block}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
+      >
         {" "}
         {block}{" "}
       </div>

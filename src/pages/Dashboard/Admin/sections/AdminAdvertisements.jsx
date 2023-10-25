@@ -37,7 +37,7 @@ export default function AdminAdvertisements(props) {
 
   const adElements = adData.map((ad) => {
     return (
-      <div className="my-4 row object">
+      <div key={ad.id} className="my-4 row object">
         <img src={ad.images[0].image} alt="advert" className="advertImgs p-0" />
 
         <div className="d-flex align-items-center justify-content-center p-2 container">

@@ -14,7 +14,7 @@ import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminBlogs(props) {
   const dataState = useDataState();
-  
+
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
   const [blogTitle, setBlogTitle] = useState("");
@@ -31,7 +31,7 @@ export default function AdminBlogs(props) {
 
   const blogsElements = blogData.map((blog) => {
     return (
-      <div className="my-4 row object">
+      <div key={blog.id} className="my-4 row object">
         <div className="col-8 container p-2 ps-4 text-dark">
           <div className="blogTitle lead my-1 fs-4">{blog.title}</div>
           <div className="blogDate text-muted mb-1">

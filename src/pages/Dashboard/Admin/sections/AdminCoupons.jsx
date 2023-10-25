@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { addCoupon, getAllCoupons } from "../../../../api/CouponsAPI";
+import { addCoupon, getCouponsByStore } from "../../../../api/CouponsAPI";
 import {
   getCategoryByStore,
   getSubCategoriesByCategory,
@@ -19,6 +19,8 @@ export default function AdminCoupons(props) {
   const [show, setShow] = useState(false);
   const [categoriesDataByStore, setCategoriesDataByStore] = useState([]);
   const [subCategoriesData, setSubCategoriesData] = useState([]);
+  const [showStoreId, setShowStoreId] = useState("");
+  const [couponsByStore, setCouponsByStore] = useState([]);
 
   const [couponCategory, setCouponCategory] = useState("");
   const [couponSubCategory, setCouponSubCategory] = useState("");
@@ -35,7 +37,13 @@ export default function AdminCoupons(props) {
     image: "",
   });
 
-  console.log("Form Data: ", formData);
+  useEffect(() => {
+    if (showStoreId) {
+      getCouponsByStore(setCouponsByStore, {
+        "store-id": Number.parseInt(showStoreId[1]),
+      });
+    }
+  }, [showStoreId]);
 
   useEffect(() => {
     if (formData.store) {
@@ -53,7 +61,22 @@ export default function AdminCoupons(props) {
     }
   }, [couponCategory]);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setCouponCategory("");
+    setCouponSubCategory("");
+    setFormData({
+      title: "",
+      store: "",
+      expiry: "",
+      category: [],
+      sub_category: [],
+      deal: "",
+      code: "",
+      details: "",
+      image: "",
+    });
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
   const deleteCategory = (e) => {
     setFormData((prev) => {
@@ -75,9 +98,15 @@ export default function AdminCoupons(props) {
     });
   };
 
-  console.log("Stores: ", storesData);
+  const showPopUp = (e, couponId) => {
+    e.stopPropagation();
 
-  const storeSelectElements = storesData.map((store) => {
+    const details = document.getElementById(`details${couponId}`);
+
+    details.classList.toggle("show");
+  };
+
+  const showStoreElements = storesData.map((store) => {
     return (
       <option key={store.id} value={[store.name, store.id]}>
         {store.name}
@@ -85,10 +114,59 @@ export default function AdminCoupons(props) {
     );
   });
 
-  console.log("selected Store: ", formData.store);
-  console.log("selected Category: ", couponCategory);
-  console.log("Select subcategory: ", couponSubCategory);
-  console.log("Categoy data by store: ", categoriesDataByStore);
+  console.log(couponsByStore);
+  const couponElements = couponsByStore.map((coupon) => {
+    return (
+      <div className="my-4 row object">
+        <div className="col-xl-3 col-lg-3 img">
+          <img
+            className=""
+            src={coupon.images[0].image}
+            alt=""
+            width="180"
+            height="110"
+          ></img>
+        </div>
+
+        <div className="col-xl-6 col-lg-6 container p-2 text-dark">
+          <div className="couponDescription lead fs-4 my-1">{coupon.name}</div>
+          <div className="couponExpiry text-muted mb-1">
+            Expires {coupon.expiry}
+          </div>
+          <div style={{ width: "fit-content" }} className="position-relative">
+            <div
+              className="couponDetails display-5  popupBtn"
+              onClick={(e) => showPopUp(e, coupon.id)}
+            >
+              Details:
+              <i className="bi bi-arrow-down-circle" id="detailsArrowIcon"></i>
+            </div>
+            <p
+              id={`details${coupon.id}`}
+              className="popupText mt-3 fs-6 position-absolute"
+            >
+              {coupon.details}
+            </p>
+          </div>
+        </div>
+
+        <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
+          <button className="btn">
+            <i className="bi bi-trash-fill fs-2"></i>
+          </button>
+        </div>
+      </div>
+    );
+  });
+
+  const storeSelectElements = storesData.map((store) => {
+    console.log(store);
+    return (
+      <option key={store.id} value={[store.name, store.id]}>
+        {store.name}
+      </option>
+    );
+  });
 
   const categorySelectElements = categoriesDataByStore.map((category) => {
     return (
@@ -170,9 +248,6 @@ export default function AdminCoupons(props) {
         return {
           ...formData,
           [name]: split,
-          image: storesData.find(
-            (store) => store.id === Number.parseInt(split[1])
-          ).images[0].image,
         };
       });
       return;
@@ -189,6 +264,10 @@ export default function AdminCoupons(props) {
 
   const handleCouponSubCategoryChange = (e) => {
     setCouponSubCategory(e.target.value.split(","));
+  };
+
+  const handleCouponStoreChange = (e) => {
+    setShowStoreId(e.target.value.split(","));
   };
 
   const handleSubmit = (event) => {
@@ -238,110 +317,24 @@ export default function AdminCoupons(props) {
               <i className="bi bi-plus fs-4"></i>ADD COUPON
             </button>
           </div>
-
           <div className="container py-2">
-            <div className="dropdown">
-              <button
-                className="col-4 btn btn-outline-secondary lead dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+            <Form.Group className="row mb-3 col-6 ">
+              <Form.Select
+                name="stores"
+                className="mb-2"
+                id="showStore"
+                value={showStoreId}
+                onChange={handleCouponStoreChange}
+                placeholder="Select Category"
               >
-                SELECT STORE
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#"></a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#"></a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#"></a>
-                </li>
-              </ul>
-            </div>
+                <option value="" disabled selected>
+                  Select a store
+                </option>
+                {showStoreElements}
+              </Form.Select>
+            </Form.Group>
           </div>
-
-          <div className="container mb-4">
-            <div className="container objectContainer">
-              <div className="my-4 row object">
-                <div className="col-xl-3 col-lg-3 img">
-                  <img
-                    className=""
-                    src={""}
-                    alt=""
-                    width="180"
-                    height="110"
-                  ></img>
-                </div>
-
-                <div className="col-xl-6 col-lg-6 container p-2 text-dark">
-                  <div className="couponDescription lead fs-4 my-1">
-                    Shop Popular Items for up to 70% Off
-                  </div>
-                  <div className="couponExpiry text-muted mb-1">
-                    Expires Mar 31
-                  </div>
-                  <div
-                    className="couponDetails display-5 popupBtn"
-                    onClick="showPopup()"
-                  >
-                    Details:
-                    <i
-                      className="bi bi-arrow-down-circle"
-                      id="detailsArrowIcon"
-                    ></i>
-                    <span className="popupText">details lao laka</span>
-                  </div>
-                </div>
-
-                <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div className="my-4 row object">
-                <div className="col-xl-3 col-lg-3 img">
-                  <img
-                    className=""
-                    src={""}
-                    alt=""
-                    width="180"
-                    height="110"
-                  ></img>
-                </div>
-
-                <div className="col-xl-6 col-lg-6 container p-2 text-dark">
-                  <div className="couponDescription lead fs-4 my-1">
-                    Shop Popular Items for up to 70% Off
-                  </div>
-                  <div className="couponExpiry text-muted mb-1">
-                    Expires Mar 31
-                  </div>
-                  <div
-                    className="couponDetails display-5 popupBtn"
-                    onClick="showPopup()"
-                  >
-                    Details:
-                    <i
-                      className="bi bi-arrow-down-circle"
-                      id="detailsArrowIcon"
-                    ></i>
-                    <span className="popupText">details lao laka</span>
-                  </div>
-                </div>
-
-                <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
-                  <button className="btn">
-                    <i className="bi bi-trash-fill fs-2"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          {couponElements}
         </div>
       </div>
 
