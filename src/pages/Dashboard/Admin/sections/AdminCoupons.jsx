@@ -4,19 +4,21 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { addCopuon, getAllCoupons } from "../../../../api/CouponsAPI";
-import { useAuth } from "../../../../components/Auth/AuthContext";
+import { addCoupon, getAllCoupons } from "../../../../api/CouponsAPI";
+import {
+  getCategoryByStore,
+  getSubCategoriesByCategory,
+} from "../../../../api/CategoriesAPI";
 import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminCoupons(props) {
   const useData = useDataState();
-  const storeData = useData.stores;
-  const couponData = useData.coupons;
-  const categoryData = useData.categories;
+  const storesData = useData.stores;
+  const couponsData = useData.coupons;
 
   const [show, setShow] = useState(false);
-  const [blocksCategory, setBlocksCategory] = useState([]);
-  const [blocksSubcategory, setBlocksSubcategory] = useState([]);
+  const [categoriesDataByStore, setCategoriesDataByStore] = useState([]);
+  const [subCategoriesData, setSubCategoriesData] = useState([]);
 
   const [couponCategory, setCouponCategory] = useState("");
   const [couponSubCategory, setCouponSubCategory] = useState("");
@@ -35,19 +37,47 @@ export default function AdminCoupons(props) {
 
   console.log("Form Data: ", formData);
 
-  // const [couponTitle, setCouponTitle] = useState("");
-  // const [couponDetails, setCouponDetails] = useState("");
-  // const [couponExpiryData, setCouponExpiryData] = useState();
-  // const [couponStore, setCouponStore] = useState();
-  // const [couponCode, setCouponCode] = useState("");
-  // const [couponDeal, setCouponDeal] = useState("");
+  useEffect(() => {
+    if (formData.store) {
+      getCategoryByStore(setCategoriesDataByStore, {
+        "store-id": Number.parseInt(formData.store[1]),
+      });
+    }
+  }, [formData.store]);
+
+  useEffect(() => {
+    if (couponCategory) {
+      getSubCategoriesByCategory(setSubCategoriesData, {
+        "category-id": Number.parseInt(couponCategory[1]),
+      });
+    }
+  }, [couponCategory]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const deleteCategory = (e) => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        category: formData.category.filter((cat) => cat !== e.target.innerHTML),
+      };
+    });
+  };
 
-  console.log("Stores: ", storeData);
+  const deleteSubCategory = (e) => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        sub_category: formData.sub_category.filter(
+          (cat) => cat !== e.target.innerHTML
+        ),
+      };
+    });
+  };
 
-  const storeSelectElements = storeData.map((store) => {
+  console.log("Stores: ", storesData);
+
+  const storeSelectElements = storesData.map((store) => {
     return (
       <option key={store.id} value={[store.name, store.id]}>
         {store.name}
@@ -55,7 +85,12 @@ export default function AdminCoupons(props) {
     );
   });
 
-  const categorySelectElements = categoryData.map((category) => {
+  console.log("selected Store: ", formData.store);
+  console.log("selected Category: ", couponCategory);
+  console.log("Select subcategory: ", couponSubCategory);
+  console.log("Categoy data by store: ", categoriesDataByStore);
+
+  const categorySelectElements = categoriesDataByStore.map((category) => {
     return (
       <option key={category.id} value={[category.name, category.id]}>
         {category.name}
@@ -63,63 +98,88 @@ export default function AdminCoupons(props) {
     );
   });
 
-  const blockElementsCategory = blocksCategory.map((block) => {
+  const subCategorySelectElements = subCategoriesData.map((subCategory) => {
+    return (
+      <option key={subCategory.id} value={[subCategory.name, subCategory.id]}>
+        {subCategory.name}
+      </option>
+    );
+  });
+
+  const blockElementsCategory = formData.category.map((block) => {
     return (
       <div
-        key={store.id}
+        key={block}
         className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd"
       >
-        {" "}
-        {block}{" "}
+        <span onClick={deleteCategory} className="bi bi-trash">
+          {block}
+        </span>
       </div>
     );
   });
 
-  const blockElementsSubcategory = blocksSubcategory.map((block) => {
+  const blockElementsSubcategory = formData.sub_category.map((block) => {
     return (
       <div
-        key={store.id}
+        key={block}
         className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light subCategoryAdd"
       >
-        {" "}
-        {block}{" "}
+        <span onClick={deleteSubCategory} className="bi bi-trash">
+          {block}
+        </span>
       </div>
     );
   });
 
   const addCategory = (e) => {
-    const data = e.target.parentElement.parentElement.firstChild.value;
-
-    if (blocksCategory.find((block) => block === data)) return;
-    setBlocksCategory((prev) => [
-      ...prev,
-      e.target.parentElement.parentElement.firstChild.value,
-    ]);
+    if (!couponCategory) return;
+    if (formData.category.find((block) => block === couponCategory[0])) return;
+    setFormData((prev) => {
+      return { ...prev, category: [...prev.category, couponCategory[0]] };
+    });
   };
 
   const addSubcategory = (e) => {
-    const data = e.target.parentElement.parentElement.firstChild.value;
+    if (!couponSubCategory) return;
+    if (formData.sub_category.find((block) => block === couponSubCategory[0]))
+      return;
+    setFormData((prev) => {
+      return {
+        ...prev,
+        sub_category: [...prev.sub_category, couponSubCategory[0]],
+      };
+    });
+    if (formData.category.find((block) => block === couponCategory[0])) return;
 
-    if (blocksSubcategory.find((block) => block === data)) return;
-    setBlocksSubcategory((prev) => [
-      ...prev,
-      e.target.parentElement.parentElement.firstChild.value,
-    ]);
+    setFormData((prev) => {
+      return {
+        ...prev,
+        category: [...prev.category, couponCategory[0]],
+      };
+    });
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    let change = value;
-
     if (name === "store") {
-      change = value.split(",");
+      const split = value.split(",");
+      console.log("Split: ", split);
+      setFormData((prev) => {
+        return {
+          ...formData,
+          [name]: split,
+          image: storesData.find(
+            (store) => store.id === Number.parseInt(split[1])
+          ).images[0].image,
+        };
+      });
+      return;
     }
 
-    console.log("Values: ", change);
-
     setFormData((prev) => {
-      return { ...formData, [name]: change };
+      return { ...formData, [name]: value };
     });
   };
 
@@ -131,45 +191,36 @@ export default function AdminCoupons(props) {
     setCouponSubCategory(e.target.value.split(","));
   };
 
-  // const handleCouponDetailsChange = (e) => {
-  //   setCouponDetails(e.target.value);
-  // };
-
-  // const handleCouponCodeChange = (e) => {
-  //   setCouponCode(e.target.value);
-  // };
-
-  // const handleCouponDealChange = (e) => {
-  //   setCouponDeal(e.target.value);
-  // };
-
-  // const handleCouponExpiryDate = (e) => {
-  //   setCouponExpiryData(e.target.value);
-  // };
-
-  // const handleCouponStoreChange = (e) => {
-  //   setCouponStore(e.target.value);
-  // };
-
   const handleSubmit = (event) => {
-    var title = document.getElementById("title").value;
-    var store = document.getElementById("store").value;
-    var expiryDate = document.getElementById("expiryDate").value;
-    var code = document.getElementById("code").value;
-    var deal = document.getElementById("deal").value;
-    var details = document.getElementById("details").value;
+    event.preventDefault();
+    const submission = new FormData();
 
-    var cats = document.querySelectorAll(".categoryAdd");
-    var subCats = document.querySelectorAll(".subCategoryAdd");
+    submission.append("name", formData.title);
+    submission.append("store", formData.store[1]);
+    submission.append("expiry", formData.expiry);
+    for (let i = 0; i < formData.category.length; i++) {
+      submission.append("category[]", formData.category[i]);
+    }
+    for (let i = 0; i < formData.sub_category.length; i++) {
+      submission.append("sub_category[]", formData.sub_category[i]);
+    }
+    submission.append("details", formData.details);
+    if (deal.length > 0) {
+      submission.append("deal", formData.deal);
+    } else {
+      submission.append("code", formData.code);
+    }
+    submission.append("image", formData.image);
 
-    cats.forEach((el) => {
-      console.log(el.innerHTML);
-    });
+    console.log("Submission: ", JSON.stringify(submission));
 
-    subCats.forEach((el) => {
-      console.log(el.innerHTML);
-    });
+    try {
+      console.log(addCoupon(submission));
+    } catch (error) {
+      console.log(error);
+    }
 
+    handleClose();
     event.preventDefault();
   };
 
@@ -351,7 +402,7 @@ export default function AdminCoupons(props) {
                 className="mb-4"
                 type="text"
                 id="code"
-                disabled={formData.deal.length > 0}
+                disabled={formData.deal}
               />
               <Form.Label>Deal</Form.Label>
               <Form.Control
@@ -361,7 +412,7 @@ export default function AdminCoupons(props) {
                 className="mb-4"
                 type="text"
                 id="deal"
-                disabled={formData.code.length > 0}
+                disabled={formData.code}
               />
             </Form.Group>
 
@@ -370,7 +421,7 @@ export default function AdminCoupons(props) {
                 name="category"
                 className="mb-2"
                 id="category"
-                value={formData.category}
+                value={couponCategory}
                 onChange={handleCouponCategoryChange}
                 required
               >
@@ -394,7 +445,7 @@ export default function AdminCoupons(props) {
 
             <Form.Group className="mb-4">
               <Form.Select
-                value={formData.sub_category}
+                value={couponSubCategory}
                 onChange={handleCouponSubCategoryChange}
                 name="sub_category"
                 className="mb-2"
@@ -403,7 +454,7 @@ export default function AdminCoupons(props) {
                 <option value="" disabled selected>
                   Select a subcategory
                 </option>
-                {/* {subCategorySelectElements} */}
+                {subCategorySelectElements}
               </Form.Select>
 
               <div className="container subcategoryContainer">
@@ -436,12 +487,7 @@ export default function AdminCoupons(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            type="submit"
-            form="couponForm"
-            onClick={handleClose}
-          >
+          <Button variant="primary" type="submit" form="couponForm">
             Submit
           </Button>
         </Modal.Footer>

@@ -65,13 +65,9 @@ export default function AdminStores(props) {
   }, [storeSubCategory]);
 
   useEffect(() => {
-    if (categoriesData && storeCategory) {
-      const storeCategoryID = categoriesData.find((category) => {
-        return category.name === storeCategory[0];
-      }).id;
-
+    if (storeCategory) {
       const data = {
-        "category-id": storeCategoryID,
+        "category-id": storeCategory[1],
       };
 
       try {
@@ -111,8 +107,6 @@ export default function AdminStores(props) {
       storesToShow = storesBySubCategory;
     }
   }
-
-  console.log("Stores to show: ", storesToShow);
 
   const storeElements = storesToShow.map((store) => {
     return (

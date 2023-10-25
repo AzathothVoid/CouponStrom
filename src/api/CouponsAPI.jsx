@@ -1,6 +1,6 @@
 import ApiService from "./ApiService";
 
-export const addCopuon = async (data) => {
+export const addCoupon = async (data) => {
   const response = await ApiService.post("/add-coupon", data);
 
   if (response.status === 201) {

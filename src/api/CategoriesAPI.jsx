@@ -36,7 +36,7 @@ export const getCategoryByStore = async (setter, storeID) => {
   });
 
   if (response.status === 200) {
-    setter(response.data);
+    setter(response.data[0]);
   } else {
     throw response;
   }
