@@ -52,3 +52,13 @@ export const verifyEmail = async (data) => {
     console.log("ERROR: ", response);
   }
 };
+
+export const getUsers = async (setter, userID) => {
+  const response = await ApiService.get("/get-users", userID);
+
+  if (response.status === 200) {
+    setter(response.data);
+  } else {
+    throw response.data.error;
+  }
+};

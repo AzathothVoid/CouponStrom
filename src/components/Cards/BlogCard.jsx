@@ -1,10 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/DateUtils";
 
 export default function (props) {
-  const [blog, setBlog] = useState(props.data);
+  const blog = props.data;
+  console.log("Blog: ", blog);
 
   return (
     <div
@@ -17,7 +18,7 @@ export default function (props) {
             <img
               style={{ height: "200px" }}
               class="card-img"
-              src={blog.img}
+              src={blog.images ? blog.images[0].image : null}
               alt=""
             />
 
@@ -27,14 +28,19 @@ export default function (props) {
               </div>
 
               <p class="card-text">{blog.description}</p>
-              <Link to={`/blogs/${blog.id}`}>
+              <Link
+                state={{ blog: blog, blogs: props.blogs }}
+                to={`/blogs/${blog.id}`}
+              >
                 <button class="btn-custom rounded  bg-primary-custom text-white">
                   Read Now
                 </button>
               </Link>
             </div>
             <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
-              <div class="views fs-6">{formatDate(new Date(blog.date))}</div>
+              <div class="views fs-6">
+                {new Date(blog.created_at).toDateString()}
+              </div>
               <div class="stats">
                 <i class="bi-eye-fill fs-6"></i> {blog.views}
               </div>

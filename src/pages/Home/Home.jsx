@@ -11,10 +11,13 @@ import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
 import LimitedTimeCouponsSection from "../../components/Sections/LimitedTimeCoupons/LimitedTimeCoupons";
 import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
 import { logosAndNames } from "./sliderData";
+import { useDataState } from "../../components/Data/DataContext";
 
 export default function Home() {
   const [currCouponPage, setCurrCouponPage] = useState(1);
   const [coupons, setCoupons] = useState(couponsData);
+
+  const useData = useDataState();
 
   const itemsPerPage = 12;
   const startIndex = (currCouponPage - 1) * itemsPerPage;
@@ -63,7 +66,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <BlogsSideBar max={3} />
+            <BlogsSideBar data={useData.blogs} max={3} />
           </div>
         </section>
         <div className="my-4">
