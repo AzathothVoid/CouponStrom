@@ -45,7 +45,7 @@ const DataProvider = ({ children }) => {
     getAd(dispatch);
     getAllCoupons(dispatch);
     getAllStores(dispatch);
-  }, []);
+  }, [window.location]);
 
   return (
     <DataStateContext.Provider value={state}>

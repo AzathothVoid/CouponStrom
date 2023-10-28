@@ -66,7 +66,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <BlogsSideBar data={useData.blogs} max={3} />
+            <BlogsSideBar max={3} />
           </div>
         </section>
         <div className="my-4">

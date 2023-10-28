@@ -9,6 +9,7 @@ import {
   addStore,
   getStoreByCategory,
   getStoreBySubCategory,
+  deleteStoreById,
 } from "../../../../api/StoresAPI";
 import { useDataState } from "../../../../components/Data/DataContext";
 
@@ -17,29 +18,36 @@ export default function AdminStores(props) {
 
   const [subCategoriesData, setSubCategoriesData] = useState([]);
   const [show, setShow] = useState(false);
-  const [blocksCategory, setBlocksCategory] = useState([]);
-  const [blocksSubcategory, setBlocksSubcategory] = useState([]);
+  const [callDelete, setCallDelete] = useState(null);
+
   const [storeCategory, setStoreCategory] = useState("");
   const [storeSubCategory, setStoreSubCategory] = useState("");
-  const [storeName, setStoreName] = useState("");
-  const [storeURL, setStoreURL] = useState("");
-  const [storeDescription, setStoreDescription] = useState("");
-  const [storeImage, setStoreImage] = useState();
   const [storesByCategory, setStoresByCategory] = useState();
   const [storesBySubCategory, setStoresBySubCategory] = useState();
+  const [formData, setFormData] = useState({
+    name: "",
+    link: "",
+    description: "",
+    category: [],
+    sub_category: [],
+    images: null,
+  });
 
   const categoriesData = dataState.categories;
   const storesData = dataState.stores;
 
   const handleClose = () => {
-    setStoreName("");
-    setStoreURL("");
-    setStoreDescription("");
     setStoreCategory("");
     setStoreSubCategory("");
-    setStoreImage();
-    setBlocksCategory([]);
-    setBlocksSubcategory([]);
+
+    setFormData({
+      name: "",
+      link: "",
+      description: "",
+      category: [],
+      sub_category: [],
+      images: "",
+    });
     setShow(false);
   };
   const handleShow = () => {
@@ -47,11 +55,25 @@ export default function AdminStores(props) {
   };
 
   useEffect(() => {
+    if (callDelete) {
+      try {
+        const response = deleteStoreById({ id: callDelete }).then(
+          (response) => {
+            window.location.reload();
+          }
+        );
+      } catch (error) {}
+    }
+  }, [callDelete]);
+
+  useEffect(() => {
     if (storeCategory) {
       const data = {
         "category-id": Number.parseInt(storeCategory[1]),
       };
       getStoreByCategory(setStoresByCategory, data);
+    } else {
+      setStoresByCategory([]);
     }
   }, [storeCategory]);
 
@@ -61,11 +83,14 @@ export default function AdminStores(props) {
         "subcategory-id": Number.parseInt(storeSubCategory[1]),
       };
       getStoreBySubCategory(setStoresBySubCategory, data);
+    } else {
+      setStoresBySubCategory([]);
     }
   }, [storeSubCategory]);
 
   useEffect(() => {
-    if (storeCategory) {
+    console.log("GETTING SUBCATEGORIES: ", storeCategory);
+    if (storeCategory.length > 1) {
       const data = {
         "category-id": storeCategory[1],
       };
@@ -75,24 +100,30 @@ export default function AdminStores(props) {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      setSubCategoriesData([]);
     }
   }, [storeCategory]);
 
-  const blockElementsCategory = blocksCategory.map((block) => {
-    return (
-      <div
-        key={block}
-        className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd"
-      >
-        {" "}
-        {block}{" "}
-      </div>
-    );
-  });
+  const deleteSubCategory = (e) => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        sub_category: formData.sub_category.filter(
+          (cat) => cat !== e.target.innerHTML
+        ),
+      };
+    });
+  };
+
+  const deleteStore = (e, storeID) => {
+    e.preventDefault();
+    setCallDelete(storeID);
+  };
 
   var storesToShow = storesData;
 
-  if (storeCategory) {
+  if (storeCategory.length > 1) {
     if (!storesByCategory) {
       storesToShow = [];
     } else {
@@ -100,7 +131,7 @@ export default function AdminStores(props) {
     }
   }
 
-  if (storeSubCategory) {
+  if (storeSubCategory.length > 1) {
     if (!storesBySubCategory) {
       storesToShow = [];
     } else {
@@ -124,12 +155,12 @@ export default function AdminStores(props) {
         <div className="col-xl-6 col-lg-6 container p-2 text-dark">
           <div className="storeDescription lead my-1 fs-4">{store.name}</div>
           <div className="storeExpiry text-muted mb-1">
-            Number of Coupons : {store.coupons}
+            Number of Coupons : {}
           </div>
         </div>
 
         <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
-          <button className="btn">
+          <button onClick={(e) => deleteStore(e, store.id)} className="btn">
             <i className="bi bi-trash-fill fs-2"></i>
           </button>
         </div>
@@ -153,32 +184,56 @@ export default function AdminStores(props) {
     );
   });
 
-  const blockElementsSubcategory = blocksSubcategory.map((block) => {
+  const blockElementsCategory = formData.category.map((block) => {
+    return (
+      <div
+        key={block}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd"
+      >
+        <span onClick={deleteSubCategory} className="bi bi-trash">
+          {block}
+        </span>
+      </div>
+    );
+  });
+
+  const blockElementsSubcategory = formData.sub_category.map((block) => {
     return (
       <div
         key={block}
         className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light subCategoryAdd"
       >
-        {" "}
-        {block}{" "}
+        <span onClick={deleteSubCategory} className="bi bi-trash">
+          {block}
+        </span>
       </div>
     );
   });
 
-  let addCategory = (e) => {
+  const addCategory = (e) => {
     if (!storeCategory) return;
-    if (blocksCategory.find((block) => block === storeCategory[0])) return;
-    setBlocksCategory((prev) => [...prev, storeCategory[0]]);
+    if (formData.category.find((block) => block === storeCategory[0])) return;
+    setFormData((prev) => {
+      return { ...prev, category: [...prev.category, storeCategory[0]] };
+    });
   };
 
-  let addSubcategory = (e) => {
+  const addSubcategory = (e) => {
     if (!storeSubCategory) return;
-    if (blocksSubcategory.find((block) => block === storeSubCategory[0]))
+    if (formData.sub_category.find((block) => block === storeSubCategory[0]))
       return;
-    setBlocksSubcategory((prev) => [...prev, storeSubCategory][0]);
-    if (blocksCategory.find((block) => block === storeCategory[0])) return;
 
-    setBlocksCategory((prev) => [...prev, storeCategory[0]]);
+    setFormData((prev) => {
+      return {
+        ...prev,
+        sub_category: [...prev.sub_category, storeSubCategory[0]],
+      };
+    });
+    if (formData.category.find((block) => block === storeCategory[0])) return;
+
+    setFormData((prev) => {
+      return { ...prev, category: [...prev.category, storeCategory[0]] };
+    });
   };
 
   const handleStoreSubCategoryChange = (e) => {
@@ -190,45 +245,52 @@ export default function AdminStores(props) {
     setStoreCategory(e.target.value.split(","));
   };
 
-  const handleStoreNameChange = (e) => {
-    setStoreName(e.target.value);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => {
+      return { ...formData, [name]: value };
+    });
   };
-  const handleStoreURLChange = (e) => {
-    setStoreURL(e.target.value);
-  };
-  const handleStoreDescriptionChange = (e) => {
-    setStoreDescription(e.target.value);
-  };
-  const handleStoreImageChange = (e) => {
-    setStoreImage(e.target.files[0]);
+
+  const handleFileChange = (e) => {
+    console.log("Image: ", e.target.files[0]);
+    setFormData((prev) => {
+      return { ...formData, images: e.target.files[0] };
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (blocksCategory.length === 0 || blocksSubcategory.length === 0) {
+    if (formData.category.length === 0 || formData.sub_category.length === 0) {
       alert("Enter atleast one Category and sub category");
     }
 
-    let formData = new FormData();
+    console.log("Form Data: ", formData);
 
-    formData.append("name", storeName);
+    let submission = new FormData();
 
-    for (let i = 0; i < blocksCategory.length; i++) {
-      formData.append("category[]", blocksCategory[i]);
+    submission.append("name", formData.name);
+
+    for (let i = 0; i < formData.category.length; i++) {
+      submission.append("category[]", formData.category[i]);
     }
-    for (let i = 0; i < blocksSubcategory.length; i++) {
-      formData.append("sub_category[]", blocksSubcategory[i]);
+    for (let i = 0; i < formData.sub_category.length; i++) {
+      submission.append("sub_category[]", formData.sub_category[i]);
     }
 
-    formData.append("images", storeImage);
-    formData.append("link", storeURL);
-    formData.append("description", storeDescription);
+    submission.append("images", formData.images);
+    submission.append("link", formData.link);
+    submission.append("description", formData.description);
 
     console.log("Form Data: ", formData);
     try {
-      const response = addStore(formData);
+      addStore(submission).then((response) => {
+        console.log(response);
+        window.location.reload();
+      });
     } catch (error) {
-      console.log(error);
+      console.log("ERROR: ", error);
     }
 
     handleClose();
@@ -263,8 +325,8 @@ export default function AdminStores(props) {
                   onChange={handleStoreCategoryChange}
                   placeholder="Select Category"
                 >
-                  <option value="" disabled selected>
-                    Select a category
+                  <option value="" selected>
+                    Show all stores
                   </option>
                   {categorySelectElements}
                 </Form.Select>
@@ -306,8 +368,9 @@ export default function AdminStores(props) {
                   type="text"
                   placeholder="Name"
                   id="storeName"
-                  value={storeName}
-                  onChange={handleStoreNameChange}
+                  value={formData.name}
+                  name="name"
+                  onChange={handleInputChange}
                   autoFocus
                   required
                 />
@@ -316,10 +379,11 @@ export default function AdminStores(props) {
               <Form.Group className="mb-4">
                 <Form.Label>URL</Form.Label>
                 <Form.Control
-                  type="text"
-                  value={storeURL}
-                  onChange={handleStoreURLChange}
+                  type="url"
+                  value={formData.link}
+                  onChange={handleInputChange}
                   placeholder="Store URL"
+                  name="link"
                   id="storeURL"
                   required
                 />
@@ -328,10 +392,11 @@ export default function AdminStores(props) {
               <Form.Group className="mb-4">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
-                  value={storeDescription}
-                  onChange={handleStoreDescriptionChange}
+                  value={formData.description}
+                  onChange={handleInputChange}
                   as="textarea"
                   placeholder="Store Description"
+                  name="description"
                   id="storeDescription"
                   required
                 />
@@ -393,18 +458,14 @@ export default function AdminStores(props) {
               </Form.Group>
 
               <Form.Group
-                className="mb-4"
-                controlId="exampleForm.ControlInput1"
-              ></Form.Group>
-
-              <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlTextarea1"
               >
                 <Form.Control
                   className="mb-3"
                   type="file"
-                  onChange={handleStoreImageChange}
+                  onChange={handleFileChange}
+                  name="images"
                   accept="image/*"
                   required
                 />

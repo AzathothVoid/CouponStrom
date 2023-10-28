@@ -14,17 +14,17 @@ export const getAllCategories = async (dispatch) => {
   const response = await ApiSerivce.get("/get-product-categories");
 
   if (response.status === 200) {
-    dispatch({type: "LOAD_CATEGORIES", payload: response.data});
+    dispatch({ type: "LOAD_CATEGORIES", payload: response.data });
   }
 };
 
-export const getCategoryById = async (setter, categoryID) => {
+export const getCategoryById = async (categoryID) => {
   const response = await ApiSerivce.get("/get-product-category-byID", {
     params: categoryID,
   });
 
   if (response.status === 200) {
-    setter(response.data);
+    return response.data;
   } else {
     throw response;
   }
@@ -36,7 +36,7 @@ export const getCategoryByStore = async (setter, storeID) => {
   });
 
   if (response.status === 200) {
-    setter(response.data[0]);
+    setter(response.data);
   } else {
     throw response;
   }
@@ -73,5 +73,18 @@ export const getSubCategoriesByID = async (setter, categoryID) => {
 
   if (response.status === 200) {
     setter(response.data);
+  }
+};
+
+export const deleteCategoryById = async (categoryID) => {
+  const response = await ApiSerivce.post(
+    "/delete-product-category",
+    categoryID
+  );
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw response;
   }
 };

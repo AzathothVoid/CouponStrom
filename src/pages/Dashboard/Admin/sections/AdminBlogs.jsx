@@ -9,21 +9,56 @@ import "react-quill/dist/quill.snow.css";
 import TurndownService from "turndown";
 import ReactMarkDown from "react-markdown";
 import Navigation from "../../Navigation";
-import { addBlog, getBlogs } from "../../../../api/BlogsAPI";
+import { addBlog, deleteBlogById } from "../../../../api/BlogsAPI";
 import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminBlogs(props) {
   const dataState = useDataState();
 
   const [show, setShow] = useState(false);
+  const [callDelete, setCallDelete] = useState(null);
+
   const [text, setText] = useState("");
   const [blogTitle, setBlogTitle] = useState("");
   const [blogImage, setBlogImage] = useState();
+  const [blogDescription, setBlogDescription] = useState("");
 
-  const blogData = dataState.blogs || [];
+  const [search, setSearch] = useState("");
 
-  const handleClose = () => setShow(false);
+  let blogData = dataState.blogs || [];
+
+  const handleClose = () => {
+    setText("");
+    setBlogTitle("");
+    setBlogImage();
+    setBlogDescription("");
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
+
+  if (search) {
+    blogData = blogData.filter((blog) => {
+      return blog.title.toLowerCase().includes(search.toLowerCase());
+    });
+  }
+
+  useEffect(() => {
+    if (callDelete) {
+      try {
+        const response = deleteBlogById({ id: callDelete }).then((response) => {
+          window.location.reload();
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [callDelete]);
+
+  const deleteBlog = (e, blogID) => {
+    e.preventDefault();
+    console.log("Blog ID: ", blogID);
+    setCallDelete(blogID);
+  };
 
   const turnDownService = new TurndownService();
 
@@ -35,12 +70,12 @@ export default function AdminBlogs(props) {
         <div className="col-8 container p-2 ps-4 text-dark">
           <div className="blogTitle lead my-1 fs-4">{blog.title}</div>
           <div className="blogDate text-muted mb-1">
-            Date Modified : {blog.updated_at}
+            Date Modified : {new Date(blog.updated_at).toUTCString()}
           </div>
         </div>
 
         <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
-          <button className="btn">
+          <button onClick={(e) => deleteBlog(e, blog.id)} className="btn">
             <i className="bi bi-trash-fill fs-2"></i>
           </button>
         </div>
@@ -56,13 +91,15 @@ export default function AdminBlogs(props) {
     formData.append("image", blogImage);
     formData.append("text", markDown);
     formData.append("title", blogTitle);
+    formData.append("description", blogDescription);
 
     try {
-      const response = addBlog(formData);
+      addBlog(formData).then((response) => {
+        window.location.reload();
+      });
     } catch (error) {
       console.log(error);
     }
-    setText("");
     handleClose();
   };
 
@@ -73,14 +110,20 @@ export default function AdminBlogs(props) {
     setBlogTitle(event.target.value);
   };
 
+  const handleBlogDescriptionChange = (event) => {
+    setBlogDescription(event.target.value);
+  };
+
   const handleQuillChange = (value) => {
     setText(value);
   };
 
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <>
-      <ReactMarkDown>{markDown}</ReactMarkDown>
-
       <div className="container">
         <Navigation
           sections={props.sections}
@@ -103,6 +146,8 @@ export default function AdminBlogs(props) {
               <input
                 type="search"
                 id="form1"
+                value={search}
+                onChange={handleSearchChange}
                 className="form-control"
                 placeholder="Search"
                 aria-label="Search"
@@ -131,6 +176,19 @@ export default function AdminBlogs(props) {
                 id="blogTitle"
                 value={blogTitle}
                 onChange={handleBlogTitleChange}
+                autoFocus
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>BLOG DESCRIPTION</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Description"
+                id="blogDescription"
+                value={blogDescription}
+                onChange={handleBlogDescriptionChange}
                 autoFocus
                 required
               />

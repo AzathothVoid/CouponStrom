@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { addCoupon, getCouponsByStore } from "../../../../api/CouponsAPI";
+import { addCoupon, deleteCouponById } from "../../../../api/CouponsAPI";
 import {
   getCategoryByStore,
   getSubCategoriesByCategory,
@@ -17,10 +17,11 @@ export default function AdminCoupons(props) {
   const couponsData = useData.coupons;
 
   const [show, setShow] = useState(false);
+  const [callDelete, setCallDelete] = useState(null);
+
   const [categoriesDataByStore, setCategoriesDataByStore] = useState([]);
   const [subCategoriesData, setSubCategoriesData] = useState([]);
   const [showStoreId, setShowStoreId] = useState("");
-  const [couponsByStore, setCouponsByStore] = useState([]);
 
   const [couponCategory, setCouponCategory] = useState("");
   const [couponSubCategory, setCouponSubCategory] = useState("");
@@ -36,16 +37,7 @@ export default function AdminCoupons(props) {
     deal: "",
     code: "",
     details: "",
-    image: "",
   });
-
-  useEffect(() => {
-    if (showStoreId) {
-      getCouponsByStore(setCouponsByStore, {
-        "store-id": Number.parseInt(showStoreId[1]),
-      });
-    }
-  }, [showStoreId]);
 
   useEffect(() => {
     if (formData.store) {
@@ -56,12 +48,27 @@ export default function AdminCoupons(props) {
   }, [formData.store]);
 
   useEffect(() => {
+    if (callDelete) {
+      try {
+        const response = deleteCouponById({ id: callDelete }).then(
+          (response) => {
+            window.location.reload();
+          }
+        );
+        console.log(response);
+      } catch (error) {}
+    }
+  }, [callDelete]);
+
+  useEffect(() => {
     if (couponCategory) {
       getSubCategoriesByCategory(setSubCategoriesData, {
         "category-id": Number.parseInt(couponCategory[1]),
       });
     }
   }, [couponCategory]);
+
+  console.log("Categories by store: ", categoriesDataByStore);
 
   const handleClose = () => {
     setCouponCategory("");
@@ -75,7 +82,6 @@ export default function AdminCoupons(props) {
       deal: "",
       code: "",
       details: "",
-      image: "",
     });
     setShow(false);
   };
@@ -100,6 +106,11 @@ export default function AdminCoupons(props) {
     });
   };
 
+  const deleteCoupon = (e, couponID) => {
+    e.preventDefault();
+    setCallDelete(couponID);
+  };
+
   const showPopUp = (e, couponId) => {
     e.stopPropagation();
 
@@ -116,11 +127,16 @@ export default function AdminCoupons(props) {
     );
   });
 
-  if (couponsByStore) {
-    couponsToShow = couponsByStore;
+  if (showStoreId.length > 1) {
+    console.log("Filtering data: ", showStoreId);
+    couponsToShow = couponsData.filter(
+      (coupon) => coupon.store === showStoreId[1]
+    );
+    console.log("Coupons to show: ", couponsToShow);
   }
 
   const couponElements = couponsToShow.map((coupon) => {
+    console.log("Coupons: ", coupon);
     return (
       <div className="my-4 row object">
         <div className="col-xl-3 col-lg-3 img">
@@ -156,7 +172,7 @@ export default function AdminCoupons(props) {
         </div>
 
         <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
-          <button className="btn">
+          <button onClick={(e) => deleteCoupon(e, coupon.id)} className="btn">
             <i className="bi bi-trash-fill fs-2"></i>
           </button>
         </div>
@@ -175,8 +191,8 @@ export default function AdminCoupons(props) {
 
   const categorySelectElements = categoriesDataByStore.map((category) => {
     return (
-      <option key={category.id} value={[category.name, category.id]}>
-        {category.name}
+      <option key={category[0].id} value={[category[0].name, category[0].id]}>
+        {category[0].name}
       </option>
     );
   });
@@ -248,7 +264,6 @@ export default function AdminCoupons(props) {
 
     if (name === "store") {
       const split = value.split(",");
-      console.log("Split: ", split);
       setFormData((prev) => {
         return {
           ...formData,
@@ -272,6 +287,7 @@ export default function AdminCoupons(props) {
   };
 
   const handleCouponStoreChange = (e) => {
+    console.log("Coupons store change: ", e.target.value);
     setShowStoreId(e.target.value.split(","));
   };
 
@@ -289,23 +305,24 @@ export default function AdminCoupons(props) {
       submission.append("sub_category[]", formData.sub_category[i]);
     }
     submission.append("details", formData.details);
-    if (deal.length > 0) {
+    if (formData.deal.length > 0) {
       submission.append("deal", formData.deal);
+      submission.append("type", "deal");
     } else {
       submission.append("code", formData.code);
+      submission.append("type", "coupon");
     }
-    submission.append("image", formData.image);
-
-    console.log("Submission: ", JSON.stringify(submission));
 
     try {
-      console.log(addCoupon(submission));
+      addCoupon(submission).then((response) => {
+        console.log(response);
+        window.location.reload();
+      });
     } catch (error) {
       console.log(error);
     }
 
     handleClose();
-    event.preventDefault();
   };
 
   return (
@@ -336,8 +353,8 @@ export default function AdminCoupons(props) {
                 onChange={handleCouponStoreChange}
                 placeholder="Select Category"
               >
-                <option value="" disabled selected>
-                  Select a store
+                <option value="" selected>
+                  Show all coupons
                 </option>
                 {showStoreElements}
               </Form.Select>
@@ -412,7 +429,7 @@ export default function AdminCoupons(props) {
                 name="deal"
                 onChange={handleInputChange}
                 className="mb-4"
-                type="text"
+                type="url"
                 id="deal"
                 disabled={formData.code}
               />

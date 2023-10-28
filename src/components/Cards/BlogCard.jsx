@@ -2,10 +2,10 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/DateUtils";
+import { useDataState } from "../Data/DataContext";
 
 export default function (props) {
   const blog = props.data;
-  console.log("Blog: ", blog);
 
   return (
     <div
@@ -17,7 +17,7 @@ export default function (props) {
           <div class="card">
             <img
               style={{ height: "200px" }}
-              class="card-img"
+              class="card-img "
               src={blog.images ? blog.images[0].image : null}
               alt=""
             />
@@ -27,11 +27,8 @@ export default function (props) {
                 <h4 class="card-title">{blog.title}</h4>
               </div>
 
-              <p class="card-text">{blog.description}</p>
-              <Link
-                state={{ blog: blog, blogs: props.blogs }}
-                to={`/blogs/${blog.id}`}
-              >
+              <p class="card-text text-truncate">{blog.description}</p>
+              <Link to={`/blogs/${blog.id}`}>
                 <button class="btn-custom rounded  bg-primary-custom text-white">
                   Read Now
                 </button>

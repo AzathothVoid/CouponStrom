@@ -20,13 +20,13 @@ export const getAllCoupons = async (dispatch) => {
   }
 };
 
-export const getCouponByCategory = async (setter, categoryID) => {
+export const getCouponByCategory = async (categoryID) => {
   const response = await ApiService.get("/get-coupon-by-cat", {
     params: categoryID,
   });
 
   if (response.status === 200) {
-    setter(response.data);
+    return response.data;
   } else {
     throw response;
   }
@@ -44,13 +44,25 @@ export const getCouponBySubCategory = async (setter, subCategoryID) => {
   }
 };
 
-export const getCouponsByStore = async (setter, storeID) => {
+export const getCouponsByStore = async (storeID) => {
   const response = await ApiService.get("/get-coupons-by-store", {
     params: storeID,
   });
 
   if (response.status === 200) {
-    setter(response.data);
+    return response.data;
+  } else {
+    throw response;
+  }
+};
+
+export const deleteCouponById = async (couponID) => {
+  const response = await ApiService.get("/delete-coupon", {
+    params: couponID,
+  });
+
+  if (response.status === 200) {
+    return response.data;
   } else {
     throw response;
   }

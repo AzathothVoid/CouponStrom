@@ -4,35 +4,21 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import BlogCard from "../../components/Cards/BlogCard";
 import { useDataState } from "../../components/Data/DataContext";
-import { getUsers } from "../../api/UsersAPI";
 
 export default function Blogs() {
   const dataState = useDataState();
   const blogs = dataState.blogs;
   const [currBlogPage, setCurrBlogPage] = useState(1);
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    getUsers(setUsers);
-  }, []);
 
   const itemsPerPage = 9;
   const startIndex = (currBlogPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const blogsToShow = blogs.slice(startIndex, endIndex);
 
-  console.log("Users: ", users);
-
   const blogElements = blogsToShow.map((blog) => {
     return (
       <div className="col-12 col-md-6 col-lg-4 my-2">
-        <BlogCard
-          data={{
-            ...blog,
-            writer: users.find((user) => user.id === blog.user_id),
-          }}
-          blogs={blogs}
-        />
+        <BlogCard data={blog} />
       </div>
     );
   });

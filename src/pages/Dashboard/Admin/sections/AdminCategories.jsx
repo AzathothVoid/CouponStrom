@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { addCategory } from "../../../../api/CategoriesAPI";
+import { addCategory, deleteCategoryById } from "../../../../api/CategoriesAPI";
 import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminCategories(props) {
@@ -14,6 +14,7 @@ export default function AdminCategories(props) {
   const [blocks, setBlocks] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [categoryDescription, setCategoryDescription] = useState("");
+  const [callDelete, setCallDelete] = useState(null);
 
   const categoriesData = useData.categories || [];
 
@@ -24,6 +25,29 @@ export default function AdminCategories(props) {
     setShow(false);
   };
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    if (callDelete) {
+      try {
+        const response = deleteCategoryById({ id: callDelete }).then(
+          (response) => {
+            window.location.reload();
+          }
+        );
+      } catch (error) {}
+    }
+  }, [callDelete]);
+
+  const deleteCategory = (e, couponID) => {
+    e.preventDefault();
+    setCallDelete(couponID);
+  };
+
+  const deleteSubCategory = (e) => {
+    setBlocks((prev) => {
+      return prev.filter((cat) => cat !== e.target.innerHTML);
+    });
+  };
 
   const categoryElements = categoriesData.map((category) => {
     return (
@@ -38,7 +62,10 @@ export default function AdminCategories(props) {
           </div>
         </div>
         <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
-          <button className="btn">
+          <button
+            onClick={(e) => deleteCategory(e, category.id)}
+            className="btn"
+          >
             <i className="bi bi-trash-fill fs-2"></i>
           </button>
         </div>
@@ -52,8 +79,9 @@ export default function AdminCategories(props) {
         key={block}
         className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
       >
-        {" "}
-        {block}{" "}
+        <span onClick={deleteSubCategory} className="bi bi-trash">
+          {block}
+        </span>
       </div>
     );
   });
@@ -77,7 +105,7 @@ export default function AdminCategories(props) {
       const response = await addCategory({
         name: categoryName,
         sub_categories: blocks,
-        description: categoryDescription,
+        descripton: categoryDescription,
       });
     } catch (error) {
       console.log(error);

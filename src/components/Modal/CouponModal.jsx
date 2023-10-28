@@ -21,12 +21,12 @@ export default function CouponModal(props) {
         <Modal.Header closeButton></Modal.Header>
         <Modal.Header className="d-flex flex-column align-items-center">
           <div style={{ maxWidth: "25%" }}>
-            <img className="mw-100" src={data.image} alt="" />
+            <img className="mw-100" src={data.images[0].image} alt="" />
           </div>
           <Modal.Title className="mb-4">{data.title}</Modal.Title>
-          <div className="mb-4">
+          <div className="mb-4 d-flex flex-column align-items-center">
             {data.type === "coupon" ? (
-              <div className="d-flex">
+              <div className="d-flex mb-4">
                 <input
                   style={{ width: "fit-content" }}
                   class="form-control text-center shadow-none"
@@ -43,18 +43,30 @@ export default function CouponModal(props) {
                 </button>
               </div>
             ) : (
-              <a className="link-primary fw-bold fs-5" href={data.deal}>
-                Get Offer
+              <a
+                target="_blank"
+                className="link-primary fw-bold fs-5"
+                href={data.deal}
+              >
+                Get Deal
               </a>
             )}
+            {data.type === "coupon" ? (
+              <h4 className="mt-1">Copy code and continue to offer</h4>
+            ) : (
+              <h4 className="mt-5">Click above to get the deal!</h4>
+            )}
           </div>
-          <a className="link-primary fw-bold fs-6" href={data.url}>
+          <a
+            target="_blank"
+            className="link-primary fw-bold fs-6"
+            href={data.stores.link}
+          >
             Continue to offer
           </a>
-          <h4 className="my-3">Copy code and continue to offer</h4>
         </Modal.Header>
-        <Modal.Body className="px-4">
-          <div>
+        <Modal.Body className="px-4 my-3">
+          <div className="ms-3">
             <h3 className="mb-2">Details</h3>
             <p>{data.details}</p>
           </div>

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import BlogCard from "../../Cards/BlogCard";
 import blogData from "../../../pages/Home/blogData";
+import { useDataState } from "../../Data/DataContext";
 
 export default function BlogsSection(props) {
-  const [blogs, setBlogs] = useState(blogData);
+  const useData = useDataState();
 
-  useEffect(() => {
-    setBlogs(blogData);
-  }, [blogData]);
+  const blogs = useData.blogs;
 
   const filteredData = blogs.slice(0, 3);
 

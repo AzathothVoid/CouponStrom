@@ -4,16 +4,17 @@ import { Link } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { AlphabeticalPaginator, Pagination } from "../../utils/Paginate";
-import storeData from "./storeData";
 import TopStores from "../../components/Sections/TopStores/TopStoresSection";
+import { useDataState } from "../../components/Data/DataContext";
 
 export default function Stores() {
+  const useData = useDataState();
+
   const [currLetter, setLetter] = useState("A");
   const [currPage, setCurrPage] = useState(1);
-  const [stores, setStores] = useState(storeData);
+  const stores = useData.stores;
 
   // filtering stores based on first letter
-  console.log("Store data", storeData);
   var filterStores;
   if (currLetter.length === 1) {
     filterStores = stores.filter((store) => store.name.startsWith(currLetter));
@@ -44,15 +45,15 @@ export default function Stores() {
     setCurrPage(page);
   };
 
-  // updating store data state whenever storeData.jsx files gets updated
-  useEffect(() => {
-    setStores(storeData);
-  }, [storeData]);
-
   const storeElements = storesToShow.map((store) => (
     <div className="justify-self-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3">
       <Link to={`/stores/${store.id}`} key={store.id}>
-        <img className="m-2" width={"100x"} src={store.img} alt="" />
+        <img
+          className="m-2"
+          width={"100x"}
+          src={store.images[0].image}
+          alt=""
+        />
         {store.name}
       </Link>
     </div>

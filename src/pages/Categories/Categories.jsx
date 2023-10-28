@@ -3,11 +3,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import categoriesData from "./categoriesData";
 import { AlphabeticalPaginator } from "../../utils/Paginate";
+import { useDataState } from "../../components/Data/DataContext";
+import { getAllCategories } from "../../api/CategoriesAPI";
 
 export default function Categories() {
-  const [categories, setCategories] = useState(categoriesData.categories);
+  const useData = useDataState();
+
+  const categories = useData.categories;
   const [currLetter, setLetter] = useState("A");
 
   var filterCategories;
@@ -22,6 +25,7 @@ export default function Categories() {
   }
 
   // Generating category elements
+  console.log("Categoires Data: ", categories);
   const categoryElements = filterCategories.map((category) => {
     return (
       <div
@@ -49,12 +53,7 @@ export default function Categories() {
 
   const handleLetterChange = (letter) => {
     setLetter(letter);
-    setCurrPage(1);
   };
-
-  useEffect(() => {
-    setCategories(categoriesData.categories);
-  }, [categoriesData]);
 
   return (
     <>

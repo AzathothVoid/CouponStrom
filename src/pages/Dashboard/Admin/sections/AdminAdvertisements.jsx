@@ -5,13 +5,15 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Navigation from "../../Navigation";
-import { addAd } from "../../../../api/AdsAPI";
+import { addAd, deleteAdById } from "../../../../api/AdsAPI";
 import { useDataState } from "../../../../components/Data/DataContext";
 
 export default function AdminAdvertisements(props) {
   const dataState = useDataState();
 
   const [show, setShow] = useState(false);
+  const [callDelete, setCallDelete] = useState(null);
+
   const [adImage, setAdImage] = useState();
 
   const adData = dataState.ads || [];
@@ -19,8 +21,23 @@ export default function AdminAdvertisements(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  useEffect(() => {
+    if (callDelete) {
+      try {
+        const response = deleteAdById({ id: callDelete }).then((response) => {
+          window.location.reload();
+        });
+      } catch (error) {}
+    }
+  }, [callDelete]);
+
   const handleAdImageChange = (e) => {
     setAdImage(e.target.files[0]);
+  };
+
+  const deleteAd = (e, adID) => {
+    e.preventDefault();
+    setCallDelete(adID);
   };
 
   const handleSubmit = async (event) => {
@@ -41,7 +58,7 @@ export default function AdminAdvertisements(props) {
         <img src={ad.images[0].image} alt="advert" className="advertImgs p-0" />
 
         <div className="d-flex align-items-center justify-content-center p-2 container">
-          <button className="btn">
+          <button onClick={(e) => deleteAd(e, ad.id)} className="btn">
             <i className="bi bi-trash-fill fs-2"></i>
           </button>
         </div>

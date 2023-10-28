@@ -21,3 +21,13 @@ export const getAd = async (dispatch) => {
     throw response;
   }
 };
+
+export const deleteAdById = async (adID) => {
+  const response = await ApiService.post("/delete-ad", adID);
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};

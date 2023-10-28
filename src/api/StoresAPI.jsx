@@ -25,26 +25,25 @@ export const getAllStores = async (dispatch) => {
   }
 };
 
-export const getStoreById = async (setter, storeID) => {
+export const getStoreById = async (storeID) => {
   const response = await ApiService.get("/get-store-by-ID", {
     params: storeID,
   });
 
   if (response.status === 200) {
-    setter(response.data);
+    return response.data;
   } else {
     throw response;
   }
 };
 
-export const getStoreByCategory = async (setter, categoryID) => {
+export const getStoreByCategory = async (categoryID) => {
   const response = await ApiService.get("/get-store-by-category", {
     params: categoryID,
   });
 
   if (response.status === 200) {
-    console.log(response);
-    setter(response.data[0]);
+    return response.data;
   } else {
     throw response;
   }
@@ -58,6 +57,17 @@ export const getStoreBySubCategory = async (setter, subCategoryID) => {
   if (response.status === 200) {
     console.log(response);
     setter(response.data[0]);
+  } else {
+    throw response;
+  }
+};
+
+export const deleteStoreById = async (storeID) => {
+  const response = await ApiService.post("/delete-stores", storeID);
+
+  if (response.status === 200) {
+    console.log(response);
+    return response.data;
   } else {
     throw response;
   }
