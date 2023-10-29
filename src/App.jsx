@@ -12,6 +12,7 @@ import Login from "./pages/Dashboard/Login";
 import Registration from "./pages/Dashboard/Registration";
 import AdminPanel from "./pages/Dashboard/Admin/Admin";
 import DataEntryPanel from "./pages/Dashboard/DataEntry/DataEntry";
+import AboutUs from "./pages/About Us/AboutUs";
 import { AuthProvider } from "./components/Auth/AuthContext";
 import { DataProvider } from "./components/Data/DataContext";
 import "./style/index.scss";
@@ -22,7 +23,8 @@ function App() {
       <DataProvider>
         <Router>
           <Routes>
-            <Route exact path="/home" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/stores/:storeId" element={<StorePage />} />
             <Route path="/categories" element={<Categories />} />
@@ -34,6 +36,7 @@ function App() {
             <Route path="/blogs" element={<Blogs />} />
             <Route path="/blogs/:blogId" element={<BlogPage />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/about-us" element={<AboutUs />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/registration" element={<Registration />} />
             <Route

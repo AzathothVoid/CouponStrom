@@ -25,8 +25,12 @@ export default function Contact() {
           ></i>
           <h3>By Phone</h3>
           <ul className="list my-3 p-0">
-            <li className="list-item">1-800-351-6804</li>
-            <li className="list-item">1-800-351-6804</li>
+            <li className="list-item">
+              {import.meta.env.VITE_CONTACT_PHONE_NO_1}
+            </li>
+            <li className="list-item">
+              {import.meta.env.VITE_CONTACT_PHONE_NO_2}
+            </li>
           </ul>
         </div>
         <div className="text-center">

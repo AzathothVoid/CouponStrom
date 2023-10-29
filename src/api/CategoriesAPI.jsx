@@ -88,3 +88,13 @@ export const deleteCategoryById = async (categoryID) => {
     throw response;
   }
 };
+
+export const likeCategory = async (categoryID) => {
+  const response = await ApiService.post("/like-category", categoryID);
+
+  if (response.status === 201) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};

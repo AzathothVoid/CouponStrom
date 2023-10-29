@@ -2,9 +2,11 @@ import React from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "bootstrap/js/dist/carousel";
+import { useDataState } from "./Data/DataContext";
 
 export default function SimpleSlider(props) {
-  const data = props.data;
+  const useData = useDataState();
+  const data = useData.ads;
 
   const sliderElements = data.map((item, index) => {
     return (
@@ -14,7 +16,7 @@ export default function SimpleSlider(props) {
       >
         <img
           style={{ width: "100%", height: "100%" }}
-          src={`${item.img}`}
+          src={item.images[0].image}
           alt=""
         />
       </div>

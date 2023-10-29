@@ -3,8 +3,10 @@ import { useAuth } from "../Auth/AuthContext";
 import { Navigate } from "react-router-dom";
 
 export default function PrivateRoute({ element, allowedRoles }) {
-  const { user, role } = useAuth();
+  const { user, role, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  console.log("Roles allowed: ", allowedRoles);
+  console.log("User Role: ", role);
   useEffect(() => {
     if (!user || !role) {
       setIsLoading(true);
@@ -17,7 +19,7 @@ export default function PrivateRoute({ element, allowedRoles }) {
     return <div>Wait</div>;
   }
   if (!user || (allowedRoles && !allowedRoles.includes(role))) {
-    // Redirect to a different route if the user is not authenticated or doesn't have the required role
+    if (user) logout();
     return <Navigate to="/auth/login" />;
   }
 

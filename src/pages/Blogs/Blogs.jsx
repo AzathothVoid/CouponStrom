@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import BlogCard from "../../components/Cards/BlogCard";
 import { useDataState } from "../../components/Data/DataContext";
+import Loader from "../../components/Loader/Loader";
 
 export default function Blogs() {
   const dataState = useDataState();
@@ -29,25 +30,31 @@ export default function Blogs() {
 
   return (
     <>
-      <Header />
-      <main className="container">
-        <h1 className="text-center my-4">Blogs and Community</h1>
-        <section className="container my-4 p-4 rounded bg-white">
-          <h2 className="mb-4 ms-1 text-center text-primary-custom">
-            Top Blogs
-          </h2>
+      {blogs && blogElements ? (
+        <>
+          <Header />
+          <main className="container">
+            <h1 className="text-center mt-4 mb-2">Blogs and Community</h1>
+            <section className="container mb-4 p-4 rounded bg-white">
+              <h2 className="mb-4 ms-1 text-center text-primary-custom">
+                Top Blogs
+              </h2>
 
-          <div className="row justify-content-center">{blogElements}</div>
-          <div className="sticky-footer my-4">
-            <Pagination
-              totalItems={blogs.length}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-            />
-          </div>
-        </section>
-      </main>
-      <Footer />
+              <div className="row justify-content-center">{blogElements}</div>
+              <div className="sticky-footer my-4">
+                <Pagination
+                  totalItems={blogs.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            </section>
+          </main>
+          <Footer />
+        </>
+      ) : (
+        <Loader />
+      )}
     </>
   );
 }

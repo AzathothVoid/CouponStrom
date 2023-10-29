@@ -49,14 +49,13 @@ export const getStoreByCategory = async (categoryID) => {
   }
 };
 
-export const getStoreBySubCategory = async (setter, subCategoryID) => {
+export const getStoreBySubCategory = async (subCategoryID) => {
   const response = await ApiService.get("/get-store-by-Subcategory", {
     params: subCategoryID,
   });
 
   if (response.status === 200) {
-    console.log(response);
-    setter(response.data[0]);
+    return response.data;
   } else {
     throw response;
   }
@@ -67,6 +66,16 @@ export const deleteStoreById = async (storeID) => {
 
   if (response.status === 200) {
     console.log(response);
+    return response.data;
+  } else {
+    throw response;
+  }
+};
+
+export const likeStore = async (storeID) => {
+  const response = await ApiService.post("like-store", storeID);
+
+  if (response.status === 201) {
     return response.data;
   } else {
     throw response;

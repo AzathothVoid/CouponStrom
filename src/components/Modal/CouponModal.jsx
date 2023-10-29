@@ -1,10 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { likeCoupon } from "../../api/CouponsAPI";
 
 export default function CouponModal(props) {
   const data = props.data;
   const codeToCopyRef = useRef(null);
+
+  const [likeCouponCall, setLikeCouponCall] = useState(false);
+  const [likedCoupons, setLikedCoupons] = useState(
+    JSON.parse(localStorage.getItem("likedCoupons")) || []
+  );
 
   const handleCopyClick = (e) => {
     if (codeToCopyRef.current) {
@@ -13,6 +19,27 @@ export default function CouponModal(props) {
         e.target.innerHTML = "Text Copied!";
       });
     }
+  };
+
+  useEffect(() => {
+    if (likeCouponCall) {
+      if (likedCoupons.includes(data.id)) return;
+      try {
+        likeCoupon({ "coupon-id": data.id }).then((response) => {
+          setLikedCoupons((prev) => [...prev, data.id]);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [likeCouponCall]);
+
+  useEffect(() => {
+    localStorage.setItem("likedCoupons", JSON.stringify(likedCoupons));
+  }, [likedCoupons]);
+
+  const handleLikeCoupon = (e) => {
+    setLikeCouponCall(true);
   };
 
   return (
@@ -69,6 +96,26 @@ export default function CouponModal(props) {
           <div className="ms-3">
             <h3 className="mb-2">Details</h3>
             <p>{data.details}</p>
+          </div>
+          <div className="d-flex justify-content-center align-items-center border-top my-0 py-3">
+            {likedCoupons.includes(data.id) ? (
+              <div className="text-primary fs-5 m-0">
+                <span>
+                  You like this coupon!{" "}
+                  <i className="bi bi-hand-thumbs-up ms-1"></i>
+                </span>
+              </div>
+            ) : (
+              <div>
+                <button
+                  onClick={handleLikeCoupon}
+                  className="btn text-primary fs-5 m-0"
+                >
+                  Like
+                  <i className="bi bi-hand-thumbs-up ms-1"></i>
+                </button>
+              </div>
+            )}
           </div>
           <div className="d-flex justify-content-center align-items-center gap-3 my-4 border-top pt-4">
             <p className="m-0">Share on</p>

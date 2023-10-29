@@ -7,7 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import { addCategory } from "../../../../api/CategoriesAPI";
 import { useDataState } from "../../../../components/Data/DataContext";
 
-export default function AdminCategories(props) {
+export default function DECategories(props) {
   const useData = useDataState();
 
   const [show, setShow] = useState(false);
@@ -24,6 +24,12 @@ export default function AdminCategories(props) {
     setShow(false);
   };
   const handleShow = () => setShow(true);
+
+  const deleteSubCategory = (e) => {
+    setBlocks((prev) => {
+      return prev.filter((cat) => cat !== e.target.innerHTML);
+    });
+  };
 
   const categoryElements = categoriesData.map((category) => {
     return (
@@ -47,8 +53,9 @@ export default function AdminCategories(props) {
         key={block}
         className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
       >
-        {" "}
-        {block}{" "}
+        <span onClick={deleteSubCategory} className="bi bi-trash">
+          {block}
+        </span>
       </div>
     );
   });
@@ -72,7 +79,7 @@ export default function AdminCategories(props) {
       const response = await addCategory({
         name: categoryName,
         sub_categories: blocks,
-        description: categoryDescription,
+        descripton: categoryDescription,
       });
     } catch (error) {
       console.log(error);

@@ -67,3 +67,13 @@ export const deleteCouponById = async (couponID) => {
     throw response;
   }
 };
+
+export const likeCoupon = async (couponID) => {
+  const response = await ApiService.post("like-coupon", couponID);
+
+  if (response.status === 201) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};

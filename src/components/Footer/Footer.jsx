@@ -7,6 +7,7 @@ export default function Footer() {
   const footerElements = footerData.map((item) => {
     return (
       <div
+        key={item.id}
         className="col-sm-6 col-md-6 col-lg collapsible text-center"
         onClick={(event) => {
           if (event.currentTarget.classList.contains("collapsible--expanded")) {
@@ -23,8 +24,8 @@ export default function Footer() {
           <ul className="list-group list">
             {item.content.map((itemContent) => {
               return (
-                <li className="list-item mb-2">
-                  <a className="text-decoration-none" href="">
+                <li key={itemContent.id} className="list-item mb-2">
+                  <a className="text-decoration-none" href={itemContent.href}>
                     {itemContent.name}
                   </a>
                 </li>
@@ -39,6 +40,7 @@ export default function Footer() {
   const iconElements = iconData.map((item) => {
     return (
       <a
+        key={item.id}
         className="btn btn-link btn-floating btn-lg text-dark m-1"
         href={`${item.url}`}
         role="button"

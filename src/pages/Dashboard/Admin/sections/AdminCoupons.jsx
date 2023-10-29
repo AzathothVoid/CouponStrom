@@ -287,7 +287,6 @@ export default function AdminCoupons(props) {
   };
 
   const handleCouponStoreChange = (e) => {
-    console.log("Coupons store change: ", e.target.value);
     setShowStoreId(e.target.value.split(","));
   };
 

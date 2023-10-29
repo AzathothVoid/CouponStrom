@@ -10,6 +10,7 @@ import { Pagination } from "../../utils/Paginate";
 import { getCategoryById } from "../../api/CategoriesAPI";
 import { getCouponByCategory } from "../../api/CouponsAPI";
 import BlogsSection from "../../components/Sections/BlogsSection/BlogsSection";
+import Loader from "../../components/Loader/Loader";
 
 export default function CategoryPage(props) {
   const { categoryId } = useParams();
@@ -200,7 +201,7 @@ export default function CategoryPage(props) {
           <Footer />
         </>
       ) : (
-        <p>Loading...</p>
+        <Loader />
       )}
     </>
   );

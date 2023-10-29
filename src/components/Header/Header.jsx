@@ -2,13 +2,15 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { navData } from "./headerData";
-import stores from "../../pages/Stores/storeData";
+import { useDataState } from "../Data/DataContext";
 
 export default function Header() {
+  const useData = useDataState();
+
   const [currPage, setCurrPage] = useState("");
   const [searchStatus, setSearchStatus] = useState(false);
-  const [storeData, setStoreData] = useState(stores);
   const [searchTerm, setSearchTerm] = useState("");
+  const storeData = useData.stores;
 
   const searchedStores = storeData
     .filter((store) => {
@@ -28,10 +30,10 @@ export default function Header() {
 
   const searchedStoresElements = searchedStores.map((store) => {
     return (
-      <Link to={`/stores/${store.id}`}>
+      <Link key={store.id} to={`/stores/${store.id}`}>
         <li className="my-1 border-bottom row flex-nowrap">
           <div className="col-3 col-md-1">
-            <img className="w-100" src={store.img} alt="" />
+            <img className="w-100" src={store.images[0].image} alt="" />
           </div>
           <button
             className={`btn-custom col-9 col-md-11 border-0 navbar-btn btn-p nav-btn nav-font text-start search-hover w-100`}
@@ -45,10 +47,6 @@ export default function Header() {
 
   const currStatus = window.location.pathname;
 
-  useEffect(() => {
-    setStoreData(storeData);
-  }, [storeData]);
-
   if (currStatus && !currPage) {
     setCurrPage(
       currStatus
@@ -59,12 +57,12 @@ export default function Header() {
     setCurrPage("");
   }
 
-  const navElements = navData.map((navItem) => {
+  const navElements = navData.map((navItem, index) => {
     return (
-      <li>
+      <li key={index}>
         <Link to={`/${navItem.toLowerCase()}`}>
           <button
-            className={`btn-custom text-white border-0 fs-5 navbar-btn rounded btn-p nav-btn nav-font ${
+            className={`btn-custom text-white border-0 fs-6 navbar-btn rounded btn-p nav-btn nav-font ${
               currPage === navItem ? "text-primary-custom fw-bold" : null
             }`}
           >

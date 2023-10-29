@@ -1,11 +1,13 @@
 import React from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import couponsData from "../../../pages/Home/couponsData";
 import CouponCard from "../../Cards/CouponCard";
 import { areDatesOneDayApart } from "../../../utils/DateUtils";
+import { useDataState } from "../../Data/DataContext";
 
 export default function TopCouponsSection() {
+  const useData = useDataState();
+  const couponsData = useData.coupons;
   const total = 10;
 
   const filteredData = couponsData.slice(0, total);

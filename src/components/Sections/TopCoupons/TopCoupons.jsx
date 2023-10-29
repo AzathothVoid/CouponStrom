@@ -1,17 +1,17 @@
 import React from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import couponsData from "../../../pages/Home/couponsData";
 import CouponCard from "../../Cards/CouponCard";
+import { useDataState } from "../../Data/DataContext";
 
 export default function TopCouponsSection() {
+  const useData = useDataState();
+  const couponsData = useData.coupons;
   const total = 10;
 
   const sortedData = couponsData.sort(
     (item1, item2) => item2.likes - item1.likes
   );
-
-  console.log(sortedData);
 
   const filteredData = sortedData.slice(0, total);
 

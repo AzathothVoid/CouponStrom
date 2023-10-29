@@ -36,17 +36,15 @@ export default function Stores() {
     setCurrPage(1);
   };
 
-  // For automatically lowering page number for alphabet categories with lower no of pages
-  //   if (currPage > Math.ceil(filterStores.length / itemsPerPage)) {
-  //     handlePageChange(Math.ceil(filterStores.length / itemsPerPage));
-  //   }
-
   const handlePageChange = (page) => {
     setCurrPage(page);
   };
 
   const storeElements = storesToShow.map((store) => (
-    <div className="justify-self-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3">
+    <div
+      key={store.id}
+      className="justify-self-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3"
+    >
       <Link to={`/stores/${store.id}`} key={store.id}>
         <img
           className="m-2"
@@ -63,7 +61,7 @@ export default function Stores() {
     <>
       <Header />
       <main>
-        <div className="container bg-white rounded  my-5 py-4">
+        <div className="container bg-white rounded  my-4 py-4">
           <h1 className="text-center mb-5 mt-3">Stores</h1>
           <div className="container mb-5 border-bottom border-top">
             <AlphabeticalPaginator
@@ -78,11 +76,11 @@ export default function Stores() {
             totalItems={filterStores.length}
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
-            forcePage={currPage - 1}
+            // forcePage={currPage - 1}
           />
         </div>
 
-        <div className="my-3 ">
+        <div className="mb-5 ">
           <TopStores />
         </div>
       </main>

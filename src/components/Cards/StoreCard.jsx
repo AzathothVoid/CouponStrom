@@ -8,7 +8,7 @@ export default function StoreCard(props) {
         <img
           style={{ width: "100%", height: "100%" }}
           className="ps-2 pe-2 card-img"
-          src={`/${data.img}`}
+          src={data.images[0].image}
           alt=""
         />
       </div>
@@ -20,7 +20,7 @@ export default function StoreCard(props) {
           </div>
           <div className="col-4 d-flex justify-content-center">
             {data.likes}{" "}
-            <i className="bi-heart-fill" style={{ color: "red" }}></i>
+            <i className="bi-heart-fill ms-1" style={{ color: "red" }}></i>
           </div>
         </div>
       </div>

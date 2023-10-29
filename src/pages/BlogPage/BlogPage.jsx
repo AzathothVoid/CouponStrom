@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
 import ReactMarkDown from "react-markdown";
 import { getBlogByID } from "../../api/BlogsAPI";
+import Loader from "../../components/Loader/Loader";
 
 export default function BlogPage() {
   const { blogId } = useParams();
@@ -82,7 +83,7 @@ export default function BlogPage() {
           <Footer />
         </>
       ) : (
-        <p>Loading...</p>
+        <Loader />
       )}
     </>
   );

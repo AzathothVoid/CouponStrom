@@ -11,12 +11,12 @@ export default function CouponCard(props) {
   }
 
   return (
-    <div className="card shadow p-1" style={{ width: "200px" }}>
+    <div className="card shadow p-1 h-100" style={{ width: "200px" }}>
       <div style={{ height: "98px" }}>
         <img
           style={{ width: "100%", height: "100%" }}
           className="ps-2 pe-2 card-img"
-          src={`/${data.image}`}
+          src={data.images[0].image}
           alt=""
         />
       </div>
@@ -24,11 +24,11 @@ export default function CouponCard(props) {
       <div className="card-body pb-2  pt-1">
         <div class="row mb-2">
           <div className="col-8">
-            <h3 className="fs-6">{data.title}</h3>
+            <h3 className="fs-6">{data.name}</h3>
           </div>
           <div className="col-4 d-flex justify-content-center">
             {data.likes}{" "}
-            <i className="bi-heart-fill" style={{ color: "red" }}></i>
+            <i className="bi-heart-fill ms-1" style={{ color: "red" }}></i>
           </div>
         </div>
         <div className="sticky-footer">
@@ -38,9 +38,9 @@ export default function CouponCard(props) {
               className="couponExpiry opacity-50"
             >
               {!limitedTime ? (
-                `Expires ${formatDate(new Date(data.expiry))}`
+                `Expires ${data.expiry}`
               ) : (
-                <span className="badge text-bg-primary ">Limited</span>
+                <span className="badge text-bg-primary ">Limited Time</span>
               )}
             </h6>
           </div>
