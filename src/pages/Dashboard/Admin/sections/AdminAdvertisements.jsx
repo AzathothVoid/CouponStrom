@@ -48,8 +48,9 @@ export default function AdminAdvertisements(props) {
     formData.append("image", adImage);
 
     try {
-      const response = await addAd(formData);
-      console.log(response);
+      addAd(formData).then((response) => {
+        window.location.refresh();
+      });
     } catch (error) {
       console.log(error);
     }

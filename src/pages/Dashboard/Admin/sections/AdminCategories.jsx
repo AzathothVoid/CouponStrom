@@ -102,10 +102,12 @@ export default function AdminCategories(props) {
     event.preventDefault();
 
     try {
-      const response = await addCategory({
+      addCategory({
         name: categoryName,
         sub_categories: blocks,
         descripton: categoryDescription,
+      }).then((response) => {
+        window.location.reload();
       });
     } catch (error) {
       console.log(error);

@@ -33,10 +33,10 @@ export default function CouponsPage() {
           <Header />
           <main className="container py-3">
             <div className="d-flex align-items-center gap-2">
-              <h1 className="h2 mb-0">Coupons:</h1>
-              <h3 className="h3 mb-0">
+              <h1 className="h2 mb-0 ">Coupons:</h1>
+              <p className="fs-4 couponExpiry mt-1 mb-0">
                 {`${category}->${store}`} {type ? `->${type}` : null}
-              </h3>
+              </p>
             </div>
             <section className="my-4">{filteredCouponElements}</section>
           </main>

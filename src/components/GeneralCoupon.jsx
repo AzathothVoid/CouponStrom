@@ -29,10 +29,10 @@ export default function GeneralCoupon(props, { btn = true }) {
           <div className="col-4 col-sm-3 d-flex flex-column justify-content-center img">
             <Link to={`/stores/${data.store}`}>
               <img
+                style={{ maxHeight: "107px" }}
                 className="w-100"
                 src={data.images[0].image}
                 alt=""
-                width={"100%"}
               />
             </Link>
           </div>

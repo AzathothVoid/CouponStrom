@@ -36,7 +36,7 @@ export default function Header() {
             <img className="w-100" src={store.images[0].image} alt="" />
           </div>
           <button
-            className={`btn-custom col-9 col-md-11 border-0 navbar-btn btn-p nav-btn nav-font text-start search-hover w-100`}
+            className={`btn-custom col-9 col-md-11 border-0 fs-5 navbar-btn btn-p nav-btn nav-font text-start search-hover w-100`}
           >
             {store.name}
           </button>

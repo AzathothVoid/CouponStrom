@@ -6,7 +6,7 @@ export const addCategory = async (data) => {
   if (response.status === 201) {
     return response.data;
   } else {
-    console.log(response);
+    throw error;
   }
 };
 

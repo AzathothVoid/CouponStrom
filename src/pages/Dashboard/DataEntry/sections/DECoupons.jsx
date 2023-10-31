@@ -290,7 +290,6 @@ export default function DECoupons(props) {
 
     try {
       addCoupon(submission).then((response) => {
-        console.log(response);
         window.location.reload();
       });
     } catch (error) {

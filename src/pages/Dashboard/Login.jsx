@@ -35,8 +35,6 @@ export default function Login() {
       console.log("Email: ", email, " Password: ", password);
       const userData = await UserLogin(email, password);
 
-      console.log("User Data: ", userData);
-
       if (userData) login(userData);
     } catch (error) {
       setErrorData("UnAuthorized");
@@ -56,7 +54,7 @@ export default function Login() {
         <div className="col-md-6">
           <div className="card mt-5">
             <div className="card-body">
-              <h1 className="card-title">Login Page</h1>
+              <h1 className="card-title text-center">Login</h1>
               <div className="form-group">
                 <label>Email:</label>
                 <input

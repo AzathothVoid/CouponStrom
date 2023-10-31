@@ -315,7 +315,6 @@ export default function AdminCoupons(props) {
 
     try {
       addCoupon(submission).then((response) => {
-        console.log(response);
         window.location.reload();
       });
     } catch (error) {

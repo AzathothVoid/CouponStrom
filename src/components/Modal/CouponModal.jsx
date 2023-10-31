@@ -6,6 +6,7 @@ import { likeCoupon } from "../../api/CouponsAPI";
 export default function CouponModal(props) {
   const codeToCopyRef = useRef(null);
 
+  console.log("Coupon data: ", props.data);
   const [data, setData] = useState(props.data);
   const [likeCouponCall, setLikeCouponCall] = useState(false);
   const [likedCoupons, setLikedCoupons] = useState(
@@ -26,7 +27,7 @@ export default function CouponModal(props) {
       if (likedCoupons.includes(data.id)) return;
       try {
         likeCoupon({ "coupon-id": data.id }).then((response) => {
-          setLikedCoupons((prev) => [...prev, prev.id]);
+          setLikedCoupons((prev) => [...prev, data.id]);
           setData((prev) => {
             return { ...prev, likes: prev.likes + 1 };
           });
@@ -53,7 +54,9 @@ export default function CouponModal(props) {
           <div style={{ maxWidth: "25%" }}>
             <img className="mw-100" src={data.images[0].image} alt="" />
           </div>
-          <Modal.Title className="mb-4">{data.title}</Modal.Title>
+          <Modal.Title className="mb-4 fs-3 text-primary-custom">
+            {data.name}
+          </Modal.Title>
           <div className="mb-4 d-flex flex-column align-items-center">
             {data.type === "coupon" ? (
               <div className="d-flex mb-4">
@@ -154,7 +157,7 @@ export default function CouponModal(props) {
                   "https://www.facebook.com/sharer/sharer.php?u=" +
                   encodeURIComponent(window.location.href) +
                   "&quote=" +
-                  encodeURIComponent("Check out this coupon: " + data.title)
+                  encodeURIComponent("Check out this coupon: " + data.name)
                 }
                 className="fb-xfbml-parse-ignore"
               >
@@ -166,7 +169,7 @@ export default function CouponModal(props) {
                 "https://www.linkedin.com/sharing/share-offsite/?url=" +
                 encodeURIComponent(window.location.href) +
                 "&title=" +
-                encodeURIComponent("Check out this coupon: " + data.title)
+                encodeURIComponent("Check out this coupon: " + data.name)
               }
               class="linkedin-share-button"
               target="_blank"
@@ -178,7 +181,7 @@ export default function CouponModal(props) {
                 "https://api.whatsapp.com/send?text=" +
                 encodeURIComponent(
                   "Check out this coupon: " +
-                    data.title +
+                    data.name +
                     " " +
                     window.location.href
                 )

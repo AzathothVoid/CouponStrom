@@ -290,7 +290,6 @@ export default function AdminStores(props) {
     console.log("Form Data: ", formData);
     try {
       addStore(submission).then((response) => {
-        console.log(response);
         window.location.reload();
       });
     } catch (error) {

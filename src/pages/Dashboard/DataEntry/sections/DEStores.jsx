@@ -271,7 +271,6 @@ export default function DEStores(props) {
     console.log("Form Data: ", formData);
     try {
       addStore(submission).then((response) => {
-        console.log(response);
         window.location.reload();
       });
     } catch (error) {

@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Coupons and Deals: Get them for Free!</title>
+        <title>CouponStrom: Free Coupons and Deals</title>
       </Helmet>
       {couponElements && coupons ? (
         <>

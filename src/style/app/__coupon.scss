@@ -36,13 +36,14 @@
   z-index: 1;
 
   top: 25px;
-  right: 10%;
+
   animation: fadeOut 0.3s;
 }
 
 .show {
   display: block;
-  min-width: 100%;
+  max-width: 100%;
+
   animation: fadeIn 0.3s;
 }
 
