@@ -10,6 +10,7 @@ import {
   getSubCategoriesByCategory,
 } from "../../../../api/CategoriesAPI";
 import { useDataState } from "../../../../components/Data/DataContext";
+import { formatDate } from "../../../../utils/DateUtils";
 
 export default function AdminCoupons(props) {
   const useData = useDataState();
@@ -25,6 +26,8 @@ export default function AdminCoupons(props) {
 
   const [couponCategory, setCouponCategory] = useState("");
   const [couponSubCategory, setCouponSubCategory] = useState("");
+
+  const currDate = formatDate(new Date());
 
   let couponsToShow = couponsData;
 
@@ -67,8 +70,6 @@ export default function AdminCoupons(props) {
       });
     }
   }, [couponCategory]);
-
-  console.log("Categories by store: ", categoriesDataByStore);
 
   const handleClose = () => {
     setCouponCategory("");
@@ -405,6 +406,7 @@ export default function AdminCoupons(props) {
                 value={formData.expiry}
                 onChange={handleInputChange}
                 name="expiry"
+                min={currDate}
                 type="date"
                 id="expiryDate"
                 required

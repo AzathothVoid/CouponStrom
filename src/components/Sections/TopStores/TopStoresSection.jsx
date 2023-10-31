@@ -1,8 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import storesData from "../../../pages/Stores/storeData";
 import { useDataState } from "../../Data/DataContext";
 import StoreCard from "../../Cards/StoreCard";
 
@@ -33,7 +30,7 @@ export default function TopStoresSection() {
     <section id="topStoresSection" className="container top-stores ">
       <h2 className="mb-3 ms-1 text-center text-primary-custom">Top Stores</h2>
 
-      <div className="d-flex flex-xs-column flex-md-row justify-content-center justify-content-lg-center flex-wrap gap-2">
+      <div className="d-flex flex-xs-column flex-md-row justify-content-center flex-wrap gap-2">
         {storesElement}
       </div>
     </section>

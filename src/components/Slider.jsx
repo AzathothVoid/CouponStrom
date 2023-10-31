@@ -11,11 +11,12 @@ export default function SimpleSlider(props) {
   const sliderElements = data.map((item, index) => {
     return (
       <div
-        style={{ height: "50vh" }}
+        style={{ height: "500px" }}
         className={`card carousel-item ${index === 0 ? "active" : null}`}
       >
         <img
-          style={{ width: "100%", height: "100%" }}
+          style={{ minHeight: "100%" }}
+          className="w-100"
           src={item.images[0].image}
           alt=""
         />
@@ -41,12 +42,14 @@ export default function SimpleSlider(props) {
       className="carousel slide carousel-dark"
       data-bs-ride="carousel"
     >
-      <div className="carousel-indicators">{indicatorElements}</div>
+      <div className="carousel-indicators d-none d-md-flex">
+        {indicatorElements}
+      </div>
       <div className="carousel-inner" role="listbox">
         {sliderElements}
       </div>
       <button
-        className="carousel-control-prev"
+        className="carousel-control-prev d-none d-md-block"
         type="button"
         data-bs-target="#simpleSlider"
         data-bs-slide="prev"
@@ -55,7 +58,7 @@ export default function SimpleSlider(props) {
         <span className="visually-hidden">Previous</span>
       </button>
       <button
-        className="carousel-control-next"
+        className="carousel-control-next d-none d-md-block"
         type="button"
         data-bs-target="#simpleSlider"
         data-bs-slide="next"

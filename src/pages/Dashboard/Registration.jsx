@@ -41,8 +41,7 @@ export default function Registration() {
       console.log(response);
       setShow(true);
     } catch (error) {
-      console.log("Error: ", error);
-      setErrorData(error.response.data.errors);
+      setErrorData("Invalid Credentials");
       setErrorModal(true);
     }
   };
@@ -87,20 +86,22 @@ export default function Registration() {
         <i className="bi bi-person-fill display-1"></i>
       </div>
 
-      <Form className="container mb-4">
+      <Form onSubmit={handleRegistration} className="container mb-4">
         <Form.Label className="d-flex justify-content-center display-6">
           REGISTRATION
         </Form.Label>
 
         <Form.Group className="container row my-4">
           <div className="namesForm">
-            <Form.Label className="fs-5">Full Name</Form.Label>
+            <Form.Label className="fs-5">Name</Form.Label>
             <Form.Control
               type="text"
               value={name}
+              maxLength={10}
               onChange={handleNameChange}
               placeholder="Full name"
               className="container col-6"
+              required
             ></Form.Control>
           </div>
         </Form.Group>
@@ -112,46 +113,48 @@ export default function Registration() {
             onChange={handleEmailChange}
             type="email"
             placeholder="abc@gmail.com"
+            required
           ></Form.Control>
         </Form.Group>
 
         <Form.Group className="container my-4">
-          <Form.Label className="fs-5">Password</Form.Label>
-          <Form.Control
-            value={password}
-            onChange={handlePasswordChange}
-            type="password"
-            placeholder="Password"
-            className="my-2"
-          ></Form.Control>
-          <Form.Control
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            type="password"
-            placeholder="Repeat password"
-            className="my-2"
-          ></Form.Control>
+          <Form.Group>
+            <Form.Label className="fs-5">Password</Form.Label>
+            <Form.Control
+              value={password}
+              onChange={handlePasswordChange}
+              type="password"
+              placeholder="Password"
+              className="my-2"
+              required
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="fs-5">Confirm Password</Form.Label>
+            <Form.Control
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              type="password"
+              placeholder="Repeat password"
+              className="my-2"
+              required
+            ></Form.Control>
+          </Form.Group>
         </Form.Group>
+        <div className="container d-flex justify-content-center gap-5">
+          <Button className="px-4" type="submit" variant="primary">
+            Register
+          </Button>
+          <Button
+            className="px-4"
+            onClick={handleLogin}
+            type="button"
+            variant="primary"
+          >
+            Log in
+          </Button>
+        </div>
       </Form>
-
-      <div className="container d-flex justify-content-center gap-5">
-        <Button
-          className="px-4"
-          onClick={handleRegistration}
-          type="submit"
-          variant="primary"
-        >
-          Register
-        </Button>
-        <Button
-          className="px-4"
-          onClick={handleLogin}
-          type="button"
-          variant="primary"
-        >
-          Log in
-        </Button>
-      </div>
 
       <ErrorModal
         data={errorData}

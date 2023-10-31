@@ -126,7 +126,7 @@ export default function Header() {
                       id="searchbar"
                       className="form-control text-dark"
                       type="search"
-                      placeholder="Search"
+                      placeholder="Search Store"
                       value={searchTerm}
                       onChange={handleSearching}
                       autoComplete="false"

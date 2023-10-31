@@ -121,7 +121,7 @@ export default function CategoryPage(props) {
 
   const topCategoryCoupons = couponsData.slice(0, 2);
   const topCategoryCouponElements = topCategoryCoupons.map((coupon) => {
-    return <GeneralCoupon data={coupon} btn={false} />;
+    return <GeneralCoupon data={coupon} />;
   });
 
   const couponSectionHandler = (event) => {

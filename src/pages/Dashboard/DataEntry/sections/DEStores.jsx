@@ -53,7 +53,7 @@ export default function DEStores(props) {
   };
 
   useEffect(() => {
-    if (storeCategory) {
+    if (storeCategory.length > 1) {
       const data = {
         "category-id": Number.parseInt(storeCategory[1]),
       };
@@ -66,7 +66,7 @@ export default function DEStores(props) {
   }, [storeCategory]);
 
   useEffect(() => {
-    if (storeSubCategory) {
+    if (storeSubCategory.length > 1) {
       const data = {
         "subcategory-id": Number.parseInt(storeSubCategory[1]),
       };
@@ -111,7 +111,7 @@ export default function DEStores(props) {
   console.log("Store subcategory: ", storeSubCategory);
   console.log("Stores by Category: ", storesByCategory);
 
-  if (storeCategory) {
+  if (storeCategory.length > 1) {
     if (!storesByCategory) {
       storesToShow = [];
     } else {
@@ -119,7 +119,7 @@ export default function DEStores(props) {
     }
   }
 
-  if (storeSubCategory) {
+  if (storeSubCategory.length > 1) {
     if (!storesBySubCategory) {
       storesToShow = [];
     } else {
@@ -143,7 +143,10 @@ export default function DEStores(props) {
         <div className="col-xl-6 col-lg-6 container p-2 text-dark">
           <div className="storeDescription lead my-1 fs-4">{store.name}</div>
           <div className="storeExpiry text-muted mb-1">
-            Number of Coupons : {}
+            Number of Coupons : {store.total_coupons}
+          </div>
+          <div className="storeExpiry text-muted mb-1">
+            Number of Deals : {store.total_deals}
           </div>
         </div>
       </div>

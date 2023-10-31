@@ -5,13 +5,14 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { Pagination } from "../../utils/Paginate";
 import StoreCouponsSection from "../../components/Sections/StoreCouponsSection/StoreCouponsSection";
-import BlogsSection from "../../components/Sections/BlogsSection/BlogsSection";
+import TopStoresSection from "../../components/Sections/TopStores/TopStoresSection";
 import { getCouponsByStore } from "../../api/CouponsAPI";
 import Loader from "../../components/Loader/Loader";
 import { getStoreById } from "../../api/StoresAPI";
 import { likeStore } from "../../api/StoresAPI";
+import GeneralCoupon from "../../components/GeneralCoupon";
 
-export default function StorePage(props) {
+export default function StorePage() {
   const { storeId } = useParams();
   const storeID = Number.parseInt(storeId);
 
@@ -101,34 +102,35 @@ export default function StorePage(props) {
     setLikeStoreCall(true);
   };
 
+  let topStoreCouponData = [];
+  let topStoreCouponElements = [];
+
+  if (couponsData) {
+    topStoreCouponData = couponsData
+      .sort((item1, item2) => item2.likes - item1.likes)
+      .slice(0, 2);
+    topStoreCouponElements = topStoreCouponData.map((coupon) => {
+      return <GeneralCoupon data={coupon} />;
+    });
+  }
+
   return (
     <>
       {storeData && couponsData ? (
         <>
           <Header />
-          <div className="container-fluid shadow-tb p-5 bg-primary-custom ">
-            <div className="row d-flex justify-content-center align-content-center">
-              <div
-                style={{ maxWidth: "250px", height: "100%" }}
-                className="col col-lg-4 mb-3 mb-sm-0"
-              >
-                <img className="w-100" src={storeData.images[0].image} alt="" />
-              </div>
-              <div className="col-12 col-sm-4 col-md-5 col-lg-5 ms-md-4">
-                <h1 className="h1 mb-2 fw-bolder">{storeData.name}</h1>
-                <p className="">{storeData.description}</p>
-              </div>
-              <div className="col col-lg-3">
-                <div className="row gx-custom-7 gh-custom-7">
-                  <span className="fs-2 fw-bolder px-0">TAGS</span>
-                  {keywords}
-                </div>
-              </div>
+          <div className="container py-3 ">
+            <div className="d-flex align-items-center flex-column flex-md-row flex-wrap flex-md-nowrap mb-4 mt-2 bg-primary-custom p-3 p-md-4 rounded">
+              <h1 className="mb-3 m-md-0 h1 fw-bolder">{storeData.name}</h1>
+              <p className="m-0 fs-5 ms-5 ">{storeData.description}</p>
+            </div>
+            <div className="d-flex gap-2 flex-wrap flex-lg-nowrap">
+              {topStoreCouponElements}
             </div>
           </div>
 
           <div className="pt-4 ">
-            <section className="container p-0">
+            <section className="container ">
               <div className="d-flex gap-0 mb-2">
                 <span>
                   <button
@@ -153,10 +155,9 @@ export default function StorePage(props) {
               </div>
             </section>
 
-            <section className="container p-0">
+            <section className="container ">
               <div className="row">
                 <div className="col-12 col-sm-12 col-md-7 col-lg-8 mb-4">
-                  {console.log("Coupons to show, store page: ", couponsToShow)}
                   <StoreCouponsSection data={couponsToShow} />
                   <div className="sticky-footer">
                     <Pagination
@@ -175,19 +176,27 @@ export default function StorePage(props) {
                           src={storeData.images[0].image}
                           alt=""
                         />
-                        <h3 className="text-white fs-6 fw-light mb-1 mb-md-2">
-                          Are you happy with these offers?
-                        </h3>
-                        <div class="row sticky-footer">
-                          <div className="col-6 ">
-                            <button
-                              onClick={handleStoreLike}
-                              className="btn btn-primary padding-inline-long rounded-0 fw-bolder"
-                            >
-                              YES
-                            </button>
+                        {!likedStores.includes(storeID) ? (
+                          <div className="d-flex flex-column align-items-center">
+                            <h3 className="text-white fs-6 fw-light mb-1 mb-md-2">
+                              Are you happy with these offers?
+                            </h3>
+                            <div class="row sticky-footer">
+                              <div className="col-6 ">
+                                <button
+                                  onClick={handleStoreLike}
+                                  className="btn btn-primary padding-inline-long rounded-0 fw-bolder"
+                                >
+                                  YES
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <h3 className="text-white fs-6 fw-light mb-1 mb-md-0 mt-4">
+                            You are happy with this Store!
+                          </h3>
+                        )}
                       </div>
                     </div>
                     <div
@@ -202,8 +211,10 @@ export default function StorePage(props) {
                           Total Deals: {storeData.total_deals}
                         </div>
                         <div className="col-12 ">
-                          Last Update:{" "}
-                          {new Date(storeData.updated_at).toLocaleDateString()}
+                          Last Update:
+                          {` ${new Date(
+                            storeData.updated_at
+                          ).toLocaleDateString()}`}
                         </div>
                         <div className="col-12 d-flex align-items-center justify-content-center gap-2">
                           <i
@@ -218,7 +229,9 @@ export default function StorePage(props) {
                 </div>
               </div>
             </section>
-            <BlogsSection />
+            <div className="my-5">
+              <TopStoresSection />
+            </div>
           </div>
           <Footer />
         </>

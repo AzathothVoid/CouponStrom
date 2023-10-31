@@ -10,6 +10,7 @@ import BlogPage from "./pages/BlogPage/BlogPage";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Login from "./pages/Dashboard/Login";
 import Registration from "./pages/Dashboard/Registration";
+import CouponsPage from "./pages/Coupons/CouponsPage";
 import AdminPanel from "./pages/Dashboard/Admin/Admin";
 import DataEntryPanel from "./pages/Dashboard/DataEntry/DataEntry";
 import AboutUs from "./pages/About Us/AboutUs";
@@ -23,8 +24,7 @@ function App() {
       <DataProvider>
         <Router>
           <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/" element={<Home />} />
+            <Route exact path="/home" element={<Home />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/stores/:storeId" element={<StorePage />} />
             <Route path="/categories" element={<Categories />} />
@@ -39,6 +39,10 @@ function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/registration" element={<Registration />} />
+            <Route
+              path="coupons/:category/:store/:type?"
+              element={<CouponsPage />}
+            />
             <Route
               path="/dashboard/admin"
               element={

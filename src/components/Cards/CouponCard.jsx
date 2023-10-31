@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { areDatesOneDayApart, formatDate } from "../../utils/DateUtils";
+import CouponModal from "../Modal/CouponModal";
 
 export default function CouponCard(props) {
   const { data } = props;
+
+  const [modalDisplay, setModalDisplay] = useState(false);
+
+  const handleShow = () => setModalDisplay(true);
+  const handleClose = () => setModalDisplay(false);
 
   var limitedTime = false;
 
@@ -12,14 +18,14 @@ export default function CouponCard(props) {
 
   return (
     <div className="card shadow p-1 h-100" style={{ width: "200px" }}>
-      <div style={{ height: "98px" }}>
+      <a href={`/stores/${data.store}`} style={{ height: "98px" }}>
         <img
           style={{ width: "100%", height: "100%" }}
           className="ps-2 pe-2 card-img"
           src={data.images[0].image}
           alt=""
         />
-      </div>
+      </a>
 
       <div className="card-body pb-2  pt-1">
         <div class="row mb-2">
@@ -45,10 +51,20 @@ export default function CouponCard(props) {
             </h6>
           </div>
           <div class="row card-btn-container mt-3">
-            <a href="" className="text-white card-btn bg-primary-custom">
+            <a
+              onClick={handleShow}
+              target="_blank"
+              href={data.stores.link}
+              className="text-white card-btn bg-primary-custom"
+            >
               Get Offer
             </a>
           </div>
+          <CouponModal
+            data={data}
+            display={modalDisplay}
+            handleClose={handleClose}
+          />
         </div>
       </div>
     </div>

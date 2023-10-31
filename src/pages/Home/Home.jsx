@@ -4,14 +4,16 @@ import Coupon from "../../components/GeneralCoupon";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import LogoSlider from "../../components/Slider";
-
 import { Pagination } from "../../utils/Paginate";
 import TopStoresSection from "../../components/Sections/TopStores/TopStoresSection";
 import TopCouponsSection from "../../components/Sections/TopCoupons/TopCoupons";
 import LimitedTimeCouponsSection from "../../components/Sections/LimitedTimeCoupons/LimitedTimeCoupons";
+import LatestCouponsSection from "../../components/Sections/LatestCoupons/LatestCoupons";
 import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
 import { useDataState } from "../../components/Data/DataContext";
 import Loader from "../../components/Loader/Loader";
+import SearchCoupons from "../../components/SearchCoupons/SearchCoupons";
+import { Helmet } from "react-helmet";
 
 export default function Home() {
   const useData = useDataState();
@@ -38,13 +40,21 @@ export default function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>Coupons and Deals: Get them for Free!</title>
+      </Helmet>
       {couponElements && coupons ? (
         <>
           <Header />
 
           <main>
-            <section className="container-fluid slider-container-bg  py-5">
-              <LogoSlider />
+            <section className="container m-auto flex-wrap flex-md-nowrap slider-container-bg align-items-center row gap-5 py-5">
+              <div className="col-12 col-md-8">
+                <LogoSlider />
+              </div>
+              <div className="col-12 col-md-4 my-md-0 my-4">
+                <SearchCoupons />
+              </div>
             </section>
             <div className="mb-5">
               <TopStoresSection />
@@ -69,6 +79,9 @@ export default function Home() {
             </section>
             <div className="my-4">
               <TopCouponsSection />
+            </div>
+            <div className="my-4">
+              <LatestCouponsSection />
             </div>
             <div className="my-4">
               <LimitedTimeCouponsSection />

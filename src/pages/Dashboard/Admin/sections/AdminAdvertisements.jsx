@@ -49,7 +49,10 @@ export default function AdminAdvertisements(props) {
 
     try {
       const response = await addAd(formData);
-    } catch (error) {}
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const adElements = adData.map((ad) => {

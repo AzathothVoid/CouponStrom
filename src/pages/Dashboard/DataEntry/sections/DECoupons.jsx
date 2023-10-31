@@ -25,6 +25,8 @@ export default function DECoupons(props) {
   const [couponCategory, setCouponCategory] = useState("");
   const [couponSubCategory, setCouponSubCategory] = useState("");
 
+  const currDate = formatDate(new Date());
+
   let couponsToShow = couponsData;
 
   const [formData, setFormData] = useState({
@@ -379,6 +381,7 @@ export default function DECoupons(props) {
                 value={formData.expiry}
                 onChange={handleInputChange}
                 name="expiry"
+                min={currDate}
                 type="date"
                 id="expiryDate"
                 required

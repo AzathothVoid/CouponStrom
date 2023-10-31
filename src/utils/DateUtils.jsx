@@ -19,10 +19,10 @@ export const padTo2Digits = (num) => {
 
 export const formatDate = (date) => {
   return [
-    padTo2Digits(date.getMonth() + 1),
     date.getFullYear(),
+    padTo2Digits(date.getMonth() + 1),
     padTo2Digits(date.getDate()),
-  ].join("/");
+  ].join("-");
 };
 
 export const formatDateBlog = (date) => {

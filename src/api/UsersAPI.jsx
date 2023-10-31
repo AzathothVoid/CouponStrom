@@ -32,10 +32,17 @@ export const userRegistration = async (
   const response = await ApiService.post(`/add-user`, registrationInfo);
 
   if (response.status === 201) {
-    console.log("Registration Successful");
     return response;
-  } else if (response.status === 200) {
-    return response.data[0];
+  } else {
+    throw response.data;
+  }
+};
+
+export const userLogout = async () => {
+  const response = await ApiService.get(`/logout`);
+
+  if (response.status === 200) {
+    return response.data;
   } else {
     throw response;
   }

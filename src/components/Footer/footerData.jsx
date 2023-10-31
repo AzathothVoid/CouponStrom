@@ -12,7 +12,7 @@ export const footerData = [
     id: 1,
     heading: "Site Map",
     content: [
-      { id: 1, name: "Top Deals", href: "/contact" },
+      { id: 1, name: "Top Deals", href: "/home#topCouponsSection" },
       { id: 2, name: "Stores", href: "/stores" },
       { id: 3, name: "Categories", href: "/categories" },
     ],
@@ -29,9 +29,13 @@ export const footerData = [
     id: 3,
     heading: "Best Deals",
     content: [
-      { id: 1, name: "Top Stores", href: "/contact" },
-      { id: 2, name: "Latest Coupons", href: "/contact" },
-      { id: 3, name: "Coupons Expiring Soon", href: "/contact" },
+      { id: 1, name: "Top Stores", href: "/home#topStoresSection" },
+      { id: 2, name: "Latest Coupons", href: "/home#latestCouponsSection" },
+      {
+        id: 3,
+        name: "Coupons Expiring Soon",
+        href: "/home#limitedTimeCouponsSection",
+      },
     ],
   },
 ];
@@ -40,16 +44,16 @@ export const iconData = [
   {
     id: 0,
     img: "/socialMediaIcons/facebook.svg",
-    url: "https://www.facebook.com",
+    url: import.meta.env.VITE_FACEBOOK_URL,
   },
   {
     id: 1,
     img: "/socialMediaIcons/twitter.svg",
-    url: "https://www.twitter.com",
+    url: import.meta.env.VITE_TWITTER_URL,
   },
   {
     id: 2,
     img: "/socialMediaIcons/instagram.svg",
-    url: "https://www.instagram.com",
+    url: import.meta.env.VITE_INSTAGRAM_URL,
   },
 ];

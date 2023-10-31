@@ -38,9 +38,6 @@ export default function (props) {
               <div class="views fs-6">
                 {new Date(blog.created_at).toDateString()}
               </div>
-              <div class="stats">
-                <i class="bi-eye-fill fs-6"></i> {blog.views}
-              </div>
             </div>
           </div>
         </div>

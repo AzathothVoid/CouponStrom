@@ -53,7 +53,7 @@ export default function Footer() {
   });
 
   return (
-    <footer className="text-center text-white sticky-footer">
+    <footer className="text-center text-white sticky-footer mt-5">
       <div className="container pt-4">
         <section className="mb-4">
           <div className="row ">

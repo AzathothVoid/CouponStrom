@@ -9,6 +9,8 @@ export const addAd = async (data) => {
 
   if (response === 201) {
     return response.data;
+  } else {
+    throw response;
   }
 };
 
