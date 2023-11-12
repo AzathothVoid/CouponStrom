@@ -9,11 +9,16 @@ import {
   addStore,
   getStoreByCategory,
   getStoreBySubCategory,
+  getAllStores,
 } from "../../../../api/StoresAPI";
-import { useDataState } from "../../../../components/Data/DataContext";
+import {
+  useDataState,
+  useDataDispatch,
+} from "../../../../components/Data/DataContext";
 
 export default function DEStores(props) {
   const dataState = useDataState();
+  const dataDispatch = useDataDispatch();
 
   const [subCategoriesData, setSubCategoriesData] = useState([]);
   const [show, setShow] = useState(false);
@@ -249,6 +254,7 @@ export default function DEStores(props) {
     event.preventDefault();
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
       alert("Enter atleast one Category and sub category");
+      return;
     }
 
     console.log("Form Data: ", formData);
@@ -271,7 +277,7 @@ export default function DEStores(props) {
     console.log("Form Data: ", formData);
     try {
       addStore(submission).then((response) => {
-        window.location.reload();
+        getAllStores(dataDispatch);
       });
     } catch (error) {
       console.log("ERROR: ", error);
@@ -304,6 +310,7 @@ export default function DEStores(props) {
                 <Form.Select
                   name="stores"
                   className="mb-2"
+                  size="6"
                   id="storeCategory"
                   value={storeCategory}
                   onChange={handleStoreCategoryChange}
@@ -319,6 +326,7 @@ export default function DEStores(props) {
               <Form.Group className="row mb-3 col-6">
                 <Form.Select
                   name="stores"
+                  size="6"
                   className="mb-2"
                   id="storeSubCategory"
                   value={storeSubCategory}
@@ -390,6 +398,7 @@ export default function DEStores(props) {
                 <Form.Select
                   name="stores"
                   className="mb-2"
+                  size="6"
                   id="storeCategory"
                   value={storeCategory}
                   onChange={handleStoreCategoryChange}
@@ -416,6 +425,7 @@ export default function DEStores(props) {
               <Form.Group className="mb-4">
                 <Form.Select
                   name="stores"
+                  size="6"
                   className="mb-2"
                   id="storeSubCategory"
                   value={storeSubCategory}

@@ -9,11 +9,15 @@ import "react-quill/dist/quill.snow.css";
 import TurndownService from "turndown";
 import ReactMarkDown from "react-markdown";
 import Navigation from "../../Navigation";
-import { addBlog, deleteBlogById } from "../../../../api/BlogsAPI";
-import { useDataState } from "../../../../components/Data/DataContext";
+import { addBlog, deleteBlogById, getBlogs } from "../../../../api/BlogsAPI";
+import {
+  useDataState,
+  useDataDispatch,
+} from "../../../../components/Data/DataContext";
 
 export default function AdminBlogs(props) {
   const dataState = useDataState();
+  const dataDispatch = useDataDispatch();
 
   const [show, setShow] = useState(false);
   const [callDelete, setCallDelete] = useState(null);
@@ -95,7 +99,7 @@ export default function AdminBlogs(props) {
 
     try {
       addBlog(formData).then((response) => {
-        window.location.reload();
+        getBlogs(dataDispatch);
       });
     } catch (error) {
       console.log(error);

@@ -20,11 +20,23 @@ export default function Home() {
 
   const [currCouponPage, setCurrCouponPage] = useState(1);
   const coupons = useData.coupons;
+  const categories = useData.categories;
+
+  // const keywords = categories.map((category) => {
+  //   return category.
+  // })
 
   const itemsPerPage = 12;
   const startIndex = (currCouponPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const couponsToShow = coupons.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    console.log("Home component mounted");
+    return () => {
+      console.log("Home component unmounted");
+    };
+  }, []);
 
   const couponElements = couponsToShow.map((coupon) => {
     return (
@@ -41,9 +53,24 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>CouponStrom: Free Coupons and Deals</title>
+        <title>Coupon Strom: Discount Codes And Offers</title>
+        <meta
+          name="description"
+          content="Get Free discount codes and offers. Browse through your favorite stores and categories and get the best deal for yourself!"
+        />
+        <meta name="keywords" content="" />
+
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:title" content="" />
+        <meta property="twitter:description" content="" />
+        <meta property="twitter:image" content="" />
       </Helmet>
-      {couponElements && coupons ? (
+      {coupons && couponElements ? (
         <>
           <Header />
 
@@ -62,9 +89,7 @@ export default function Home() {
             <section className="container-md my-3 pe-0">
               <div style={{ minHeight: "100vh" }} className="row">
                 <div className="col-12 col-sm-12 col-md-7 col-lg-8 mb-4">
-                  <h2 className="fs-2 text-uppercase text-primary-custom">
-                    Coupon Deals
-                  </h2>
+                  <h2 className="fs-2 text-primary-custom">Coupon Deals</h2>
                   <div>{couponElements}</div>
                   <div className="sticky-footer my-4">
                     <Pagination

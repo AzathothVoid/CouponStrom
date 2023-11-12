@@ -96,6 +96,7 @@ export default function SearchCoupons() {
               id="couponSelectCateogry"
               value={category}
               onChange={handleCategoryChange}
+              size="6"
               required
             >
               <option value="" disabled selected>

@@ -37,6 +37,7 @@ export default function Login() {
 
       if (userData) login(userData);
     } catch (error) {
+      console.log("eRROR", error);
       setErrorData("UnAuthorized");
       setErrorModal(true);
     }
@@ -55,24 +56,26 @@ export default function Login() {
           <div className="card mt-5">
             <div className="card-body">
               <h1 className="card-title text-center">Login</h1>
-              <div className="form-group">
-                <label>Email:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Password:</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-              </div>
+              <form autoComplete="off">
+                <div className="form-group">
+                  <label>Email:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={email}
+                    onChange={handleEmailChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Password:</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={password}
+                    onChange={handlePasswordChange}
+                  />
+                </div>
+              </form>
 
               <div className="d-flex justify-content-center gap-5">
                 <button

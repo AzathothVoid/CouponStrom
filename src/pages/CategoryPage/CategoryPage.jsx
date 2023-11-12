@@ -11,6 +11,7 @@ import { getCategoryById } from "../../api/CategoriesAPI";
 import { getCouponByCategory } from "../../api/CouponsAPI";
 import BlogsSection from "../../components/Sections/BlogsSection/BlogsSection";
 import Loader from "../../components/Loader/Loader";
+import { Helmet } from "react-helmet";
 
 export default function CategoryPage(props) {
   const { categoryId } = useParams();
@@ -109,7 +110,7 @@ export default function CategoryPage(props) {
 
   const storeElements = storesToShow.map((store) => {
     return (
-      <div className="col-6">
+      <div style={{ maxWidth: "150px" }} className="col-6 mb-5">
         <Link to={`/stores/${store.store.id}`}>
           <img className="w-100" src={store.store.images[0].image} alt="" />
         </Link>
@@ -131,6 +132,21 @@ export default function CategoryPage(props) {
 
   return (
     <>
+      <Helmet>
+        <title>CouponStrom: Free Coupons and Deals</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:title" content="" />
+        <meta property="twitter:description" content="" />
+        <meta property="twitter:image" content="" />
+      </Helmet>
       {categoryData ? (
         <>
           <Header />
@@ -145,13 +161,21 @@ export default function CategoryPage(props) {
             <section className="container p-0">
               <div className="row">
                 <div className="col-12 col-md-5 col-lg-4 py-3 container-fluid sidebarWrapper">
-                  <div className=" shadow rounded p-3 mb-4">
+                  <div
+                    style={{ maxWidth: "300px" }}
+                    className=" shadow rounded p-3 mb-4"
+                  >
                     <h3>SUBCATEGORIES</h3>
                     <form>{subCategoryElements}</form>
                   </div>
-                  <div className="shadow rounded p-3 mb-4">
+                  <div
+                    style={{ maxWidth: "300px" }}
+                    className="shadow rounded p-3 mb-4"
+                  >
                     <h3>STORES</h3>
-                    <div className="row gx-5 ">{storeElements}</div>
+                    <div className="row gx-5 align-items-center">
+                      {storeElements}
+                    </div>
                   </div>
                 </div>
                 <div className="col-12 col-sm-12 col-md-7 col-lg-8 mb-4 p-4">

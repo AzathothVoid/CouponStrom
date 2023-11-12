@@ -4,10 +4,10 @@ export default function StoreCard(props) {
   const { data } = props;
   return (
     <div className="card shadow p-1" style={{ width: "200px" }}>
-      <div style={{ height: "98px" }}>
+      <div className="text-center" style={{ height: "98px" }}>
         <img
-          style={{ width: "100%", height: "100%" }}
-          className="ps-2 pe-2 card-img"
+          style={{ width: "80%", height: "100%" }}
+          className="p-2 card-img"
           src={data.images[0].image}
           alt=""
         />

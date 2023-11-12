@@ -24,7 +24,7 @@ function App() {
       <DataProvider>
         <Router>
           <Routes>
-            <Route exact path="/home" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/stores/:storeId" element={<StorePage />} />
             <Route path="/categories" element={<Categories />} />

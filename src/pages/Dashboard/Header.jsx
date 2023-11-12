@@ -26,10 +26,10 @@ export default function Header(props) {
     <Navbar className="bg-primary-custom">
       <div className="container">
         <Navbar.Brand href="#home">
-          <img src="/logo.svg" alt="logo" width={"300px"} />
+          <img className="w-100" src="/logo.svg" alt="logo" />
         </Navbar.Brand>
         <Navbar.Toggle />
-        <Navbar.Collapse className="justify-content-end">
+        <Navbar.Collapse className="justify-content-end flex-wrap text-center">
           <Navbar.Text>
             Signed in as:{" "}
             <a className="fw-bold" href="#login">

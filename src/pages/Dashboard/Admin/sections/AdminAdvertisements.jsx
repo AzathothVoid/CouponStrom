@@ -5,11 +5,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Navigation from "../../Navigation";
-import { addAd, deleteAdById } from "../../../../api/AdsAPI";
+import { addAd, deleteAdById, getAd } from "../../../../api/AdsAPI";
 import { useDataState } from "../../../../components/Data/DataContext";
+import { useDataDispatch } from "../../../../components/Data/DataContext";
 
 export default function AdminAdvertisements(props) {
   const dataState = useDataState();
+  const dataDispatch = useDataDispatch();
 
   const [show, setShow] = useState(false);
   const [callDelete, setCallDelete] = useState(null);
@@ -49,7 +51,7 @@ export default function AdminAdvertisements(props) {
 
     try {
       addAd(formData).then((response) => {
-        window.location.refresh();
+        getAd(dataDispatch);
       });
     } catch (error) {
       console.log(error);
@@ -58,8 +60,12 @@ export default function AdminAdvertisements(props) {
 
   const adElements = adData.map((ad) => {
     return (
-      <div key={ad.id} className="my-4 row object">
-        <img src={ad.images[0].image} alt="advert" className="advertImgs p-0" />
+      <div key={ad.id} className="my-4 d-flex justify-content-center row ">
+        <img
+          src={ad.images[0].image}
+          alt="advert"
+          className="w-50 advertImgs p-0"
+        />
 
         <div className="d-flex align-items-center justify-content-center p-2 container">
           <button onClick={(e) => deleteAd(e, ad.id)} className="btn">
@@ -90,7 +96,7 @@ export default function AdminAdvertisements(props) {
           </div>
 
           <div className="container mb-4">
-            <div className="container objectContainer">{adElements}</div>
+            <div className="container">{adElements}</div>
           </div>
         </div>
       </div>

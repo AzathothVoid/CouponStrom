@@ -4,15 +4,19 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { addCoupon } from "../../../../api/CouponsAPI";
+import { addCoupon, getAllCoupons } from "../../../../api/CouponsAPI";
 import {
   getCategoryByStore,
   getSubCategoriesByCategory,
 } from "../../../../api/CategoriesAPI";
-import { useDataState } from "../../../../components/Data/DataContext";
+import {
+  useDataState,
+  useDataDispatch,
+} from "../../../../components/Data/DataContext";
 
 export default function DECoupons(props) {
   const useData = useDataState();
+  const dataDispatch = useDataDispatch();
   const storesData = useData.stores;
   const couponsData = useData.coupons;
 
@@ -270,6 +274,11 @@ export default function DECoupons(props) {
     event.preventDefault();
     const submission = new FormData();
 
+    if (formData.category.length === 0 || formData.sub_category.length === 0) {
+      alert("Enter atleast one Category and sub category");
+      return;
+    }
+
     submission.append("name", formData.title);
     submission.append("store", formData.store[1]);
     submission.append("expiry", formData.expiry);
@@ -290,7 +299,7 @@ export default function DECoupons(props) {
 
     try {
       addCoupon(submission).then((response) => {
-        window.location.reload();
+        getAllCoupons(dataDispatch);
       });
     } catch (error) {
       console.log(error);
@@ -321,6 +330,7 @@ export default function DECoupons(props) {
             <Form.Group className="row mb-3 col-6 ">
               <Form.Select
                 name="stores"
+                size="6"
                 className="mb-2"
                 id="showStore"
                 value={showStoreId}
@@ -362,6 +372,7 @@ export default function DECoupons(props) {
             <Form.Group className="mb-4">
               <Form.Select
                 value={formData.store}
+                size="6"
                 onChange={handleInputChange}
                 name="store"
                 id="store"
@@ -413,6 +424,7 @@ export default function DECoupons(props) {
             <Form.Group className="mb-4">
               <Form.Select
                 name="category"
+                size="6"
                 className="mb-2"
                 id="category"
                 value={couponCategory}
@@ -441,6 +453,7 @@ export default function DECoupons(props) {
               <Form.Select
                 value={couponSubCategory}
                 onChange={handleCouponSubCategoryChange}
+                size="6"
                 name="sub_category"
                 className="mb-2"
                 id="subCategory"

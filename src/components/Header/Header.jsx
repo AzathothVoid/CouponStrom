@@ -32,7 +32,7 @@ export default function Header() {
     return (
       <Link key={store.id} to={`/stores/${store.id}`}>
         <li className="my-1 border-bottom row flex-nowrap">
-          <div className="col-3 col-md-1">
+          <div className="col-3 col-md-1 d-flex align-items-center justify-content-center">
             <img className="w-100" src={store.images[0].image} alt="" />
           </div>
           <button

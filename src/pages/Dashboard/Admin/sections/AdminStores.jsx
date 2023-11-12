@@ -7,14 +7,19 @@ import Navigation from "../../Navigation";
 import { getSubCategoriesByCategory } from "../../../../api/CategoriesAPI";
 import {
   addStore,
+  getAllStores,
   getStoreByCategory,
   getStoreBySubCategory,
   deleteStoreById,
 } from "../../../../api/StoresAPI";
-import { useDataState } from "../../../../components/Data/DataContext";
+import {
+  useDataState,
+  useDataDispatch,
+} from "../../../../components/Data/DataContext";
 
 export default function AdminStores(props) {
   const dataState = useDataState();
+  const dataDispatch = useDataDispatch();
 
   const [subCategoriesData, setSubCategoriesData] = useState([]);
   const [show, setShow] = useState(false);
@@ -268,6 +273,7 @@ export default function AdminStores(props) {
     event.preventDefault();
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
       alert("Enter atleast one Category and sub category");
+      return;
     }
 
     console.log("Form Data: ", formData);
@@ -290,7 +296,7 @@ export default function AdminStores(props) {
     console.log("Form Data: ", formData);
     try {
       addStore(submission).then((response) => {
-        window.location.reload();
+        getAllStores(dataDispatch);
       });
     } catch (error) {
       console.log("ERROR: ", error);
@@ -325,6 +331,7 @@ export default function AdminStores(props) {
                   className="mb-2"
                   id="storeCategory"
                   value={storeCategory}
+                  size="6"
                   onChange={handleStoreCategoryChange}
                   placeholder="Select Category"
                 >
@@ -340,6 +347,7 @@ export default function AdminStores(props) {
                   name="stores"
                   className="mb-2"
                   id="storeSubCategory"
+                  size="6"
                   value={storeSubCategory}
                   onChange={handleStoreSubCategoryChange}
                   placeholder="Select SubCategory"
@@ -364,7 +372,7 @@ export default function AdminStores(props) {
             <Modal.Title>ADD STORE</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form onSubmit={handleSubmit} id="storeForm">
+            <Form autoComplete="off" onSubmit={handleSubmit} id="storeForm">
               <Form.Group className="mb-4">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -409,6 +417,7 @@ export default function AdminStores(props) {
                 <Form.Select
                   name="stores"
                   className="mb-2"
+                  size="6"
                   id="storeCategory"
                   value={storeCategory}
                   onChange={handleStoreCategoryChange}
@@ -437,6 +446,7 @@ export default function AdminStores(props) {
                   name="stores"
                   className="mb-2"
                   id="storeSubCategory"
+                  size="6"
                   value={storeSubCategory}
                   onChange={handleStoreSubCategoryChange}
                   placeholder="Select SubCategory"

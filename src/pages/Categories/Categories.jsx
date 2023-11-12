@@ -6,6 +6,7 @@ import Footer from "../../components/Footer/Footer";
 import { AlphabeticalPaginator } from "../../utils/Paginate";
 import { useDataState } from "../../components/Data/DataContext";
 import { getAllCategories } from "../../api/CategoriesAPI";
+import { Helmet } from "react-helmet";
 
 export default function Categories() {
   const useData = useDataState();
@@ -57,6 +58,21 @@ export default function Categories() {
 
   return (
     <>
+      <Helmet>
+        <title>CouponStrom: Free Coupons and Deals</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:title" content="" />
+        <meta property="twitter:description" content="" />
+        <meta property="twitter:image" content="" />
+      </Helmet>
       <Header />
       <div className="container bg-white rounded my-5 py-4">
         <h1 className="text-center mb-5 mt-3">Categories</h1>

@@ -6,6 +6,7 @@ import Footer from "../../components/Footer/Footer";
 import { AlphabeticalPaginator, Pagination } from "../../utils/Paginate";
 import TopStores from "../../components/Sections/TopStores/TopStoresSection";
 import { useDataState } from "../../components/Data/DataContext";
+import { Helmet } from "react-helmet";
 
 export default function Stores() {
   const useData = useDataState();
@@ -47,6 +48,7 @@ export default function Stores() {
     >
       <Link to={`/stores/${store.id}`} key={store.id}>
         <img
+          style={{ maxWidth: "90px" }}
           className="m-2"
           width={"100x"}
           src={store.images[0].image}
@@ -59,6 +61,21 @@ export default function Stores() {
 
   return (
     <>
+      <Helmet>
+        <title>CouponStrom: Free Coupons and Deals</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:title" content="" />
+        <meta property="twitter:description" content="" />
+        <meta property="twitter:image" content="" />
+      </Helmet>
       <Header />
       <main>
         <div className="container bg-white rounded  my-4 py-4">

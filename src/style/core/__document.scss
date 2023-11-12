@@ -13,13 +13,19 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: GilroyLight;
+  src: url("../../assets/fonts/Gilroy-FREE/Gilroy-Light.otf");
+}
+
 body {
-  font-family: "Gilroy Light";
+  font-family: "Questrial", sans-serif !important;
   margin: none;
   position: relative;
   background: #fff;
   overflow-x: hidden;
 }
+
 h1,
 h2,
 h3,

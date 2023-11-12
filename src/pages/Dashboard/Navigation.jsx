@@ -1,7 +1,5 @@
 import React from "react";
 
-
-
 export default function Navigation({ setSection, section, sections }) {
   const handleSection = (e) => {
     setSection(e.target.innerHTML.toLowerCase());
@@ -19,7 +17,7 @@ export default function Navigation({ setSection, section, sections }) {
     );
   });
   return (
-    <div className="d-inline-flex container ps-0 text-center mt-5">
+    <div className="d-flex container flex-wrap flex-md-nowrap ps-0 text-center my-5">
       {navElements}
     </div>
   );

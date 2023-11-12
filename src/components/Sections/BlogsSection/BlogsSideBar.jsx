@@ -17,8 +17,9 @@ export default function BlogsSideBar(props) {
   return (
     <div
       style={{ height: "fit-content" }}
-      className="row col-12 col-md-5 col-lg-4 py-3 container-fluid sidebarWrapper  rounded me-0 mb-4"
+      className="row col-12 col-md-5 col-lg-4 py-3 container-fluid sidebarWrapper text-center rounded me-0 mb-4"
     >
+      <h3 className="text-primary-custom">Popular Blogs</h3>
       {blogElements}
     </div>
   );

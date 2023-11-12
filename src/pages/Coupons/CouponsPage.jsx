@@ -4,6 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import { useParams } from "react-router-dom";
 import { useDataState } from "../../components/Data/DataContext";
 import GeneralCoupon from "../../components/GeneralCoupon";
+import { Helmet } from "react-helmet";
 
 export default function CouponsPage() {
   const useData = useDataState();
@@ -28,6 +29,22 @@ export default function CouponsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>CouponStrom: Free Coupons and Deals</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:title" content="" />
+        <meta property="twitter:description" content="" />
+        <meta property="twitter:image" content="" />
+      </Helmet>
+
       {coupons ? (
         <>
           <Header />

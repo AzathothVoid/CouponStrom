@@ -4,11 +4,15 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { addCategory } from "../../../../api/CategoriesAPI";
-import { useDataState } from "../../../../components/Data/DataContext";
+import { addCategory, getAllCategories } from "../../../../api/CategoriesAPI";
+import {
+  useDataState,
+  useDataDispatch,
+} from "../../../../components/Data/DataContext";
 
 export default function DECategories(props) {
   const useData = useDataState();
+  const dispatchData = useDataDispatch();
 
   const [show, setShow] = useState(false);
   const [blocks, setBlocks] = useState([]);
@@ -66,14 +70,20 @@ export default function DECategories(props) {
     setCategoryDescription(e.target.value);
 
   const addSubcategory = (e) => {
-    const subCatInput = document.getElementById("subCategory").value;
+    const subCatInput = document.getElementById("subCategory");
+    const value = subCatInput.value;
 
-    if (blocks.find((block) => block === subCatInput)) return;
-    setBlocks((curr) => [...curr, subCatInput]);
+    subCatInput.value = "";
+    if (blocks.find((block) => block === value)) return;
+    setBlocks((curr) => [...curr, value]);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (blocks.length === 0) {
+      alert("Enter atleast one Category and sub category");
+    }
 
     try {
       addCategory({
@@ -81,7 +91,7 @@ export default function DECategories(props) {
         sub_categories: blocks,
         descripton: categoryDescription,
       }).then((response) => {
-        window.location.reload();
+        getAllCategories(dispatchData);
       });
     } catch (error) {
       console.log(error);
@@ -119,7 +129,7 @@ export default function DECategories(props) {
           <Modal.Title>ADD CATEGORY</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit} id="categoriesForm">
+          <Form autoComplete="off" onSubmit={handleSubmit} id="categoriesForm">
             <Form.Group className="mb-3">
               <Form.Label>Category Name</Form.Label>
               <Form.Control
@@ -163,8 +173,8 @@ export default function DECategories(props) {
             >
               ADD SUBCATEGORY
             </Button>
-            {blockElements}
           </div>
+          {blockElements}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

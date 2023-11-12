@@ -5,6 +5,7 @@ import Footer from "../../components/Footer/Footer";
 import BlogCard from "../../components/Cards/BlogCard";
 import { useDataState } from "../../components/Data/DataContext";
 import Loader from "../../components/Loader/Loader";
+import { Helmet } from "react-helmet";
 
 export default function Blogs() {
   const dataState = useDataState();
@@ -30,6 +31,21 @@ export default function Blogs() {
 
   return (
     <>
+      <Helmet>
+        <title>CouponStrom: Free Coupons and Deals</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:title" content="" />
+        <meta property="twitter:description" content="" />
+        <meta property="twitter:image" content="" />
+      </Helmet>
       {blogs && blogElements ? (
         <>
           <Header />

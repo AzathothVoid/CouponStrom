@@ -11,6 +11,7 @@ import Loader from "../../components/Loader/Loader";
 import { getStoreById } from "../../api/StoresAPI";
 import { likeStore } from "../../api/StoresAPI";
 import GeneralCoupon from "../../components/GeneralCoupon";
+import { Helmet } from "react-helmet";
 
 export default function StorePage() {
   const { storeId } = useParams();
@@ -116,6 +117,21 @@ export default function StorePage() {
 
   return (
     <>
+      <Helmet>
+        <title>CouponStrom: Free Coupons and Deals</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:title" content="" />
+        <meta property="twitter:description" content="" />
+        <meta property="twitter:image" content="" />
+      </Helmet>
       {storeData && couponsData ? (
         <>
           <Header />
@@ -172,7 +188,7 @@ export default function StorePage() {
                     <div style={{ height: "500px" }} className="mb-4">
                       <div className="bg-dark h-100 w-100 d-flex  p-5 p-md-3 ps-md-0 pe-md-0 flex-column align-items-center justify-content-center">
                         <img
-                          className="w-75 rounded mb-4 bg-white"
+                          className="w-75 rounded mb-4 p-5 bg-white"
                           src={storeData.images[0].image}
                           alt=""
                         />

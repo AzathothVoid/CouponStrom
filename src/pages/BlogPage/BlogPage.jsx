@@ -6,6 +6,7 @@ import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
 import ReactMarkDown from "react-markdown";
 import { getBlogByID } from "../../api/BlogsAPI";
 import Loader from "../../components/Loader/Loader";
+import { Helmet } from "react-helmet";
 
 export default function BlogPage() {
   const { blogId } = useParams();
@@ -42,6 +43,21 @@ export default function BlogPage() {
 
   return (
     <>
+      <Helmet>
+        <title>CouponStrom: Free Coupons and Deals</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <meta property="og:title" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta property="twitter:card" content="" />
+        <meta property="twitter:title" content="" />
+        <meta property="twitter:description" content="" />
+        <meta property="twitter:image" content="" />
+      </Helmet>
       {blog ? (
         <>
           {console.log("Blog Data: ", blog)}
