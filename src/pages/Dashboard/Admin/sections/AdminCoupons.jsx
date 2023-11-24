@@ -147,18 +147,16 @@ export default function AdminCoupons(props) {
   const couponElements = couponsToShow.map((coupon) => {
     console.log("Coupons: ", coupon);
     return (
-      <div className="my-4 row object">
-        <div className="col-xl-3 col-lg-3 img">
+      <div key={coupon.id} className="my-4 row object">
+        <div className="col-4 col-sm-3 col-md-2 img p-4 d-flex align-items-center">
           <img
-            className=""
+            className="w-100"
             src={coupon.images[0].image}
-            alt=""
-            width="180"
-            height="110"
+            alt="AliExpress"
           ></img>
         </div>
 
-        <div className="col-xl-6 col-lg-6 container p-2 text-dark">
+        <div className="col-7 col-sm-8 col-md-9 container p-2 text-dark ">
           <div className="couponDescription lead fs-4 my-1">{coupon.name}</div>
           <div className="couponExpiry text-muted mb-1">
             Expires {coupon.expiry}
@@ -180,7 +178,7 @@ export default function AdminCoupons(props) {
           </div>
         </div>
 
-        <div className="col-xl-3 col-lg-3 d-flex align-items-start justify-content-end p-2 container">
+        <div className="col-1 d-flex align-items-start justify-content-end p-2 container">
           <button onClick={(e) => deleteCoupon(e, coupon.id)} className="btn">
             <i className="bi bi-trash-fill fs-2"></i>
           </button>

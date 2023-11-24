@@ -59,8 +59,8 @@ export default function AdminCategories(props) {
 
   const categoryElements = categoriesData.map((category) => {
     return (
-      <div key={category.id} className="my-4 row object">
-        <div className="col-8 container p-2 ps-4 text-dark">
+      <div key={category.id} className="d-flex my-4 object">
+        <div className="container p-2 ps-4 text-dark">
           <div className="storeDescription lead my-1 fs-4">{category.name}</div>
           <div className="storeExpiry text-muted mb-1">
             Number of Deals : {category.total_deals}
@@ -69,7 +69,7 @@ export default function AdminCategories(props) {
             Number of Coupons : {category.total_coupons}
           </div>
         </div>
-        <div className="col-4 d-flex align-items-start justify-content-end p-2 container">
+        <div className="d-flex align-items-start justify-content-end p-2 container">
           <button
             onClick={(e) => deleteCategory(e, category.id)}
             className="btn"

@@ -39,27 +39,26 @@ export default function BlogPage() {
     });
   }
 
+  const keywords = ["blog", blog.title];
+
   console.log("Blog: ", blog);
 
   return (
     <>
-      <Helmet>
-        <title>CouponStrom: Free Coupons and Deals</title>
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
-        <meta property="og:image" content="" />
-        <meta property="og:url" content="" />
-
-        <meta property="twitter:card" content="" />
-        <meta property="twitter:title" content="" />
-        <meta property="twitter:description" content="" />
-        <meta property="twitter:image" content="" />
-      </Helmet>
       {blog ? (
         <>
+          <Helmet>
+            <title>{`${blog.title}-Coupon Strom`}</title>
+            <meta name="description" content={`${blog.description}`} />
+            <meta name="keywords" content={keywords} />
+
+            <meta property="og:title" content={`${blog.title}-Coupon Strom`} />
+            <meta property="og:description" content={`${blog.description}`} />
+            <meta property="og:image" content="/logo.svg" />
+            <meta property="og:url" content={`${window.location.href}`} />
+            <link rel="canonical" href={import.meta.env.VITE_WEBSITE_URL} />
+            <link rel="shortLink" href={import.meta.env.VITE_WEBSITE_URL} />
+          </Helmet>
           {console.log("Blog Data: ", blog)}
           <Header />
 
@@ -73,13 +72,11 @@ export default function BlogPage() {
                   <div className="blog-short-info my-2 fs-6">
                     <span className="me-2">
                       <i class="bi bi-person-circle me-1"></i>
-                      {blog.writer.name}
+                      {blog.writer.name === "admin"
+                        ? "Anonymous"
+                        : blog.writer.name}
                     </span>
                     {new Date(blog.created_at).toDateString()}
-                    <span className="ms-2">
-                      <i class="bi bi-eye-fill me-1"></i>
-                      {blog.views}
-                    </span>
                   </div>
                   <section className="my-3">
                     <div className="mb-3">

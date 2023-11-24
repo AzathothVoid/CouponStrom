@@ -103,6 +103,7 @@ export default function AdminBlogs(props) {
       });
     } catch (error) {
       console.log(error);
+      return;
     }
     handleClose();
   };
@@ -171,7 +172,7 @@ export default function AdminBlogs(props) {
         </Modal.Header>
 
         <Modal.Body>
-          <Form onSubmit={handleSubmit} id="blogForm">
+          <Form id="blogForm">
             <Form.Group className="mb-3">
               <Form.Label>BLOG TITLE</Form.Label>
               <Form.Control
@@ -230,7 +231,7 @@ export default function AdminBlogs(props) {
             variant="primary"
             type="submit"
             form="blogForm"
-            onClick={handleClose}
+            onClick={handleSubmit}
           >
             Submit
           </Button>

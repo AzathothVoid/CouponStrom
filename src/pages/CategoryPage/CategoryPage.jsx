@@ -83,8 +83,14 @@ export default function CategoryPage(props) {
   let storesToShow = [];
   let subCategoryElements = [];
 
-  console.log("Category Data: ", categoryData);
-  console.log("Coupons Data", couponsData);
+  let keywords;
+
+  if (categoryData) {
+    keywords = [categoryData.name];
+    categoryData.subcategories.map((subcategory) => {
+      keywords.push(subcategory.name);
+    });
+  }
 
   if (categoryData) storesToShow = categoryData.stores.slice(0, 5);
 
@@ -118,8 +124,6 @@ export default function CategoryPage(props) {
     );
   });
 
-  console.log("first filteR: ", firstFilter);
-
   const topCategoryCoupons = couponsData.slice(0, 2);
   const topCategoryCouponElements = topCategoryCoupons.map((coupon) => {
     return <GeneralCoupon data={coupon} />;
@@ -132,23 +136,29 @@ export default function CategoryPage(props) {
 
   return (
     <>
-      <Helmet>
-        <title>CouponStrom: Free Coupons and Deals</title>
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
-        <meta property="og:image" content="" />
-        <meta property="og:url" content="" />
-
-        <meta property="twitter:card" content="" />
-        <meta property="twitter:title" content="" />
-        <meta property="twitter:description" content="" />
-        <meta property="twitter:image" content="" />
-      </Helmet>
       {categoryData ? (
         <>
+          <Helmet>
+            <title>{`${categoryData.name}-Coupons Strom`}</title>
+            <meta
+              name="description"
+              content={`Get free discounted deals and coupons in the  ${categoryData.name} category. Find all your coupons for your favorite stores`}
+            />
+            <meta name="keywords" content={keywords} />
+
+            <meta
+              property="og:title"
+              content={`${categoryData.name}-Coupons Strom`}
+            />
+            <meta
+              property="og:description"
+              content={`Get free discounted deals and coupons in the  ${categoryData.name} category. Find all your coupons for your favorite stores`}
+            />
+            <meta property="og:image" content="/logo.svg" />
+            <meta property="og:url" content={`${window.location.href}`} />
+            <link rel="canonical" href={import.meta.env.VITE_WEBSITE_URL} />
+            <link rel="shortLink" href={import.meta.env.VITE_WEBSITE_URL} />
+          </Helmet>
           <Header />
           <div className="container">
             <div className="my-4">
@@ -165,14 +175,14 @@ export default function CategoryPage(props) {
                     style={{ maxWidth: "300px" }}
                     className=" shadow rounded p-3 mb-4"
                   >
-                    <h3>SUBCATEGORIES</h3>
+                    <h3 className="mb-2">Subcategories</h3>
                     <form>{subCategoryElements}</form>
                   </div>
                   <div
                     style={{ maxWidth: "300px" }}
                     className="shadow rounded p-3 mb-4"
                   >
-                    <h3>STORES</h3>
+                    <h3 className="mb-2">Stores</h3>
                     <div className="row gx-5 align-items-center">
                       {storeElements}
                     </div>

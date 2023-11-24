@@ -22,21 +22,17 @@ export default function Home() {
   const coupons = useData.coupons;
   const categories = useData.categories;
 
-  // const keywords = categories.map((category) => {
-  //   return category.
-  // })
+  const keywords = categories.map((category) => {
+    return category.name;
+  });
+
+  keywords.push("Coupons");
+  keywords.push("Deals");
 
   const itemsPerPage = 12;
   const startIndex = (currCouponPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const couponsToShow = coupons.slice(startIndex, endIndex);
-
-  useEffect(() => {
-    console.log("Home component mounted");
-    return () => {
-      console.log("Home component unmounted");
-    };
-  }, []);
 
   const couponElements = couponsToShow.map((coupon) => {
     return (
@@ -58,17 +54,25 @@ export default function Home() {
           name="description"
           content="Get Free discount codes and offers. Browse through your favorite stores and categories and get the best deal for yourself!"
         />
-        <meta name="keywords" content="" />
+        <meta name="keywords" content={keywords} />
 
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
-        <meta property="og:image" content="" />
-        <meta property="og:url" content="" />
+        <meta
+          property="og:title"
+          content="Coupon Strom: Discount Codes And Offers"
+        />
+        <meta
+          property="og:description"
+          content="Get Free discount codes and offers. Browse through your favorite stores and categories and get the best deal for yourself!"
+        />
+        <meta property="og:image" content={`/logo.svg`} />
+        <meta property="og:url" content={import.meta.env.VITE_WEBSITE_URL} />
 
         <meta property="twitter:card" content="" />
         <meta property="twitter:title" content="" />
         <meta property="twitter:description" content="" />
         <meta property="twitter:image" content="" />
+        <link rel="canonical" href={import.meta.env.VITE_WEBSITE_URL} />
+        <link rel="shortLink" href={import.meta.env.VITE_WEBSITE_URL} />
       </Helmet>
       {coupons && couponElements ? (
         <>

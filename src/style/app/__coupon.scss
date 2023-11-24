@@ -47,6 +47,14 @@
   animation: fadeIn 0.3s;
 }
 
+.hover-button:hover {
+  opacity: 0.9;
+}
+
+.hover-image:hover {
+  border: 1px solid var(--color-primary) !important;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

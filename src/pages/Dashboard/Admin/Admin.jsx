@@ -57,7 +57,7 @@ export default function Admin() {
 
   return (
     <section className="container-fluid p-0">
-      <Header />
+      <Header admin="true" />
       {element}
     </section>
   );

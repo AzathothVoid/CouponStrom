@@ -83,11 +83,7 @@ export default function StorePage() {
 
   if (storeData)
     keywords = storeData.subcategories.map((keyword) => {
-      return (
-        <span className="col col-lg-3 px-0 bg-white text-center fs-tags text-dark">
-          {keyword.subcategory.name}
-        </span>
-      );
+      return keyword.subcategory.name;
     });
 
   const couponSectionHandler = (event) => {
@@ -117,26 +113,32 @@ export default function StorePage() {
 
   return (
     <>
-      <Helmet>
-        <title>CouponStrom: Free Coupons and Deals</title>
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
-        <meta property="og:image" content="" />
-        <meta property="og:url" content="" />
-
-        <meta property="twitter:card" content="" />
-        <meta property="twitter:title" content="" />
-        <meta property="twitter:description" content="" />
-        <meta property="twitter:image" content="" />
-      </Helmet>
       {storeData && couponsData ? (
         <>
+          <Helmet>
+            <title>{`${storeData.name}-Coupon Strom`}</title>
+            <meta
+              name="description"
+              content={`Find all your favorite coupons and deals in ${storeData.name}! ${storeData.description}`}
+            />
+            <meta name="keywords" content={keywords} />
+
+            <meta
+              property="og:title"
+              content={`${storeData.name}-Coupon Strom`}
+            />
+            <meta
+              property="og:description"
+              content={`Find all your favorite coupons and deals in ${storeData.name}! ${storeData.description}`}
+            />
+            <meta property="og:image" content="/logo.svg" />
+            <meta property="og:url" content={`${window.location.href}`} />
+            <link rel="canonical" href={import.meta.env.VITE_WEBSITE_URL} />
+            <link rel="shortLink" href={import.meta.env.VITE_WEBSITE_URL} />
+          </Helmet>
           <Header />
           <div className="container py-3 ">
-            <div className="d-flex align-items-center flex-column flex-md-row flex-wrap flex-md-nowrap mb-4 mt-2 bg-primary-custom p-3 p-md-4 rounded">
+            <div className="d-flex align-items-center text-footer-custom flex-column flex-md-row flex-wrap flex-md-nowrap mb-4 mt-2 bg-primary-custom p-3 p-md-4 rounded">
               <h1 className="mb-3 m-md-0 h1 fw-bolder">{storeData.name}</h1>
               <p className="m-0 fs-5 ms-5 ">{storeData.description}</p>
             </div>

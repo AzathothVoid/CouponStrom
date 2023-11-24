@@ -31,6 +31,10 @@ export default function Stores() {
   const endIndex = startIndex + itemsPerPage;
   const storesToShow = filterStores.slice(startIndex, endIndex);
 
+  const keywords = stores.map((store) => {
+    return store.name;
+  });
+
   //handler functions for pagination change
   const handleLetterChange = (letter) => {
     setLetter(letter);
@@ -62,19 +66,22 @@ export default function Stores() {
   return (
     <>
       <Helmet>
-        <title>CouponStrom: Free Coupons and Deals</title>
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
+        <title>{`Browse All Stores-Coupons Strom`}</title>
+        <meta
+          name="description"
+          content={`Browse through the wide variety of stores and choose the one you need. Get free discounted coupons and deals for your use! `}
+        />
+        <meta name="keywords" content={keywords} />
 
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
-        <meta property="og:image" content="" />
-        <meta property="og:url" content="" />
-
-        <meta property="twitter:card" content="" />
-        <meta property="twitter:title" content="" />
-        <meta property="twitter:description" content="" />
-        <meta property="twitter:image" content="" />
+        <meta property="og:title" content={`Browse All Stores-Coupons Strom`} />
+        <meta
+          property="og:description"
+          content={`Browse through the wide variety of stores and choose the one you need. Get free discounted coupons and deals for your use! `}
+        />
+        <meta property="og:image" content="/logo.svg" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <link rel="canonical" href={import.meta.env.VITE_WEBSITE_URL} />
+        <link rel="shortLink" href={import.meta.env.VITE_WEBSITE_URL} />
       </Helmet>
       <Header />
       <main>

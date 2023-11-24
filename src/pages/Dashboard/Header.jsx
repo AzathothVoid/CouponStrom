@@ -3,10 +3,12 @@ import { Navbar } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useAuth } from "../../components/Auth/AuthContext";
 import { userLogout } from "../../api/UsersAPI";
+import { useNavigate } from "react-router-dom";
 
 export default function Header(props) {
   const { data, logout } = useAuth();
   const [logoutCall, setLogoutCall] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (logoutCall) {
@@ -18,8 +20,16 @@ export default function Header(props) {
       } catch (error) {}
     }
   }, [logoutCall]);
+
   const handleLogout = () => {
     setLogoutCall(true);
+  };
+
+  const handleAdminRegistration = () => {
+    const propsToPass = {
+      admin: true,
+    };
+    navigate("/auth/registration", { state: propsToPass, replace: true });
   };
 
   return (
@@ -36,9 +46,22 @@ export default function Header(props) {
               {data.name}
             </a>
           </Navbar.Text>
-          <Button onClick={handleLogout} variant="secondary" className="mx-3">
+          <Button
+            onClick={handleLogout}
+            variant="secondary"
+            className="ms-3 my-2"
+          >
             Sign out
           </Button>
+          {props.admin && (
+            <Button
+              onClick={handleAdminRegistration}
+              variant="secondary"
+              className="mx-3"
+            >
+              Register admin
+            </Button>
+          )}
         </Navbar.Collapse>
       </div>
     </Navbar>

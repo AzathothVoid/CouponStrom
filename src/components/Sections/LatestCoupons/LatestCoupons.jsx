@@ -7,9 +7,9 @@ export default function LatestCouponsSection() {
   const couponsData = useData.coupons;
   const total = 10;
 
-  const sortedCoupons = couponsData.sort(
-    (coup1, coup2) => coup2.created_at - coup1.created_at
-  );
+  const sortedCoupons = couponsData.sort((coup1, coup2) => {
+    return new Date(coup2.created_at) - new Date(coup1.created_at);
+  });
 
   const filteredData = sortedCoupons.slice(0, total);
 

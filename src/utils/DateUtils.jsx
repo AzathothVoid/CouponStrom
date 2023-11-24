@@ -41,5 +41,5 @@ export const areDatesOneDayApart = (date1, date2) => {
   const timeDifference = Math.abs(date1 - date2);
 
   const millisecondsInOneDay = 24 * 60 * 60 * 1000;
-  return timeDifference === millisecondsInOneDay;
+  return timeDifference <= millisecondsInOneDay;
 };

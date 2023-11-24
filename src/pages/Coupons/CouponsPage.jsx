@@ -25,24 +25,33 @@ export default function CouponsPage() {
     );
   });
 
-  console.log("filtered coupons data: ", filteredCoupons);
+  const keywords = [category, store];
+
+  if (type) keywords.push(type);
 
   return (
     <>
       <Helmet>
-        <title>CouponStrom: Free Coupons and Deals</title>
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
+        <title>Deals & Coupons-Coupons Strom</title>
+        <meta
+          name="description"
+          content={`List of ${
+            type ? type : "all coupons and deals"
+          } of the category ${category} and store ${store}`}
+        />
+        <meta name="keywords" content={keywords} />
 
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
-        <meta property="og:image" content="" />
-        <meta property="og:url" content="" />
-
-        <meta property="twitter:card" content="" />
-        <meta property="twitter:title" content="" />
-        <meta property="twitter:description" content="" />
-        <meta property="twitter:image" content="" />
+        <meta property="og:title" content="Deals & Coupons-Coupons Strom" />
+        <meta
+          property="og:description"
+          content={`List of ${
+            type ? type : "all coupons and deals"
+          } of the category ${category} and store ${store}`}
+        />
+        <meta property="og:image" content="/logo.svg" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <link rel="canonical" href={import.meta.env.VITE_WEBSITE_URL} />
+        <link rel="shortLink" href={import.meta.env.VITE_WEBSITE_URL} />
       </Helmet>
 
       {coupons ? (

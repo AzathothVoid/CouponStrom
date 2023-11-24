@@ -86,6 +86,10 @@ a:visited {
   background: var(--color-footer);
 }
 
+.text-footer-custom {
+  color: var(--color-footer);
+}
+
 .text-primary-custom {
   color: var(--color-primary) !important;
 }
@@ -131,4 +135,8 @@ a:visited {
 .active-custom {
   color: var(--color-primary-dark);
   font-weight: bolder;
+}
+
+.muted {
+  opacity: 0.7;
 }

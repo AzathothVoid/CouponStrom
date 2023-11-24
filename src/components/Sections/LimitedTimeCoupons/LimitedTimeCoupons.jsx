@@ -29,7 +29,7 @@ export default function TopCouponsSection() {
       id="limitedTimeCouponsSection"
       className="container p-2 m-auto my-4 top-stores"
     >
-      <h2 className="mb-3 ms-1 text-primary-custom">Limited Time Coupons</h2>
+      <h2 className="text-primary-custom">Limited Time Coupons</h2>
 
       <div className="d-flex flex-xs-column flex-md-row justify-content-center justify-content-lg-start flex-wrap gap-2">
         {couponsElement}

@@ -6,6 +6,8 @@ export default function StoreCoupon(props) {
   const [modalDisplay, setModalDisplay] = useState(false);
   const data = props.data;
 
+  const expiry = new Date(data.expiry);
+
   const handleShow = () => setModalDisplay(true);
   const handleClose = () => setModalDisplay(false);
   const handleShowSmallScreen = () => {
@@ -31,8 +33,10 @@ export default function StoreCoupon(props) {
             className="col-8 col-sm-6 container-fluid p-2 text-dark"
           >
             <div className="couponDescription my-1 lead">{data.name}</div>
-            <div className="couponExpiry text-muted mb-1">
-              Expires {new Date(data.expiry).toLocaleDateString()}
+            <div className="couponExpiry text-muted mb-2">
+              <i className="bi bi-clock me-2"></i>
+
+              {`${expiry.toDateString()} ${expiry.toLocaleTimeString()}`}
             </div>
             <div>
               <div

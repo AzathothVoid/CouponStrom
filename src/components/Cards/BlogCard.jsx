@@ -1,30 +1,28 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
-import { formatDate } from "../../utils/DateUtils";
-import { useDataState } from "../Data/DataContext";
 
 export default function (props) {
   const blog = props.data;
 
   return (
     <div
-      style={{ maxWidth: "400px" }}
+      style={{ width: "350px" }}
       class="container d-flex justify-content-center"
     >
       <div class="row w-100">
-        <div class="">
-          <div class="card">
+        <div class="1-100">
+          <div class="card w-100">
             <img
-              style={{ height: "200px" }}
-              class="card-img "
+              style={{ height: "233px" }}
+              class="card-img"
               src={blog.images ? blog.images[0].image : null}
               alt=""
             />
 
             <div class="card-body">
               <div className="blockquote">
-                <h4 class="card-title">{blog.title}</h4>
+                <h4 class="card-title text-truncate">{blog.title}</h4>
               </div>
 
               <p class="card-text text-truncate">{blog.description}</p>

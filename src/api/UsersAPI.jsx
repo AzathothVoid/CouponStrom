@@ -15,26 +15,21 @@ export const UserLogin = async (email, password) => {
   }
 };
 
-export const userRegistration = async (
-  name,
-  email,
-  password,
-  confirmPassword
-) => {
+export const userRegistration = async (data) => {
   const registrationInfo = {
-    name: name,
-    email: email,
-    category_id: 2,
-    password: password,
-    password_confirmation: confirmPassword,
+    name: data.name,
+    email: data.email,
+    category_id: data.category_id,
+    password: data.password,
+    password_confirmation: data.confirmPassword,
   };
 
   const response = await ApiService.post(`/add-user`, registrationInfo);
 
-  if (response.status === 201) {
+  if (response.status === 201 || response.status === 200) {
     return response;
   } else {
-    throw response.data;
+    throw response;
   }
 };
 

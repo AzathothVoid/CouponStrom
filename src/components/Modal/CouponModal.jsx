@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { likeCoupon } from "../../api/CouponsAPI";
+import { Helmet } from "react-helmet";
 
 export default function CouponModal(props) {
   const codeToCopyRef = useRef(null);
@@ -48,13 +49,19 @@ export default function CouponModal(props) {
 
   return (
     <>
+      <Helmet>
+        <meta property="og:title" content={`${data.name}`} />
+        <meta property="og:description" content={`${data.details}`} />
+        <meta property="og:image" content={`/logo.svg`} />
+        <meta property="og:url" content={`${window.location.href}`} />
+      </Helmet>
       <Modal size="lg" show={props.display} onHide={props.handleClose}>
         <Modal.Header closeButton></Modal.Header>
         <Modal.Header className="d-flex flex-column align-items-center">
           <div style={{ maxWidth: "25%" }}>
             <img className="mw-100" src={data.images[0].image} alt="" />
           </div>
-          <Modal.Title className="mb-4 fs-3 text-primary-custom">
+          <Modal.Title className="mb-4 mt-3 fs-3 text-primary-custom">
             {data.name}
           </Modal.Title>
           <div className="mb-4 d-flex flex-column align-items-center">
@@ -125,21 +132,15 @@ export default function CouponModal(props) {
           </div>
           <div className="d-flex justify-content-center align-items-center gap-3 my-4 border-top pt-4">
             <p className="m-0">Share on</p>
-            {/* <a
-              href="https://twitter.com/intent/tweet?text=Check%20out%20this%20amazing%20coupon%20on%20MyCouponSite:%20https://couponstrom.com/"
-              target="_blank"
-            >
-              <img src={`/socialMediaIcons/twitter.svg`} alt="" />
-            </a> */}
+
             <a
               href={
                 "https://twitter.com/share?text=" +
-                encodeURIComponent("Check out this coupon: " + data.title) +
+                encodeURIComponent(data.name) +
                 "&url=" +
-                encodeURIComponent(window.location.href)
+                encodeURIComponent(`${window.location.host}/coupon/${data.id}`)
               }
               target="_blank"
-              class="twitter-share-button"
               data-show-count="false"
             >
               <img src={`/socialMediaIcons/twitter.svg`} alt="" />
@@ -155,9 +156,9 @@ export default function CouponModal(props) {
                 target="_blank"
                 href={
                   "https://www.facebook.com/sharer/sharer.php?u=" +
-                  encodeURIComponent(window.location.href) +
-                  "&quote=" +
-                  encodeURIComponent("Check out this coupon: " + data.name)
+                  encodeURIComponent(
+                    `${window.location.host}/coupon/${data.id}`
+                  )
                 }
                 className="fb-xfbml-parse-ignore"
               >
@@ -167,26 +168,24 @@ export default function CouponModal(props) {
             <a
               href={
                 "https://www.linkedin.com/sharing/share-offsite/?url=" +
-                encodeURIComponent(window.location.href) +
+                encodeURIComponent(
+                  `${window.location.host}/coupon/${data.id}`
+                ) +
                 "&title=" +
                 encodeURIComponent("Check out this coupon: " + data.name)
               }
-              class="linkedin-share-button"
               target="_blank"
             >
               <img src={`/socialMediaIcons/linkedin.svg`} alt="" />
             </a>
+            {console.log("Data name: ", data.name)}
             <a
               href={
                 "https://api.whatsapp.com/send?text=" +
                 encodeURIComponent(
-                  "Check out this coupon: " +
-                    data.name +
-                    " " +
-                    window.location.href
+                  data.name + "\n" + `${window.location.host}/coupon/${data.id}`
                 )
               }
-              class="whatsapp-share-button"
               target="_blank"
             >
               <img src={`/socialMediaIcons/whatsapp.svg`} alt="" />

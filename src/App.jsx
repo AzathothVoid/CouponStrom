@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Login from "./pages/Dashboard/Login";
 import Registration from "./pages/Dashboard/Registration";
 import CouponsPage from "./pages/Coupons/CouponsPage";
+import CouponPage from "./pages/CouponPage/CouponPage";
 import AdminPanel from "./pages/Dashboard/Admin/Admin";
 import DataEntryPanel from "./pages/Dashboard/DataEntry/DataEntry";
 import AboutUs from "./pages/About Us/AboutUs";
@@ -39,6 +40,7 @@ function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/registration" element={<Registration />} />
+            <Route path="/coupon/:couponId" element={<CouponPage />} />
             <Route
               path="coupons/:category/:store/:type?"
               element={<CouponsPage />}

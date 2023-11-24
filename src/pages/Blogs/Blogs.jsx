@@ -25,29 +25,37 @@ export default function Blogs() {
     );
   });
 
+  const keywords = ["couponstrom", "blogs", "coupons", "deals", "community"];
+
   const handlePageChange = (page) => {
     setCurrBlogPage(page);
   };
 
   return (
     <>
-      <Helmet>
-        <title>CouponStrom: Free Coupons and Deals</title>
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
-        <meta property="og:image" content="" />
-        <meta property="og:url" content="" />
-
-        <meta property="twitter:card" content="" />
-        <meta property="twitter:title" content="" />
-        <meta property="twitter:description" content="" />
-        <meta property="twitter:image" content="" />
-      </Helmet>
       {blogs && blogElements ? (
         <>
+          <Helmet>
+            <title>{`Welcome to our community-Coupons Strom`}</title>
+            <meta
+              name="description"
+              content={`Look at what we have been upto recently and keep yourself upto date with everything going on around you!`}
+            />
+            <meta name="keywords" content={keywords} />
+
+            <meta
+              property="og:title"
+              content={`Welcome to our community-Coupons Strom`}
+            />
+            <meta
+              property="og:description"
+              content={`Look at what we have been upto recently and keep yourself upto date with everything going on around you!`}
+            />
+            <meta property="og:image" content="/logo.svg" />
+            <meta property="og:url" content={`${window.location.href}`} />
+            <link rel="canonical" href={import.meta.env.VITE_WEBSITE_URL} />
+            <link rel="shortLink" href={import.meta.env.VITE_WEBSITE_URL} />
+          </Helmet>
           <Header />
           <main className="container">
             <h1 className="text-center mt-4 mb-2">Blogs and Community</h1>

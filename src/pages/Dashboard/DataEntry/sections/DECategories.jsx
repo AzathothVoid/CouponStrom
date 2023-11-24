@@ -37,8 +37,8 @@ export default function DECategories(props) {
 
   const categoryElements = categoriesData.map((category) => {
     return (
-      <div key={category.id} className="my-4 row object">
-        <div className="col-8 container p-2 ps-4 text-dark">
+      <div key={category.id} className="my-4 object">
+        <div className="container p-2 ps-4 text-dark">
           <div className="storeDescription lead my-1 fs-4">{category.name}</div>
           <div className="storeExpiry text-muted mb-1">
             Number of Deals : {category.total_deals}

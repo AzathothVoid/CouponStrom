@@ -14,6 +14,8 @@ import {
   useDataDispatch,
 } from "../../../../components/Data/DataContext";
 
+import { formatDate } from "../../../../utils/DateUtils";
+
 export default function DECoupons(props) {
   const useData = useDataState();
   const dataDispatch = useDataDispatch();
@@ -123,18 +125,16 @@ export default function DECoupons(props) {
   const couponElements = couponsToShow.map((coupon) => {
     console.log("Coupons: ", coupon);
     return (
-      <div className="my-4 row object">
-        <div className="col-xl-3 col-lg-3 img">
+      <div key={coupon.id} className="my-4 row object">
+        <div className="col-4 col-sm-3 col-md-2 img p-4 d-flex align-items-center">
           <img
-            className=""
+            className="w-100"
             src={coupon.images[0].image}
-            alt=""
-            width="180"
-            height="110"
+            alt="AliExpress"
           ></img>
         </div>
 
-        <div className="col-xl-6 col-lg-6 container p-2 text-dark">
+        <div className="col-8 col-sm-9 col-md-10 container p-2 text-dark ">
           <div className="couponDescription lead fs-4 my-1">{coupon.name}</div>
           <div className="couponExpiry text-muted mb-1">
             Expires {coupon.expiry}

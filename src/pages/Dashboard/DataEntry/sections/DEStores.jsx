@@ -135,17 +135,15 @@ export default function DEStores(props) {
   const storeElements = storesToShow.map((store) => {
     return (
       <div key={store.id} className="my-4 row object">
-        <div className="col-xl-3 col-lg-3 img">
+        <div className="col-4 col-sm-3 col-md-2 img p-4 d-flex align-items-center">
           <img
-            className=""
+            className="w-100"
             src={store.images[0].image}
             alt="AliExpress"
-            width="180"
-            height="110"
           ></img>
         </div>
 
-        <div className="col-xl-6 col-lg-6 container p-2 text-dark">
+        <div className="col-8 col-sm-9 col-md-10 container p-2 text-dark">
           <div className="storeDescription lead my-1 fs-4">{store.name}</div>
           <div className="storeExpiry text-muted mb-1">
             Number of Coupons : {store.total_coupons}

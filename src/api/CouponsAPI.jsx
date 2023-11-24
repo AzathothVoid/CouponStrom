@@ -77,3 +77,15 @@ export const likeCoupon = async (couponID) => {
     throw response;
   }
 };
+
+export const getCouponByID = async (couponID) => {
+  const response = await ApiService.get("/get-coupon-byID", {
+    params: couponID,
+  });
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};

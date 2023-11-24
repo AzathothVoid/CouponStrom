@@ -126,8 +126,28 @@ export default function Contact() {
     </div>
   );
 
+  const keywords = ["contact", "couponstrom"];
+
   return (
     <>
+      <Helmet>
+        <title>{`Contact us-Coupon Strom`}</title>
+        <meta
+          name="description"
+          content={`24/7 contact available for any question and query.`}
+        />
+        <meta name="keywords" content={keywords} />
+
+        <meta property="og:title" content={`Contact us-Coupon Strom`} />
+        <meta
+          property="og:description"
+          content={`24/7 contact available for any question and query.`}
+        />
+        <meta property="og:image" content="/logo.svg" />
+        <meta property="og:url" content={`${window.location.href}`} />
+        <link rel="canonical" href={import.meta.env.VITE_WEBSITE_URL} />
+        <link rel="shortLink" href={import.meta.env.VITE_WEBSITE_URL} />
+      </Helmet>
       <Header />
       <main>{message ? messageElement : mainElement}</main>
       <Footer />

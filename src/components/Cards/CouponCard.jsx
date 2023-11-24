@@ -19,12 +19,12 @@ export default function CouponCard(props) {
   return (
     <div className="card shadow p-1 h-100" style={{ width: "200px" }}>
       <a
-        className="text-center"
+        className="d-flex align-items-center justify-content-center mb-2 border m-3 hover-image"
         href={`/stores/${data.store}`}
         style={{ height: "98px" }}
       >
         <img
-          style={{ width: "80%", height: "100%" }}
+          style={{ width: "60%", height: "100%" }}
           className="p-2 card-img"
           src={data.images[0].image}
           alt=""
