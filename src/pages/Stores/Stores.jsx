@@ -50,7 +50,7 @@ export default function Stores() {
       key={store.id}
       className="justify-self-center col-lg-3 col-md-4 col-sm-6 text-center col-xs-6 mb-3"
     >
-      <Link to={`/stores/${store.id}`} key={store.id}>
+      <Link to={`/stores/${store.name}/${store.id}`} key={store.id}>
         <img
           style={{ maxWidth: "90px" }}
           className="m-2"

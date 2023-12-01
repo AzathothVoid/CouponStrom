@@ -27,9 +27,12 @@ function App() {
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/stores" element={<Stores />} />
-            <Route path="/stores/:storeId" element={<StorePage />} />
+            <Route path="/stores/:storeName/:storeId" element={<StorePage />} />
             <Route path="/categories" element={<Categories />} />
-            <Route path="/categories/:categoryId" element={<CategoryPage />} />
+            <Route
+              path="/categories/:categoryName/:categoryId"
+              element={<CategoryPage />}
+            />
             <Route
               path="/categories/:categoryId/:subCatId"
               element={<CategoryPage />}

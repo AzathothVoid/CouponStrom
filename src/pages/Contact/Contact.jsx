@@ -18,22 +18,7 @@ export default function Contact() {
   const mainElement = (
     <div className="container my-5 d-flex flex-column align-items-center">
       <h1>Get in Touch</h1>
-      <div className="container d-flex justify-content-between flex-wrap flex-md-nowrap my-5">
-        <div className="text-center">
-          <i
-            style={{ fontSize: "4rem" }}
-            className="bi bi-telephone text-secondary-custom"
-          ></i>
-          <h3>By Phone</h3>
-          <ul className="list my-3 p-0">
-            <li className="list-item">
-              {import.meta.env.VITE_CONTACT_PHONE_NO_1}
-            </li>
-            <li className="list-item">
-              {import.meta.env.VITE_CONTACT_PHONE_NO_2}
-            </li>
-          </ul>
-        </div>
+      <div className="container d-flex justify-content-center flex-wrap flex-md-nowrap my-5">
         <div className="text-center">
           <i
             style={{ fontSize: "4rem" }}

@@ -37,8 +37,20 @@ export default function Categories() {
         key={category.id}
         className="col-lg-3 col-md-4 col-sm-6 text-sm-center mb-3"
       >
-        <Link to={`/categories/${category.id}`}>
-          <h3 className="border-bottom mb-2">{category.name}</h3>
+        <Link to={`/categories/${category.name}/${category.id}`}>
+          <div className="d-flex align-items-center justify-content-center border-bottom mb-2">
+            <div
+              className="me-2 "
+              style={{
+                width: "26px",
+              }}
+            >
+              {category.images.length > 0 ? (
+                <img className="w-100" src={category.images[0].image} alt="" />
+              ) : null}
+            </div>
+            <h3>{category.name}</h3>
+          </div>
         </Link>
         <ul className="list list-group">
           {category.subcategories.map((subCat) => {

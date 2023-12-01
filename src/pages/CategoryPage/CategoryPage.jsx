@@ -144,7 +144,7 @@ export default function CategoryPage(props) {
               name="description"
               content={`Get free discounted deals and coupons in the  ${categoryData.name} category. Find all your coupons for your favorite stores`}
             />
-            <meta name="keywords" content={keywords} />
+            <meta name="keywords" content={categoryData.keywords} />
 
             <meta
               property="og:title"
@@ -162,7 +162,23 @@ export default function CategoryPage(props) {
           <Header />
           <div className="container">
             <div className="my-4">
-              <h1 className="h1 mb-2 fw-bolder">{categoryData.name}</h1>
+              <div className="d-flex align-items-center h1 mb-2 fw-bolder">
+                <div
+                  className="me-3"
+                  style={{
+                    width: "35px",
+                  }}
+                >
+                  {categoryData.images.length > 0 ? (
+                    <img
+                      className="w-100"
+                      src={categoryData.images[0].image}
+                      alt=""
+                    />
+                  ) : null}
+                </div>
+                <h1 className="">{categoryData.name}</h1>
+              </div>
               <div className="d-flex gap-2 flex-wrap flex-lg-nowrap">
                 {topCategoryCouponElements}
               </div>

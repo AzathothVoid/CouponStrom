@@ -102,6 +102,10 @@ a:visited {
   color: var(--color-primary-dark);
 }
 
+.text-heading {
+  color: rgba($color: #eaa842, $alpha: 1);
+}
+
 .border-primary-custom {
   border: 1px solid var(--color-primary) !important;
 }
@@ -137,6 +141,40 @@ a:visited {
   font-weight: bolder;
 }
 
+.collapsible__chevron {
+  transform: rotate(0deg);
+  transition: transform 0.3s;
+}
+
+.collapsible__content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s;
+  margin: 0;
+  padding: 0;
+}
+
+.collapsible--expanded .collapsible__chevron {
+  transform: rotate(90deg);
+}
+
+.collapsible--expanded .collapsible__content {
+  max-height: 100vh;
+  opacity: 1;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+}
+
+.details {
+  border-left: 1px solid #ccc;
+  padding-left: 0.5rem !important;
+}
+
 .muted {
   opacity: 0.7;
+}
+
+.hover-mouse:hover {
+  cursor: pointer;
 }

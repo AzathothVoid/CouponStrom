@@ -62,7 +62,7 @@ export default function Header() {
       <li key={index}>
         <Link to={`/${navItem.toLowerCase()}`}>
           <button
-            className={`btn-custom text-white border-0 fs-6 navbar-btn rounded btn-p nav-btn nav-font ${
+            className={`btn-custom text-white border-0 fs-5 navbar-btn rounded btn-p nav-btn nav-font ${
               currPage === navItem ? "text-primary-custom fw-bold" : null
             }`}
           >
@@ -114,7 +114,7 @@ export default function Header() {
 
                 {!searchStatus ? (
                   <button
-                    className="btn text-light btn-search-main fw-bold "
+                    className="btn text-light btn-search-main"
                     type="submit"
                     onClick={handleSearchChange}
                   >

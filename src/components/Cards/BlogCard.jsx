@@ -27,7 +27,7 @@ export default function (props) {
 
               <p class="card-text text-truncate">{blog.description}</p>
               <Link to={`/blogs/${blog.id}`}>
-                <button class="btn-custom rounded  bg-primary-custom text-white">
+                <button class="btn-custom rounded  bg-primary-custom text-white hover-button">
                   Read Now
                 </button>
               </Link>

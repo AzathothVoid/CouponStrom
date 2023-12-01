@@ -5,8 +5,16 @@ import AdminCoupons from "./sections/AdminCoupons";
 import AdminCategories from "./sections/AdminCategories";
 import AdminBlogs from "./sections/AdminBlogs";
 import AdminAdvertisements from "./sections/AdminAdvertisements";
+import CompanyInfo from "./sections/CompanyInfo";
 
-const sections = ["coupons", "stores", "categories", "blogs", "advertisements"];
+const sections = [
+  "coupons",
+  "stores",
+  "categories",
+  "blogs",
+  "advertisements",
+  "company",
+];
 
 export default function Admin() {
   const [section, setSection] = useState(sections[0]);
@@ -45,9 +53,17 @@ export default function Admin() {
         section={section}
       />
     );
-  } else {
+  } else if (section === sections[4]) {
     element = (
       <AdminAdvertisements
+        sections={sections}
+        setSection={setSection}
+        section={section}
+      />
+    );
+  } else if (section === sections[5]) {
+    element = (
+      <CompanyInfo
         sections={sections}
         setSection={setSection}
         section={section}

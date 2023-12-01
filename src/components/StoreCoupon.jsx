@@ -1,23 +1,59 @@
 import React, { useState } from "react";
 import { formatDate } from "../utils/DateUtils";
-import CouponModal from "./Modal/CouponModal";
+import CodeCouponModal from "./Modal/CodeCouponModal";
+import { areDatesOneDayApart } from "../utils/DateUtils";
+import ShareCouponModal from "./Modal/ShareCouponModal";
 
 export default function StoreCoupon(props) {
   const [modalDisplay, setModalDisplay] = useState(false);
+  const [shareModalDisplay, setShareModalDisplay] = useState(false);
+
   const data = props.data;
 
   const expiry = new Date(data.expiry);
 
-  const handleShow = () => setModalDisplay(true);
+  const handleShow = async () => {
+    console.log("Code: ", data.code);
+    await navigator.clipboard.writeText(data.code);
+    setModalDisplay(true);
+    window.open(data.stores.link, "_blank");
+  };
+
+  const getOffer = () => {
+    window.open(data.deal, "_blank");
+  };
+
+  const handleShareOpen = () => {
+    setShareModalDisplay(true);
+  };
+
+  const handleShareClose = () => setShareModalDisplay(false);
+
   const handleClose = () => setModalDisplay(false);
+
+  const handleReadMore = (event) => {
+    const detailsElement = document.getElementById(`details${data.id}2`);
+
+    detailsElement.classList.toggle("collapsible--expanded");
+  };
   const handleShowSmallScreen = () => {
     if (window.screen.width < 576) setModalDisplay(true);
   };
+
+  let limitedTime;
+
+  if (areDatesOneDayApart(data.expiry, new Date().getTime())) {
+    limitedTime = true;
+  }
 
   const showPopUp = (e) => {
     e.stopPropagation();
     const details = document.getElementById(`details${data.id}${data.name}`);
     details.classList.toggle("show");
+  };
+
+  const handleCouponPage = (event) => {
+    window.open(`/coupon/${data.id}`, "_blank");
   };
 
   return (
@@ -32,46 +68,82 @@ export default function StoreCoupon(props) {
             onClick={handleShowSmallScreen}
             className="col-8 col-sm-6 container-fluid p-2 text-dark"
           >
-            <div className="couponDescription my-1 lead">{data.name}</div>
+            <div className="couponDescription my-1 lead">
+              {data.name}
+              <div>
+                {!limitedTime ? null : (
+                  <span
+                    style={{ fontSize: "1rem" }}
+                    className="badge me-2 text-bg-success"
+                  >
+                    Limited Time
+                  </span>
+                )}
+                <span
+                  style={{ fontSize: "1rem" }}
+                  className="badge me-2 text-bg-primary"
+                >
+                  {data.type == "coupon" ? "Code" : "Deal"}
+                </span>
+              </div>
+            </div>
             <div className="couponExpiry text-muted mb-2">
               <i className="bi bi-clock me-2"></i>
 
               {`${expiry.toDateString()} ${expiry.toLocaleTimeString()}`}
             </div>
-            <div>
+            <div className="d-inline-block">
               <div
-                style={{ width: "fit-content" }}
-                className="couponDetails display-5 fs-5 popupBtn position-relative"
-                onClick={showPopUp}
+                id={`details${data.id}2`}
+                className="collapsible text-success hover-mouse"
               >
-                Details:
-                <i
-                  className="bi bi-arrow-down-circle mx-2 fs-6"
-                  id="detailsArrowIcon"
-                ></i>
-                <p
-                  id={`details${data.id}${data.name}`}
-                  className="popupText mt-3 fs-6 position-absolute"
+                <div
+                  style={{ width: "fit-content" }}
+                  className="d-flex align-items-center"
+                  onClick={handleReadMore}
                 >
+                  <h3
+                    id={`readMoreButton${data.id}2`}
+                    className="fs-6 me-2 d-inline-block"
+                  >
+                    Read More
+                  </h3>
+                  <div className="collapsible__chevron d-inline-block">
+                    <i
+                      id={`readMoreChevron${data.id}2`}
+                      className="bi bi-chevron-double-right"
+                    ></i>
+                  </div>
+                </div>
+                <p className="collapsible__content text-black details rounded w-100">
                   {data.details}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="col-3 d-none d-sm-flex align-items-start justify-content-end p-2 container">
+          <div className="col-3 d-flex flex-column align-items-end justify-content-between p-2 container">
             <button
-              onClick={handleShow}
-              className="px-4 btn text-light bg-primary-custom"
+              onClick={data.type == "coupon" ? handleShow : getOffer}
+              className="d-none d-sm-flex px-4 btn text-light bg-primary-custom hover-button"
             >
-              Get Offer
+              {data.type === "coupon" ? "Get Code" : "Get Offer"}
             </button>
-            <CouponModal
-              data={data}
-              display={modalDisplay}
-              handleClose={handleClose}
-            />
+            <div className="hover-mouse" onClick={handleShareOpen}>
+              <i className="bi bi-share"></i>
+            </div>
           </div>
+
+          <CodeCouponModal
+            data={data}
+            display={modalDisplay}
+            handleClose={handleClose}
+          />
+          <ShareCouponModal
+            data={data}
+            display={shareModalDisplay}
+            handleClose={handleShareClose}
+          />
         </div>
       </div>
     </div>

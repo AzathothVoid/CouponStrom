@@ -12,10 +12,13 @@ import { getStoreById } from "../../api/StoresAPI";
 import { likeStore } from "../../api/StoresAPI";
 import GeneralCoupon from "../../components/GeneralCoupon";
 import { Helmet } from "react-helmet";
+import { useDataDispatch } from "../../components/Data/DataContext";
+import { getAllStores } from "../../api/StoresAPI";
 
 export default function StorePage() {
   const { storeId } = useParams();
   const storeID = Number.parseInt(storeId);
+  const dataDispatch = useDataDispatch();
 
   const [likeStoreCall, setLikeStoreCall] = useState(false);
   const [currCouponPage, setCurrCouponPage] = useState(1);
@@ -39,7 +42,6 @@ export default function StorePage() {
   }, [storeID, storeData]);
 
   useEffect(() => {
-    console.log("inserting", likedStores);
     localStorage.setItem("likedStores", JSON.stringify(likedStores));
   }, [likedStores]);
 
@@ -48,12 +50,19 @@ export default function StorePage() {
       if (likedStores.includes(storeID)) return;
       try {
         likeStore({ "store-id": storeID }).then((response) => {
-          setLikedStores((prev) => [...prev, storeID]);
-          setStoreData((prev) => {
-            return { ...prev, likes: prev.likes + 1 };
-          });
+          getAllStores(dataDispatch);
+        });
+        setLikedStores((prev) => [...prev, storeID]);
+        setStoreData((prev) => {
+          return { ...prev, likes: prev.likes + 1 };
         });
       } catch (error) {
+        setLikedStores((prev) => {
+          return prev.filter((store) => store.id != data.id);
+        });
+        setStoreData((prev) => {
+          return { ...prev, likes: prev.likes - 1 };
+        });
         console.log(error);
       }
     }
@@ -68,9 +77,9 @@ export default function StorePage() {
   console.log("Coupons Data: ", couponsData);
 
   if (couponsData)
-    filteredCoupons = couponsData.filter(
-      (coupon) => coupon.type === couponSection.toLowerCase()
-    );
+    filteredCoupons = couponsData
+      .filter((coupon) => coupon.type === couponSection.toLowerCase())
+      .sort((coup1, coup2) => coup2.rating - coup1.rating);
 
   console.log("Coupons Filtered Data: ", filteredCoupons);
 
@@ -88,7 +97,7 @@ export default function StorePage() {
 
   const couponSectionHandler = (event) => {
     event.preventDefault();
-    setCouponSection(event.target.innerHTML.toLowerCase());
+    setCouponSection(event.target.value);
   };
 
   const handlePageChange = (page) => {
@@ -97,6 +106,10 @@ export default function StorePage() {
 
   const handleStoreLike = () => {
     setLikeStoreCall(true);
+  };
+
+  const visitStore = () => {
+    window.open(storeData.link);
   };
 
   let topStoreCouponData = [];
@@ -121,8 +134,7 @@ export default function StorePage() {
               name="description"
               content={`Find all your favorite coupons and deals in ${storeData.name}! ${storeData.description}`}
             />
-            <meta name="keywords" content={keywords} />
-
+            <meta name="keywords" content={storeData.keywords} />
             <meta
               property="og:title"
               content={`${storeData.name}-Coupon Strom`}
@@ -141,8 +153,15 @@ export default function StorePage() {
             <div className="d-flex align-items-center text-footer-custom flex-column flex-md-row flex-wrap flex-md-nowrap mb-4 mt-2 bg-primary-custom p-3 p-md-4 rounded">
               <h1 className="mb-3 m-md-0 h1 fw-bolder">{storeData.name}</h1>
               <p className="m-0 fs-5 ms-5 ">{storeData.description}</p>
+              <button
+                onClick={visitStore}
+                className="btn bg-white ms-auto"
+                type="button"
+              >
+                Visit Store
+              </button>
             </div>
-            <div className="d-flex gap-2 flex-wrap flex-lg-nowrap">
+            <div className="d-flex align-items-center gap-2 flex-wrap flex-lg-nowrap">
               {topStoreCouponElements}
             </div>
           </div>
@@ -156,8 +175,9 @@ export default function StorePage() {
                     className={`btn-custom fs-4 ${
                       couponSection === "coupon" ? "btn-active-primary" : null
                     }`}
+                    value={"coupon"}
                   >
-                    COUPON
+                    COUPONS
                   </button>
                 </span>
                 <span>
@@ -166,8 +186,9 @@ export default function StorePage() {
                     className={`btn-custom fs-4 ${
                       couponSection === "deal" ? "btn-active-primary" : null
                     }`}
+                    value={"deal"}
                   >
-                    DEAL
+                    DEALS
                   </button>
                 </span>
               </div>

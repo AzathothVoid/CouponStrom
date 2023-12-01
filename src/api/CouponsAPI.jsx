@@ -10,6 +10,26 @@ export const addCoupon = async (data) => {
   }
 };
 
+export const updateCoupon = async (data) => {
+  const response = await ApiService.post("/update-coupon", data);
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};
+
+export const changeCouponRating = async (data) => {
+  const response = await ApiService.post("/change-coupon-rating", data);
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};
+
 export const getAllCoupons = async (dispatch) => {
   const response = await ApiService.get("/get-coupon");
 

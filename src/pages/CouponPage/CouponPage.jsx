@@ -10,6 +10,7 @@ import {
   useDataDispatch,
   useDataState,
 } from "../../components/Data/DataContext";
+import { Link } from "react-router-dom";
 
 function getTimeRemaining(expiryDate) {
   if (!expiryDate) return;
@@ -47,6 +48,7 @@ export default function CouponPage() {
   const useData = useDataState();
 
   const categories = useData.categories;
+  const coupons = useData.coupons;
 
   const [coupon, setCoupon] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(
@@ -80,17 +82,38 @@ export default function CouponPage() {
 
   const handleShow = () => setModalDisplay(true);
   const handleClose = () => setModalDisplay(false);
+  const handleCouponVisit = (event, couponID) => {
+    window.open(`/coupon/${couponID}`, "_self");
+  };
 
   let subCategoryElements;
+  let relatedCouponElements;
 
   if (coupon)
-    subCategoryElements = coupon.subcategories.map((subcategory) => {
-      return (
-        <li key={subcategory.subcategory.id}>
-          <h3 className="h5">{subcategory.subcategory.name}</h3>
-        </li>
-      );
-    });
+    relatedCouponElements = coupons
+      .filter((coupon) =>
+        coupon.subcategories.some((subcategory) =>
+          coupon.subcategories.includes(subcategory)
+        )
+      )
+      .slice(0, 5)
+      .map((coupon) => {
+        return (
+          <li key={coupon.id} className="row my-4 align-items-center  my-md-3">
+            <div className="col-3 d-flex align-items-center justify-content-center border hover-image p-3">
+              <Link to={`/stores/${coupon.store}`}>
+                <img className="w-100" src={coupon.images[0].image} alt="" />
+              </Link>
+            </div>
+            <p
+              onClick={(event) => handleCouponVisit(event, coupon.id)}
+              className="col-9 fs-6"
+            >
+              {coupon.name}
+            </p>
+          </li>
+        );
+      });
 
   let categoryElements;
 
@@ -121,6 +144,144 @@ export default function CouponPage() {
           </Helmet>
           <Header />
           <main className="container d-flex flex-column my-3">
+            <section className="row">
+              <div className="col-12 col-md-7 col-lg-8">
+                <div className="my-4 d-flex mx-5 py-3 flex-column align-items-center gap-4 shadow rounded">
+                  <img
+                    className="border p-3"
+                    width={"200px"}
+                    src={coupon.images[0].image}
+                  />
+                  <h1 className="h1 text-center px-2">{coupon.name}</h1>
+                  <div className="d-flex justify-content-center align-items-center flex-wrap my-4 border-top border-bottom w-100 p-2">
+                    <p className="m-0 me-4">Share on</p>
+
+                    <div className="d-flex gap-3">
+                      <a
+                        href={
+                          "https://twitter.com/share?text=" +
+                          encodeURIComponent(coupon.name) +
+                          "&url=" +
+                          encodeURIComponent(window.location.href)
+                        }
+                        target="_blank"
+                        data-show-count="false"
+                      >
+                        <img src={`/socialMediaIcons/twitter.svg`} alt="" />
+                      </a>
+                      <div
+                        className="fb-share-button"
+                        data-href="https://couponstrom.com"
+                        data-layout=""
+                        data-size=""
+                      >
+                        <a
+                          target="_blank"
+                          href={
+                            "https://www.facebook.com/sharer/sharer.php?u=" +
+                            encodeURIComponent(`${window.location.href}`)
+                          }
+                          className="fb-xfbml-parse-ignore"
+                        >
+                          <img src={`/socialMediaIcons/facebook.svg`} alt="" />
+                        </a>
+                      </div>
+                      <a
+                        href={
+                          "https://www.linkedin.com/sharing/share-offsite/?url=" +
+                          encodeURIComponent(window.location.href) +
+                          "&title=" +
+                          encodeURIComponent(
+                            "Check out this coupon: " + coupon.name
+                          )
+                        }
+                        class="linkedin-share-button"
+                        target="_blank"
+                      >
+                        <img src={`/socialMediaIcons/linkedin.svg`} alt="" />
+                      </a>
+                      <a
+                        href={
+                          "https://api.whatsapp.com/send?text=" +
+                          encodeURIComponent(
+                            "Check out this coupon: " +
+                              coupon.name +
+                              "\n" +
+                              window.location.href
+                          )
+                        }
+                        class="whatsapp-share-button"
+                        target="_blank"
+                      >
+                        <img src={`/socialMediaIcons/whatsapp.svg`} alt="" />
+                      </a>
+                    </div>
+
+                    {/* 
+            <div
+              className="fb-share-button"
+              data-href="https://couponstrom.com"
+              data-layout=""
+              data-size=""
+            >
+              <a
+                target="_blank"
+                href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcouponstrom.com%2F&amp;src=sdkpreparse"
+                className="fb-xfbml-parse-ignore"
+              >
+                <img src={`/socialMediaIcons/facebook.svg`} alt="" />
+              </a>
+            </div> */}
+                  </div>
+                  <div className="w-100 p-4 px-5">
+                    <button
+                      onClick={handleShow}
+                      className="btn text-light w-100 bg-primary-custom py-2"
+                    >
+                      {coupon.type === "coupon" ? "Get Code" : "Get Offer"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="col-12 col-md-5 col-lg-4">
+                <div className="shadow rounded p-4 mb-4 my-4 text-center m-auto">
+                  <h2 className="fs-3 border-bottom pb-2">Expires in</h2>
+                  <div className="text-danger mt-2 fs-2 d-flex gap-2 align-items-center justify-content-center">
+                    <i className="bi bi-clock"></i>
+                    {timeRemaining
+                      ? `${timeRemaining.days} Days ${timeRemaining.hours}:${timeRemaining.minutes}:${timeRemaining.seconds}`
+                      : null}
+                  </div>
+                </div>
+                <div className=" shadow rounded py-4 mb-4 my-4 m-auto">
+                  <h3 className="mb-4 fs-4 border-bottom w-100 ps-3 pb-2">
+                    Related Coupons
+                  </h3>
+                  <ul>{relatedCouponElements}</ul>
+                </div>
+                {/* <div className=" shadow rounded p-4 mb-4 my-4 m-auto">
+                  <h3 className="mb-3 text-center">Categories</h3>
+                  <ul>{categoryElements}</ul>
+                </div> */}
+              </div>
+            </section>
+          </main>
+          <Footer />
+          <CouponModal
+            data={coupon}
+            display={modalDisplay}
+            handleClose={handleClose}
+          />
+        </>
+      ) : (
+        <Loader />
+      )}
+    </>
+  );
+}
+
+{
+  /* <main className="container d-flex flex-column my-3">
             <section className="row">
               <div className="col-md-9">
                 <div className="my-4 d-flex mx-5 py-3 flex-column align-items-center gap-4 shadow rounded">
@@ -207,7 +368,7 @@ export default function CouponPage() {
               >
                 <img src={`/socialMediaIcons/facebook.svg`} alt="" />
               </a>
-            </div> */}
+            </div>
                   </div>
                   <div className="w-100 p-4 px-5">
                     <button
@@ -246,10 +407,5 @@ export default function CouponPage() {
             display={modalDisplay}
             handleClose={handleClose}
           />
-        </>
-      ) : (
-        <Loader />
-      )}
-    </>
-  );
+        </> */
 }

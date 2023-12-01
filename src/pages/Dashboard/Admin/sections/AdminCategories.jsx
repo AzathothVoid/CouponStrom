@@ -20,18 +20,23 @@ export default function AdminCategories(props) {
 
   const [show, setShow] = useState(false);
   const [blocks, setBlocks] = useState([]);
+  const [keywordBlocks, setKeywordBlocks] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [categoryDescription, setCategoryDescription] = useState("");
+  const [categoryImage, setCategoryImage] = useState(null);
   const [callDelete, setCallDelete] = useState(null);
 
   const categoriesData = useData.categories || [];
 
   const handleClose = () => {
     setBlocks([]);
+    setKeywordBlocks([]);
     setCategoryName("");
     setCategoryDescription("");
+    setCategoryImage(null);
     setShow(false);
   };
+
   const handleShow = () => setShow(true);
 
   useEffect(() => {
@@ -57,11 +62,34 @@ export default function AdminCategories(props) {
     });
   };
 
+  const deleteKeywordBlock = (e) => {
+    setKeywordBlocks((prev) => {
+      return prev.filter((keyword) => keyword !== e.target.innerHTML);
+    });
+  };
+
   const categoryElements = categoriesData.map((category) => {
+    console.log("Category: ", category);
     return (
       <div key={category.id} className="d-flex my-4 object">
         <div className="container p-2 ps-4 text-dark">
-          <div className="storeDescription lead my-1 fs-4">{category.name}</div>
+          <div className="fs-6 d-flex align-items-center">
+            <div
+              className="me-2 p-2"
+              style={{
+                background: "#f1f1f1",
+                borderRadius: "100%",
+                width: "40px",
+              }}
+            >
+              {category.images.length > 0 ? (
+                <img className="w-100" src={category.images[0].image} alt="" />
+              ) : null}
+            </div>
+            <div className="storeDescription lead my-1 fs-4">
+              {category.name}
+            </div>
+          </div>
           <div className="storeExpiry text-muted mb-1">
             Number of Deals : {category.total_deals}
           </div>
@@ -81,6 +109,19 @@ export default function AdminCategories(props) {
     );
   });
 
+  const keywordBlockElements = keywordBlocks.map((block) => {
+    return (
+      <div
+        key={block}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
+      >
+        <span onClick={deleteKeywordBlock} className="bi bi-trash">
+          {block}
+        </span>
+      </div>
+    );
+  });
+
   const blockElements = blocks.map((block) => {
     return (
       <div
@@ -96,6 +137,10 @@ export default function AdminCategories(props) {
 
   const handleCategoryNameChange = (e) => setCategoryName(e.target.value);
 
+  const handleFileChange = (e) => {
+    setCategoryImage(e.target.files[0]);
+  };
+
   const handleCategoryDescriptionChange = (e) =>
     setCategoryDescription(e.target.value);
 
@@ -108,19 +153,40 @@ export default function AdminCategories(props) {
     setBlocks((curr) => [...curr, value]);
   };
 
+  const addKeyword = (e) => {
+    const keywordElement = document.getElementById("keyword");
+    const value = keywordElement.value;
+
+    keywordElement.value = "";
+
+    if (keywordBlocks.find((block) => block === value)) return;
+    setKeywordBlocks((curr) => [...curr, value]);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (blocks.length === 0) {
       alert("Enter atleast one Category and sub category");
+      return;
     }
 
     try {
-      addCategory({
-        name: categoryName,
-        sub_categories: blocks,
-        descripton: categoryDescription,
-      }).then((response) => {
+      let formData = new FormData();
+
+      formData.append("name", categoryName);
+
+      for (let i = 0; i < blocks.length; i++) {
+        formData.append("sub_categories[]", blocks[i]);
+      }
+      for (let i = 0; i < keywordBlocks.length; i++) {
+        formData.append("keywords[]", keywordBlocks[i]);
+      }
+
+      formData.append("descripton", categoryDescription);
+      formData.append("images", categoryImage);
+
+      addCategory(formData).then((response) => {
         getAllCategories(dispatchData);
       });
     } catch (error) {
@@ -173,6 +239,20 @@ export default function AdminCategories(props) {
               />
             </Form.Group>
             <Form.Group className="mb-3">
+              <Form.Label>Keywords</Form.Label>
+              <Form.Control type="text" placeholder="Keyword" id="keyword" />
+              <div className="d-flex align-items-center">
+                <Button
+                  variant="outline-secondary"
+                  onClick={addKeyword}
+                  className="mt-3"
+                >
+                  ADD KEYWORD
+                </Button>
+              </div>
+              {keywordBlockElements}
+            </Form.Group>
+            <Form.Group className="mb-3">
               <Form.Label>Description</Form.Label>
               <Form.Control
                 as="textarea"
@@ -192,19 +272,29 @@ export default function AdminCategories(props) {
                 placeholder="Subcategory"
                 id="subCategory"
               />
+              <div className="d-flex align-items-center">
+                <Button
+                  variant="outline-secondary"
+                  onClick={addSubcategory}
+                  className="mt-3"
+                >
+                  ADD SUBCATEGORY
+                </Button>
+              </div>
+              {blockElements}
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Icon Image</Form.Label>
+              <Form.Control
+                className="mb-3"
+                type="file"
+                onChange={handleFileChange}
+                name="images"
+                accept="image/*"
+                required
+              />
             </Form.Group>
           </Form>
-
-          <div className="d-flex align-items-center">
-            <Button
-              variant="outline-secondary"
-              onClick={addSubcategory}
-              className="mt-3"
-            >
-              ADD SUBCATEGORY
-            </Button>
-          </div>
-          {blockElements}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

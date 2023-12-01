@@ -11,11 +11,13 @@ import {
   getStoreByCategory,
   getStoreBySubCategory,
   deleteStoreById,
+  updateStore,
 } from "../../../../api/StoresAPI";
 import {
   useDataState,
   useDataDispatch,
 } from "../../../../components/Data/DataContext";
+import loadImage from "../../../../utils/LoadImage";
 
 export default function AdminStores(props) {
   const dataState = useDataState();
@@ -24,6 +26,8 @@ export default function AdminStores(props) {
   const [subCategoriesData, setSubCategoriesData] = useState([]);
   const [show, setShow] = useState(false);
   const [callDelete, setCallDelete] = useState(null);
+
+  const [update, setUpdate] = useState(null);
 
   const [storeCategory, setStoreCategory] = useState("");
   const [storeSubCategory, setStoreSubCategory] = useState("");
@@ -35,6 +39,7 @@ export default function AdminStores(props) {
     description: "",
     category: [],
     sub_category: [],
+    keywords: [],
     images: null,
   });
 
@@ -50,13 +55,34 @@ export default function AdminStores(props) {
       link: "",
       description: "",
       category: [],
+      keywords: [],
       sub_category: [],
       images: "",
     });
     setShow(false);
+    setUpdate(false);
   };
   const handleShow = () => {
     setShow(true);
+  };
+
+  const handleUpdate = async (e, store) => {
+    const response = await fetch(imageURL);
+    const blob = await response.blob();
+
+    const data = {
+      name: store.name,
+      link: store.link,
+      description: store.description,
+      category: store.categories.map((category) => categorky.category.name),
+      sub_category: store.subcategories.map(
+        (subcategory) => subcategory.subcategory.name
+      ),
+      images: blob,
+    };
+    setUpdate(store);
+    setFormData(data);
+    handleShow();
   };
 
   useEffect(() => {
@@ -127,6 +153,12 @@ export default function AdminStores(props) {
     setCallDelete(storeID);
   };
 
+  const deleteKeywordBlock = (e) => {
+    setKeywordBlocks((prev) => {
+      return prev.filter((keyword) => keyword !== e.target.innerHTML);
+    });
+  };
+
   var storesToShow = storesData;
 
   if (storeCategory.length > 1) {
@@ -144,15 +176,16 @@ export default function AdminStores(props) {
       storesToShow = storesBySubCategory;
     }
   }
-
+  console.log("Stores to show: ", storesToShow);
   const storeElements = storesToShow.map((store) => {
+    console.log("Store: ", store);
     return (
       <div key={store.id} className="my-4 row object">
         <div className="col-4 col-sm-3 col-md-2 img p-4 d-flex align-items-center">
           <img
             className="w-100"
             src={store.images[0].image}
-            alt="AliExpress"
+            alt={store.name}
           ></img>
         </div>
 
@@ -166,10 +199,17 @@ export default function AdminStores(props) {
           </div>
         </div>
 
-        <div className="col-1 d-flex align-items-start justify-content-end p-2 container">
-          <button onClick={(e) => deleteStore(e, store.id)} className="btn">
-            <i className="bi bi-trash-fill fs-2"></i>
-          </button>
+        <div className="col-1 container">
+          <input type="number" placeholder="Number" />
+          Rating
+          <div className="d-flex align-items-start justify-content-end p-2 ">
+            <button onClick={(e) => deleteStore(e, store.id)} className="btn">
+              <i className="bi bi-trash-fill fs-2"></i>
+            </button>
+            <button onClick={(e) => handleUpdate(e, store)} className="btn">
+              <i className="bi bi-arrow-clockwise fs-2"></i>
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -217,6 +257,19 @@ export default function AdminStores(props) {
     );
   });
 
+  const keywordBlockElements = keywordBlocks.map((block) => {
+    return (
+      <div
+        key={block}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
+      >
+        <span onClick={deleteKeywordBlock} className="bi bi-trash">
+          {block}
+        </span>
+      </div>
+    );
+  });
+
   const addCategory = (e) => {
     if (!storeCategory) return;
     if (formData.category.find((block) => block === storeCategory[0])) return;
@@ -243,6 +296,16 @@ export default function AdminStores(props) {
     });
   };
 
+  const addKeyword = (e) => {
+    const keywordElement = document.getElementById("keyword");
+    const value = keywordElement.value;
+
+    keywordElement.value = "";
+
+    if (keywordBlocks.find((block) => block === value)) return;
+    setKeywordBlocks((curr) => [...curr, value]);
+  };
+
   const handleStoreSubCategoryChange = (e) => {
     setStoreSubCategory(e.target.value.split(","));
   };
@@ -261,7 +324,6 @@ export default function AdminStores(props) {
   };
 
   const handleFileChange = (e) => {
-    console.log("Image: ", e.target.files[0]);
     setFormData((prev) => {
       return { ...formData, images: e.target.files[0] };
     });
@@ -286,6 +348,9 @@ export default function AdminStores(props) {
     for (let i = 0; i < formData.sub_category.length; i++) {
       submission.append("sub_category[]", formData.sub_category[i]);
     }
+    for (let i = 0; i < formData.keywords.length; i++) {
+      submission.append("keywords[]", formData.keywords[i]);
+    }
 
     submission.append("images", formData.images);
     submission.append("link", formData.link);
@@ -294,6 +359,43 @@ export default function AdminStores(props) {
     console.log("Form Data: ", formData);
     try {
       addStore(submission).then((response) => {
+        getAllStores(dataDispatch);
+      });
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+
+    handleClose();
+  };
+
+  const updateStoreData = (event) => {
+    event.preventDefault();
+    if (formData.category.length === 0 || formData.sub_category.length === 0) {
+      alert("Enter atleast one Category and sub category");
+      return;
+    }
+
+    console.log("Form Data: ", formData);
+
+    let submission = new FormData();
+
+    submission.append("name", formData.name);
+
+    for (let i = 0; i < formData.category.length; i++) {
+      submission.append("category[]", formData.category[i]);
+    }
+    for (let i = 0; i < formData.sub_category.length; i++) {
+      submission.append("sub_category[]", formData.sub_category[i]);
+    }
+
+    submission.append("images", formData.images);
+    submission.append("link", formData.link);
+    submission.append("description", formData.description);
+    submission.append("id", update.id);
+
+    console.log("Form Data: ", formData);
+    try {
+      updateStore(submission).then((response) => {
         getAllStores(dataDispatch);
       });
     } catch (error) {
@@ -383,6 +485,21 @@ export default function AdminStores(props) {
                   autoFocus
                   required
                 />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Keywords</Form.Label>
+                <Form.Control type="text" placeholder="Keyword" id="keyword" />
+                <div className="d-flex align-items-center">
+                  <Button
+                    variant="outline-secondary"
+                    onClick={addKeyword}
+                    className="mt-3"
+                  >
+                    ADD KEYWORD
+                  </Button>
+                </div>
+                {keywordBlockElements}
               </Form.Group>
 
               <Form.Group className="mb-4">
@@ -487,9 +604,15 @@ export default function AdminStores(props) {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" type="submit" form="storeForm">
-              Submit
-            </Button>
+            {update ? (
+              <Button variant="primary" type="button" onClick={updateStoreData}>
+                Update
+              </Button>
+            ) : (
+              <Button onClick={handleSubmit} variant="primary" type="button">
+                Submit
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
       </div>

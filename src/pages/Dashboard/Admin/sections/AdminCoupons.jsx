@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import {
   addCoupon,
+  updateCoupon,
   deleteCouponById,
   getAllCoupons,
 } from "../../../../api/CouponsAPI";
@@ -27,6 +28,10 @@ export default function AdminCoupons(props) {
 
   const [show, setShow] = useState(false);
   const [callDelete, setCallDelete] = useState(null);
+  const [update, setUpdate] = useState(null);
+
+  const [changeRating, setChangeRating] = useState(false);
+  const [couponsToShow, setCouponsToShow] = useState(couponsData);
 
   const [categoriesDataByStore, setCategoriesDataByStore] = useState([]);
   const [subCategoriesData, setSubCategoriesData] = useState([]);
@@ -37,7 +42,8 @@ export default function AdminCoupons(props) {
 
   const currDate = formatDate(new Date());
 
-  let couponsToShow = couponsData;
+  if (couponsData.length > 0 && !showStoreId && couponsToShow.length === 0)
+    setCouponsToShow(couponsData);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -93,8 +99,29 @@ export default function AdminCoupons(props) {
       details: "",
     });
     setShow(false);
+    setUpdate(null);
   };
+
   const handleShow = () => setShow(true);
+
+  const handleUpdate = (e, coupon) => {
+    const data = {
+      title: coupon.name,
+      store: [coupon.stores.name, coupon.stores.id],
+      expiry: coupon.expiry,
+      category: coupon.categories.map((category) => category.category.name),
+      sub_category: coupon.subcategories.map(
+        (subcategory) => subcategory.subcategory.name
+      ),
+      deal: coupon.deal,
+      code: coupon.code,
+      details: coupon.details,
+    };
+    setUpdate(coupon);
+    setFormData(data);
+    handleShow();
+  };
+
   const deleteCategory = (e) => {
     setFormData((prev) => {
       return {
@@ -120,12 +147,10 @@ export default function AdminCoupons(props) {
     setCallDelete(couponID);
   };
 
-  const showPopUp = (e, couponId) => {
-    e.stopPropagation();
+  const handleReadMore = (event, data) => {
+    const detailsElement = document.getElementById(`details${data.id}`);
 
-    const details = document.getElementById(`details${couponId}`);
-
-    details.classList.toggle("show");
+    detailsElement.classList.toggle("collapsible--expanded");
   };
 
   const showStoreElements = storesData.map((store) => {
@@ -136,19 +161,10 @@ export default function AdminCoupons(props) {
     );
   });
 
-  if (showStoreId.length > 1) {
-    console.log("Filtering data: ", showStoreId);
-    couponsToShow = couponsData.filter(
-      (coupon) => coupon.store === showStoreId[1]
-    );
-    console.log("Coupons to show: ", couponsToShow);
-  }
-
   const couponElements = couponsToShow.map((coupon) => {
-    console.log("Coupons: ", coupon);
     return (
       <div key={coupon.id} className="my-4 row object">
-        <div className="col-4 col-sm-3 col-md-2 img p-4 d-flex align-items-center">
+        <div className="col-4 col-sm-2 img p-4 d-flex align-items-center">
           <img
             className="w-100"
             src={coupon.images[0].image}
@@ -156,32 +172,68 @@ export default function AdminCoupons(props) {
           ></img>
         </div>
 
-        <div className="col-7 col-sm-8 col-md-9 container p-2 text-dark ">
+        <div className="col-7 col-sm-8 container p-2 text-dark ">
           <div className="couponDescription lead fs-4 my-1">{coupon.name}</div>
           <div className="couponExpiry text-muted mb-1">
             Expires {coupon.expiry}
           </div>
-          <div style={{ width: "fit-content" }} className="position-relative">
+          <div className="d-inline-block">
             <div
-              className="couponDetails display-5  popupBtn"
-              onClick={(e) => showPopUp(e, coupon.id)}
-            >
-              Details:
-              <i className="bi bi-arrow-down-circle" id="detailsArrowIcon"></i>
-            </div>
-            <p
               id={`details${coupon.id}`}
-              className="popupText mt-3 fs-6 position-absolute"
+              className="collapsible text-success hover-mouse"
             >
-              {coupon.details}
-            </p>
+              <div
+                style={{ width: "fit-content" }}
+                className="d-flex align-items-center"
+                onClick={(e) => handleReadMore(e, coupon)}
+              >
+                <h3
+                  id={`readMoreButton${coupon.id}`}
+                  className="fs-6 me-2 d-inline-block"
+                >
+                  Read More
+                </h3>
+                <div className="collapsible__chevron d-inline-block">
+                  <i
+                    id={`readMoreChevron${coupon.id}`}
+                    className="bi bi-chevron-double-right"
+                  ></i>
+                </div>
+              </div>
+              <p className="collapsible__content text-black p-0 details rounded w-100">
+                {coupon.details}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="col-1 d-flex align-items-start justify-content-end p-2 container">
-          <button onClick={(e) => deleteCoupon(e, coupon.id)} className="btn">
-            <i className="bi bi-trash-fill fs-2"></i>
-          </button>
+        <div className="col-4 col-sm-2 d-flex flex-column align-items-center container mt-4">
+          <input
+            value={coupon.rating}
+            onChange={(e) =>
+              setCouponsToShow((prev) =>
+                prev.map((item) =>
+                  item.id === coupon.id
+                    ? { ...item, rating: Number.parseInt(e.target.value) }
+                    : item
+                )
+              )
+            }
+            className="w-100"
+            disabled={!changeRating}
+            min={0}
+            type="number"
+            placeholder="Rating"
+            name="rating"
+          />
+          <div className="d-flex align-items-start justify-content-end p-2 ">
+            <button onClick={(e) => deleteStore(e, store.id)} className="btn">
+              <i className="bi bi-trash-fill fs-2"></i>
+            </button>
+            <button onClick={(e) => handleUpdate(e, store)} className="btn">
+              <i className="bi bi-arrow-clockwise fs-2"></i>
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -275,8 +327,11 @@ export default function AdminCoupons(props) {
         return {
           ...formData,
           [name]: split,
+          category: [],
+          sub_category: [],
         };
       });
+
       return;
     }
 
@@ -294,12 +349,70 @@ export default function AdminCoupons(props) {
   };
 
   const handleCouponStoreChange = (e) => {
+    const array = e.target.value.split(",");
+
+    setCouponsToShow(couponsData.filter((coupon) => coupon.store === array[1]));
     setShowStoreId(e.target.value.split(","));
+  };
+  const handleSubmitRating = (e) => {
+    const data = couponsToShow.map((coupon) => {
+      return { id: coupon.id, rating: coupon.rating };
+    });
+    try {
+      changeCouponRating(data).then((response) => {
+        getAllCoupons(dataDispatch);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    setChangeRating(false);
+  };
+
+  const updateCouponData = (e) => {
+    e.preventDefault();
+
+    const submission = new FormData();
+
+    if (formData.category.length === 0 || formData.sub_category.length === 0) {
+      alert("Enter atleast one Category and sub category");
+      return;
+    }
+
+    submission.append("name", formData.title);
+    submission.append("store", formData.store[1]);
+    submission.append("expiry", formData.expiry);
+    for (let i = 0; i < formData.category.length; i++) {
+      submission.append("category[]", formData.category[i]);
+    }
+    for (let i = 0; i < formData.sub_category.length; i++) {
+      submission.append("sub_category[]", formData.sub_category[i]);
+    }
+    submission.append("details", formData.details);
+    if (formData.deal) {
+      submission.append("deal", formData.deal);
+      submission.append("type", "deal");
+    } else {
+      submission.append("code", formData.code);
+      submission.append("type", "coupon");
+    }
+    submission.append("id", update.id);
+
+    try {
+      updateCoupon(submission).then((response) => {
+        getAllCoupons(dataDispatch);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    handleClose();
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const submission = new FormData();
+
+    console.log("Submitted Data: ", formData);
 
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
       alert("Enter atleast one Category and sub category");
@@ -370,11 +483,26 @@ export default function AdminCoupons(props) {
                 {showStoreElements}
               </Form.Select>
             </Form.Group>
+            <Form.Group className="d-flex justify-content-end gap-3 mb-3 col-6 ">
+              <Button
+                onClick={(e) => setChangeRating(true)}
+                disabled={changeRating}
+                className="btn-custom border-0 hover-mouse hover-button text-white bg-primary-custom"
+              >
+                Change Rating
+              </Button>
+              <Button
+                disabled={!changeRating}
+                onClick={handleSubmitRating}
+                className="btn-custom border-0 hover-mouse hover-button text-white bg-primary-custom"
+              >
+                Submit Rating
+              </Button>
+            </Form.Group>
           </div>
           {couponElements}
         </div>
       </div>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>ADD COUPON</Modal.Title>
@@ -513,6 +641,7 @@ export default function AdminCoupons(props) {
                 id="details"
                 value={formData.details}
                 onChange={handleInputChange}
+                required
               />
             </Form.Group>
           </Form>
@@ -521,11 +650,18 @@ export default function AdminCoupons(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" form="couponForm">
-            Submit
-          </Button>
+          {update ? (
+            <Button variant="primary" type="button" onClick={updateCouponData}>
+              Update
+            </Button>
+          ) : (
+            <Button variant="primary" type="submit" form="couponForm">
+              Submit
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
+      ;
     </>
   );
 }

@@ -16,19 +16,21 @@ export default function TopStoresSection() {
 
   const storesElement = filteredData.map((store, index) => {
     const storeElement = (
-      <Link to={`/stores/${store.id}`} key={store.id}>
+      
         <div key={store.id} className="">
           <StoreCard data={store} />
         </div>
-      </Link>
+      
     );
 
     return storeElement;
   });
 
   return (
-    <section id="topStoresSection" className="container top-stores ">
-      <h2 className="mb-3 ms-1 text-center text-primary-custom">Top Stores</h2>
+    <section id="topStoresSection" className="container top-stores text-center">
+      <h2 className="fs-4 mb-3 rounded bg-primary-custom p-2 text-white d-inline-block">
+        Top Stores
+      </h2>
 
       <div className="d-flex flex-xs-column flex-md-row justify-content-center flex-wrap gap-2">
         {storesElement}

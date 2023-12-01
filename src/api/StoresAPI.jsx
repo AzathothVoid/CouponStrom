@@ -15,6 +15,16 @@ export const addStore = async (store) => {
   }
 };
 
+export const updateStore = async (data) => {
+  const response = await ApiService.post("/update-store", data);
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};
+
 export const getAllStores = async (dispatch) => {
   const response = await ApiService.get("/get-stores");
 

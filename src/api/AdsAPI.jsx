@@ -10,6 +10,16 @@ export const addAd = async (data) => {
   }
 };
 
+export const updateBlog = async (data) => {
+  const response = await ApiService.post("/update-ad", data);
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};
+
 export const getAd = async (dispatch) => {
   const response = await ApiService.get("/get-ad");
 

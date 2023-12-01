@@ -7,6 +7,7 @@ import ReactMarkDown from "react-markdown";
 import { getBlogByID } from "../../api/BlogsAPI";
 import Loader from "../../components/Loader/Loader";
 import { Helmet } from "react-helmet";
+import LatestCouponsSection from "../../components/Sections/LatestCoupons/LatestCoupons";
 
 export default function BlogPage() {
   const { blogId } = useParams();
@@ -39,7 +40,8 @@ export default function BlogPage() {
     });
   }
 
-  const keywords = ["blog", blog.title];
+  let keywords;
+  if (blog) keywords = ["blog", blog.title];
 
   console.log("Blog: ", blog);
 
@@ -50,7 +52,7 @@ export default function BlogPage() {
           <Helmet>
             <title>{`${blog.title}-Coupon Strom`}</title>
             <meta name="description" content={`${blog.description}`} />
-            <meta name="keywords" content={keywords} />
+            <meta name="keywords" content={blog.keywords} />
 
             <meta property="og:title" content={`${blog.title}-Coupon Strom`} />
             <meta property="og:description" content={`${blog.description}`} />
@@ -91,6 +93,7 @@ export default function BlogPage() {
                 </div>
               </section>
             </div>
+            <LatestCouponsSection />
           </main>
 
           <Footer />

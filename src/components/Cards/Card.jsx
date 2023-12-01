@@ -35,7 +35,10 @@ export default function Card(props) {
               </h6>
             </div>
             <div class="row card-btn-container mt-3">
-              <a href="" className="text-white card-btn bg-primary-custom">
+              <a
+                href=""
+                className="text-white card-btn bg-primary-custom hover-button"
+              >
                 Get Offer
               </a>
             </div>

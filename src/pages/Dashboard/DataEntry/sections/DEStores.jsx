@@ -31,6 +31,7 @@ export default function DEStores(props) {
     name: "",
     link: "",
     description: "",
+    keywords: [],
     category: [],
     sub_category: [],
     images: null,
@@ -42,12 +43,12 @@ export default function DEStores(props) {
   const handleClose = () => {
     setStoreCategory("");
     setStoreSubCategory("");
-
     setFormData({
       name: "",
       link: "",
       description: "",
       category: [],
+      keywords: [],
       sub_category: [],
       images: "",
     });
@@ -110,6 +111,11 @@ export default function DEStores(props) {
     });
   };
 
+  const deleteKeywordBlock = (e) => {
+    setKeywordBlocks((prev) => {
+      return prev.filter((keyword) => keyword !== e.target.innerHTML);
+    });
+  };
   var storesToShow = storesData;
 
   console.log("Store category: ", storeCategory);
@@ -198,6 +204,19 @@ export default function DEStores(props) {
     );
   });
 
+  const keywordBlockElements = formData.keywords.map((block) => {
+    return (
+      <div
+        key={block}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
+      >
+        <span onClick={deleteKeywordBlock} className="bi bi-trash">
+          {block}
+        </span>
+      </div>
+    );
+  });
+
   const addCategory = (e) => {
     if (!storeCategory) return;
     if (formData.category.find((block) => block === storeCategory[0])) return;
@@ -221,6 +240,21 @@ export default function DEStores(props) {
 
     setFormData((prev) => {
       return { ...prev, category: [...prev.category, storeCategory[0]] };
+    });
+  };
+
+  const addKeyword = (e) => {
+    const keywordElement = document.getElementById("keyword");
+    const value = keywordElement.value;
+
+    keywordElement.value = "";
+
+    if (formData.keywords.find((block) => block === value)) return;
+    setFormData((prev) => {
+      return {
+        ...prev,
+        keywords: [...prev.keywords, value],
+      };
     });
   };
 
@@ -266,6 +300,9 @@ export default function DEStores(props) {
     }
     for (let i = 0; i < formData.sub_category.length; i++) {
       submission.append("sub_category[]", formData.sub_category[i]);
+    }
+    for (let i = 0; i < formData.keywords.length; i++) {
+      submission.append("keywords[]", formData.keywords[i]);
     }
 
     submission.append("images", formData.images);
@@ -364,6 +401,21 @@ export default function DEStores(props) {
                   autoFocus
                   required
                 />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Keywords</Form.Label>
+                <Form.Control type="text" placeholder="Keyword" id="keyword" />
+                <div className="d-flex align-items-center">
+                  <Button
+                    variant="outline-secondary"
+                    onClick={addKeyword}
+                    className="mt-3"
+                  >
+                    ADD KEYWORD
+                  </Button>
+                </div>
+                {keywordBlockElements}
               </Form.Group>
 
               <Form.Group className="mb-4">

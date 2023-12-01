@@ -12,7 +12,6 @@ import LatestCouponsSection from "../../components/Sections/LatestCoupons/Latest
 import BlogsSideBar from "../../components/Sections/BlogsSection/BlogsSideBar";
 import { useDataState } from "../../components/Data/DataContext";
 import Loader from "../../components/Loader/Loader";
-import SearchCoupons from "../../components/SearchCoupons/SearchCoupons";
 import { Helmet } from "react-helmet";
 
 export default function Home() {
@@ -22,6 +21,8 @@ export default function Home() {
   const coupons = useData.coupons;
   const categories = useData.categories;
 
+  const maxCoupons = coupons.slice(0, 25);
+
   const keywords = categories.map((category) => {
     return category.name;
   });
@@ -29,10 +30,10 @@ export default function Home() {
   keywords.push("Coupons");
   keywords.push("Deals");
 
-  const itemsPerPage = 12;
+  const itemsPerPage = 10;
   const startIndex = (currCouponPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const couponsToShow = coupons.slice(startIndex, endIndex);
+  const couponsToShow = maxCoupons.slice(startIndex, endIndex);
 
   const couponElements = couponsToShow.map((coupon) => {
     return (
@@ -79,21 +80,19 @@ export default function Home() {
           <Header />
 
           <main>
-            <section className="container m-auto flex-wrap flex-md-nowrap slider-container-bg align-items-center row gap-5 py-5">
-              <div className="col-12 col-md-8">
-                <LogoSlider />
-              </div>
-              <div className="col-12 col-md-4 my-md-0 my-4">
-                <SearchCoupons />
-              </div>
+            <section className="px-2 my-3">
+              <LogoSlider />
+              
             </section>
             <div className="mb-5">
               <TopStoresSection />
             </div>
             <section className="container-md my-3 pe-0">
-              <div style={{ minHeight: "100vh" }} className="row">
+              <div className="row">
                 <div className="col-12 col-sm-12 col-md-7 col-lg-8 mb-4">
-                  <h2 className="fs-2 text-primary-custom">Coupon Deals</h2>
+                  <h2 className="fs-4 p-2 rounded bg-primary-custom text-white d-inline-block">
+                    Coupon Deals
+                  </h2>
                   <div>{couponElements}</div>
                   <div className="sticky-footer my-4">
                     <Pagination
@@ -103,7 +102,7 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <BlogsSideBar max={3} />
+                <BlogsSideBar max={2} />
               </div>
             </section>
             <div className="my-4">

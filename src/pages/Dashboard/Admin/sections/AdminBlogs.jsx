@@ -21,6 +21,7 @@ export default function AdminBlogs(props) {
 
   const [show, setShow] = useState(false);
   const [callDelete, setCallDelete] = useState(null);
+  const [keywordBlocks, setKeywordBlocks] = useState([]);
 
   const [text, setText] = useState("");
   const [blogTitle, setBlogTitle] = useState("");
@@ -36,6 +37,7 @@ export default function AdminBlogs(props) {
     setBlogTitle("");
     setBlogImage();
     setBlogDescription("");
+    setKeywordBlocks([]);
     setShow(false);
   };
   const handleShow = () => setShow(true);
@@ -57,6 +59,12 @@ export default function AdminBlogs(props) {
       }
     }
   }, [callDelete]);
+
+  const deleteKeywordBlock = (e) => {
+    setKeywordBlocks((prev) => {
+      return prev.filter((keyword) => keyword !== e.target.innerHTML);
+    });
+  };
 
   const deleteBlog = (e, blogID) => {
     e.preventDefault();
@@ -87,6 +95,29 @@ export default function AdminBlogs(props) {
     );
   });
 
+  const keywordBlockElements = keywordBlocks.map((block) => {
+    return (
+      <div
+        key={block}
+        className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
+      >
+        <span onClick={deleteKeywordBlock} className="bi bi-trash">
+          {block}
+        </span>
+      </div>
+    );
+  });
+
+  const addKeyword = (e) => {
+    const keywordElement = document.getElementById("keyword");
+    const value = keywordElement.value;
+
+    keywordElement.value = "";
+
+    if (keywordBlocks.find((block) => block === value)) return;
+    setKeywordBlocks((curr) => [...curr, value]);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -96,6 +127,9 @@ export default function AdminBlogs(props) {
     formData.append("text", markDown);
     formData.append("title", blogTitle);
     formData.append("description", blogDescription);
+    for (let i = 0; i < keywordBlocks.length; i++) {
+      formData.append("keywords[]", keywordBlocks[i]);
+    }
 
     try {
       addBlog(formData).then((response) => {
@@ -184,6 +218,21 @@ export default function AdminBlogs(props) {
                 autoFocus
                 required
               />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Keywords</Form.Label>
+              <Form.Control type="text" placeholder="Keyword" id="keyword" />
+              <div className="d-flex align-items-center">
+                <Button
+                  variant="outline-secondary"
+                  onClick={addKeyword}
+                  className="mt-3"
+                >
+                  ADD KEYWORD
+                </Button>
+              </div>
+              {keywordBlockElements}
             </Form.Group>
 
             <Form.Group className="mb-3">

@@ -12,6 +12,16 @@ export const addBlog = async (data) => {
   }
 };
 
+export const updateBlog = async (data) => {
+  const response = await ApiService.post("/update-blog", data);
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    throw response;
+  }
+};
+
 export const getBlogs = async (dispatch) => {
   const response = await ApiService.get("/get-blog");
 

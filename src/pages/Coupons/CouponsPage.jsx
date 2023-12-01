@@ -59,10 +59,13 @@ export default function CouponsPage() {
           <Header />
           <main className="container py-3">
             <div className="d-flex align-items-center gap-2">
-              <h1 className="h2 mb-0 ">Coupons:</h1>
-              <p className="fs-4 couponExpiry mt-1 mb-0">
-                {`${category}->${store}`} {type ? `->${type}` : null}
-              </p>
+              <ol className="breadcrumb fs-3">
+                <li className="breadcrumb-item">{category}</li>
+                <li className="breadcrumb-item">{store}</li>
+                <li className={`breadcrumb-item ${type ? "active" : null}`}>
+                  {type ? type : "All"}
+                </li>
+              </ol>
             </div>
             <section className="my-4">{filteredCouponElements}</section>
           </main>

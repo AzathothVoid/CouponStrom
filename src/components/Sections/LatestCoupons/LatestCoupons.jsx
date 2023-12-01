@@ -28,7 +28,9 @@ export default function LatestCouponsSection() {
       id="latestCouponsSection"
       className="container p-2 m-auto my-4 top-stores"
     >
-      <h2 className="mb-3 text-primary-custom ">Latest Coupons</h2>
+      <h2 className="fs-4 mb-3 rounded bg-primary-custom p-2 text-white d-inline-block ">
+        Latest Coupons
+      </h2>
 
       <div className="d-flex flex-xs-column flex-md-row justify-content-center justify-content-lg-start flex-wrap gap-2">
         {couponsElement}

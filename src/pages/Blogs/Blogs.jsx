@@ -6,6 +6,7 @@ import BlogCard from "../../components/Cards/BlogCard";
 import { useDataState } from "../../components/Data/DataContext";
 import Loader from "../../components/Loader/Loader";
 import { Helmet } from "react-helmet";
+import LatestCouponsSection from "../../components/Sections/LatestCoupons/LatestCoupons";
 
 export default function Blogs() {
   const dataState = useDataState();
@@ -36,7 +37,7 @@ export default function Blogs() {
       {blogs && blogElements ? (
         <>
           <Helmet>
-            <title>{`Welcome to our community-Coupons Strom`}</title>
+            <title>{`Welcome to our community-Coupon Strom`}</title>
             <meta
               name="description"
               content={`Look at what we have been upto recently and keep yourself upto date with everything going on around you!`}
@@ -58,7 +59,6 @@ export default function Blogs() {
           </Helmet>
           <Header />
           <main className="container">
-            <h1 className="text-center mt-4 mb-2">Blogs and Community</h1>
             <section className="container mb-4 p-4 rounded bg-white">
               <h2 className="mb-4 ms-1 text-center text-primary-custom">
                 Top Blogs
@@ -73,6 +73,7 @@ export default function Blogs() {
                 />
               </div>
             </section>
+            <LatestCouponsSection />
           </main>
           <Footer />
         </>
