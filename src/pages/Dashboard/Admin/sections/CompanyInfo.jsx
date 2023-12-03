@@ -6,7 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import TurndownService from "turndown";
-import ReactMarkDown from "react-markdown";
+import { marked } from "marked";
 import Navigation from "../../Navigation";
 import { getCompanyInfo, updateCompanyInfo } from "../../../../api/Company";
 import {
@@ -18,35 +18,50 @@ export default function CompanyInfo(props) {
   const dataState = useDataState();
   const dataDispatch = useDataDispatch();
 
+  const companyData = dataState.company;
+
   const [show, setShow] = useState(false);
 
-  const [aboutUsText, setAboutUsText] = useState(
-    dataState.company.aboutUs || ""
+  const [companyInfo, setCompanyInfo] = useState(
+    {
+      aboutUs: companyData.about_us ? marked(companyData.about_us) : "",
+      policy: companyData.policy ? marked(companyData.policy) : "",
+    } || {}
   );
-  const [policyText, setPolicyText] = useState(dataState.company.policy || "");
 
   const handleClose = () => {
-    setAboutUsText("");
-    setPolicyText("");
     setShow(false);
   };
   const handleShow = () => setShow(true);
 
   const turnDownService = new TurndownService();
 
-  const aboutUsMarkDown = turnDownService.turndown(aboutUsText);
-  const policyMarkDown = turnDownService.turndown(policyText);
+  const aboutUsMarkDown = turnDownService.turndown(companyInfo.aboutUs);
+  const policyMarkDown = turnDownService.turndown(companyInfo.policy);
+
+  console.log("INFO: ", companyData);
+  console.log("Company INFO: ", companyInfo);
+
+  useEffect(() => {
+    if (companyData)
+      setCompanyInfo({
+        aboutUs: marked(companyData.about_us),
+        policy: marked(companyData.policy),
+      });
+  }, [companyData]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let formData = new FormData();
+    const data = {
+      aboutUs: aboutUsMarkDown,
+      policy: policyMarkDown,
+    };
 
-    formData.append("aboutUs", aboutUsMarkDown);
-    formData.append("policy", policyMarkDown);
+    console.log("DATA TO BE SENT: ", data);
 
     try {
-      updateCompanyInfo(formData).then((response) => {
+      updateCompanyInfo(data).then((response) => {
         getCompanyInfo(dataDispatch);
       });
     } catch (error) {
@@ -57,11 +72,15 @@ export default function CompanyInfo(props) {
   };
 
   const handleAboutUsChange = (value) => {
-    setAboutUsText(value);
+    setCompanyInfo((prev) => {
+      return { ...prev, aboutUs: value };
+    });
   };
 
   const handlePolicyChange = (value) => {
-    setPolicyText(value);
+    setCompanyInfo((prev) => {
+      return { ...prev, policy: value };
+    });
   };
 
   return (
@@ -97,7 +116,7 @@ export default function CompanyInfo(props) {
               <div>
                 <ReactQuill
                   theme="snow"
-                  value={aboutUsText}
+                  value={companyInfo.aboutUs}
                   onChange={handleAboutUsChange}
                 />
               </div>
@@ -108,7 +127,7 @@ export default function CompanyInfo(props) {
               <div>
                 <ReactQuill
                   theme="snow"
-                  value={policyText}
+                  value={companyInfo.policy}
                   onChange={handlePolicyChange}
                 />
               </div>

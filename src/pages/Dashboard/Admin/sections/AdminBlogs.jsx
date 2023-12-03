@@ -52,7 +52,8 @@ export default function AdminBlogs(props) {
     if (callDelete) {
       try {
         const response = deleteBlogById({ id: callDelete }).then((response) => {
-          window.location.reload();
+          getBlogs(dataDispatch);
+          setCallDelete(false);
         });
       } catch (error) {
         console.log(error);

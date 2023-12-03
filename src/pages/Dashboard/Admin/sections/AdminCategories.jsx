@@ -44,7 +44,8 @@ export default function AdminCategories(props) {
       try {
         const response = deleteCategoryById({ id: callDelete }).then(
           (response) => {
-            window.location.reload();
+            getAllCategories(dispatchData);
+            setCallDelete(false);
           }
         );
       } catch (error) {}

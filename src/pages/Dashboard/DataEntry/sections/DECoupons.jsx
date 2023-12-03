@@ -25,6 +25,7 @@ export default function DECoupons(props) {
   const dataDispatch = useDataDispatch();
   const storesData = useData.stores;
   const couponsData = useData.coupons;
+  const categoriesData = useData.categories;
 
   const [show, setShow] = useState(false);
 
@@ -51,7 +52,7 @@ export default function DECoupons(props) {
     details: "",
   });
 
-  if (couponsData.length > 0 && !showStoreId && couponsToShow.length === 0)
+  if (couponsData.length != couponsToShow.length && !showStoreId)
     setCouponsToShow(couponsData);
 
   useEffect(() => {
@@ -325,8 +326,25 @@ export default function DECoupons(props) {
     const submission = new FormData();
 
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
-      alert("Enter atleast one Category and sub category");
+      alert("Enter atleast one Category and subCategory");
       return;
+    }
+
+    for (i = 0; i < formData.category.length; i++) {
+      const catData = categoriesData.find(
+        (cat) => cat.name === formData.category[i]
+      );
+
+      console.log("Cat Data: ", catData);
+
+      if (
+        !catData.subcategories.some((subcat) =>
+          formData.sub_category.includes(subcat.name)
+        )
+      ) {
+        alert(`Enter atleast one subcategory for the category ${catData.name}`);
+        return;
+      }
     }
 
     submission.append("name", formData.title);

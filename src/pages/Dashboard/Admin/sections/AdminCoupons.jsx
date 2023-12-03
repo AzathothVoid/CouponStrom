@@ -9,6 +9,7 @@ import {
   updateCoupon,
   deleteCouponById,
   getAllCoupons,
+  changeCouponRating,
 } from "../../../../api/CouponsAPI";
 import {
   getCategoryByStore,
@@ -24,6 +25,7 @@ export default function AdminCoupons(props) {
   const useData = useDataState();
   const dataDispatch = useDataDispatch();
   const storesData = useData.stores;
+  const categoriesData = useData.categories;
   const couponsData = useData.coupons;
 
   const [show, setShow] = useState(false);
@@ -42,7 +44,7 @@ export default function AdminCoupons(props) {
 
   const currDate = formatDate(new Date());
 
-  if (couponsData.length > 0 && !showStoreId && couponsToShow.length === 0)
+  if (couponsData.length != couponsToShow.length && !showStoreId)
     setCouponsToShow(couponsData);
 
   const [formData, setFormData] = useState({
@@ -67,12 +69,11 @@ export default function AdminCoupons(props) {
   useEffect(() => {
     if (callDelete) {
       try {
-        const response = deleteCouponById({ id: callDelete }).then(
-          (response) => {
-            window.location.reload();
-          }
-        );
-        console.log(response);
+        deleteCouponById({ id: callDelete }).then((response) => {
+          console.log("Enter Inside");
+          getAllCoupons(dataDispatch);
+          setCallDelete(false);
+        });
       } catch (error) {}
     }
   }, [callDelete]);
@@ -227,10 +228,10 @@ export default function AdminCoupons(props) {
             name="rating"
           />
           <div className="d-flex align-items-start justify-content-end p-2 ">
-            <button onClick={(e) => deleteStore(e, store.id)} className="btn">
+            <button onClick={(e) => deleteCoupon(e, coupon.id)} className="btn">
               <i className="bi bi-trash-fill fs-2"></i>
             </button>
-            <button onClick={(e) => handleUpdate(e, store)} className="btn">
+            <button onClick={(e) => handleUpdate(e, coupon)} className="btn">
               <i className="bi bi-arrow-clockwise fs-2"></i>
             </button>
           </div>
@@ -374,9 +375,22 @@ export default function AdminCoupons(props) {
     const submission = new FormData();
 
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
-      alert("Enter atleast one Category and sub category");
+      alert("Enter atleast one Category and subCategory");
       return;
     }
+
+    formData.category.map((category) => {
+      const catData = categoriesData.find((cat) => cat.name === category);
+
+      if (
+        !catData.subcategories.some((subcat) =>
+          formData.sub_category.includes(subcat.name)
+        )
+      ) {
+        alert("Enter atleast one subcategory for the category ", catData.name);
+        return;
+      }
+    });
 
     submission.append("name", formData.title);
     submission.append("store", formData.store[1]);
@@ -415,8 +429,25 @@ export default function AdminCoupons(props) {
     console.log("Submitted Data: ", formData);
 
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
-      alert("Enter atleast one Category and sub category");
+      alert("Enter atleast one Category and subCategory");
       return;
+    }
+
+    for (i = 0; i < formData.category.length; i++) {
+      const catData = categoriesData.find(
+        (cat) => cat.name === formData.category[i]
+      );
+
+      console.log("Cat Data: ", catData);
+
+      if (
+        !catData.subcategories.some((subcat) =>
+          formData.sub_category.includes(subcat.name)
+        )
+      ) {
+        alert(`Enter atleast one subcategory for the category ${catData.name}`);
+        return;
+      }
     }
 
     submission.append("name", formData.title);
@@ -466,7 +497,7 @@ export default function AdminCoupons(props) {
               <i className="bi bi-plus fs-4"></i>ADD COUPON
             </button>
           </div>
-          <div className="container py-2">
+          <div className="container d-flex justify-content-between py-2">
             <Form.Group className="row mb-3 col-6 ">
               <Form.Select
                 name="stores"

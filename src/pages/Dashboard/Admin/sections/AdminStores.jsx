@@ -13,6 +13,7 @@ import {
   deleteStoreById,
   updateStore,
 } from "../../../../api/StoresAPI";
+import { getImage } from "../../../../api/ImagesAPI";
 import {
   useDataState,
   useDataDispatch,
@@ -67,18 +68,27 @@ export default function AdminStores(props) {
   };
 
   const handleUpdate = async (e, store) => {
-    const response = await fetch(imageURL);
-    const blob = await response.blob();
+    const binaryData = await getImage(store.images[0].image);
+
+    const uint8Array = new Uint8Array(binaryData.length);
+    for (let i = 0; i < binaryData.length; i++) {
+      uint8Array[i] = binaryData.charCodeAt(i);
+    }
+
+    const blob = new Blob([uint8Array]);
+
+    const file = new File([blob], "filename.png");
 
     const data = {
       name: store.name,
       link: store.link,
       description: store.description,
-      category: store.categories.map((category) => categorky.category.name),
+      category: store.categories.map((category) => category.category.name),
       sub_category: store.subcategories.map(
         (subcategory) => subcategory.subcategory.name
       ),
-      images: blob,
+      keywords: store.keywords ? store.keywords : [],
+      images: file,
     };
     setUpdate(store);
     setFormData(data);
@@ -89,7 +99,8 @@ export default function AdminStores(props) {
     if (callDelete) {
       try {
         deleteStoreById({ id: callDelete }).then((response) => {
-          window.location.reload();
+          getAllStores(dataDispatch);
+          setCallDelete(false);
         });
       } catch (error) {}
     }
@@ -137,6 +148,25 @@ export default function AdminStores(props) {
     }
   }, [storeCategory]);
 
+  console.log("Categories Data: ", categoriesData);
+  console.log("Subcategories Data: ", subCategoriesData);
+
+  const deleteCategory = (e) => {
+    const category = categoriesData.find(
+      (cat) => cat.name === e.target.innerHTML
+    );
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        category: formData.category.filter((cat) => cat !== e.target.innerHTML),
+        sub_category: formData.sub_category.filter(
+          (subcat) => !category.subcategories.find((sb) => sb.name === subcat)
+        ),
+      };
+    });
+  };
+
   const deleteSubCategory = (e) => {
     setFormData((prev) => {
       return {
@@ -154,8 +184,13 @@ export default function AdminStores(props) {
   };
 
   const deleteKeywordBlock = (e) => {
-    setKeywordBlocks((prev) => {
-      return prev.filter((keyword) => keyword !== e.target.innerHTML);
+    setFormData((prev) => {
+      return {
+        ...prev,
+        keywords: prev.keywords.filter(
+          (keyword) => keyword !== e.target.innerHTML
+        ),
+      };
     });
   };
 
@@ -200,8 +235,6 @@ export default function AdminStores(props) {
         </div>
 
         <div className="col-1 container">
-          <input type="number" placeholder="Number" />
-          Rating
           <div className="d-flex align-items-start justify-content-end p-2 ">
             <button onClick={(e) => deleteStore(e, store.id)} className="btn">
               <i className="bi bi-trash-fill fs-2"></i>
@@ -237,7 +270,7 @@ export default function AdminStores(props) {
         key={block}
         className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd"
       >
-        <span onClick={deleteSubCategory} className="bi bi-trash">
+        <span onClick={deleteCategory} className="bi bi-trash">
           {block}
         </span>
       </div>
@@ -257,18 +290,23 @@ export default function AdminStores(props) {
     );
   });
 
-  const keywordBlockElements = keywordBlocks.map((block) => {
-    return (
-      <div
-        key={block}
-        className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
-      >
-        <span onClick={deleteKeywordBlock} className="bi bi-trash">
-          {block}
-        </span>
-      </div>
-    );
-  });
+  const keywordBlockElements = formData.keywords
+    ? formData.keywords.map((block) => {
+        return (
+          <div
+            key={block}
+            className="d-inline-flex bg-secondary border border-dark p-1 m-1 mt-3 text-light subCategoryAdd"
+          >
+            <span onClick={deleteKeywordBlock} className="bi bi-trash">
+              {block}
+            </span>
+          </div>
+        );
+      })
+    : [];
+
+  console.log("Form Data: ", formData);
+  console.log("Keywords: ", formData.keywords);
 
   const addCategory = (e) => {
     if (!storeCategory) return;
@@ -302,8 +340,15 @@ export default function AdminStores(props) {
 
     keywordElement.value = "";
 
-    if (keywordBlocks.find((block) => block === value)) return;
-    setKeywordBlocks((curr) => [...curr, value]);
+    if (formData.keywords && formData.keywords.find((block) => block === value))
+      return;
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        keywords: [...prev.keywords, value],
+      };
+    });
   };
 
   const handleStoreSubCategoryChange = (e) => {
@@ -331,9 +376,27 @@ export default function AdminStores(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
-      alert("Enter atleast one Category and sub category");
+      alert("Enter atleast one Category and subCategory");
       return;
+    }
+
+    for (i = 0; i < formData.category.length; i++) {
+      const catData = categoriesData.find(
+        (cat) => cat.name === formData.category[i]
+      );
+
+      console.log("Cat Data: ", catData);
+
+      if (
+        !catData.subcategories.some((subcat) =>
+          formData.sub_category.includes(subcat.name)
+        )
+      ) {
+        alert(`Enter atleast one subcategory for the category ${catData.name}`);
+        return;
+      }
     }
 
     console.log("Form Data: ", formData);
@@ -371,8 +434,25 @@ export default function AdminStores(props) {
   const updateStoreData = (event) => {
     event.preventDefault();
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
-      alert("Enter atleast one Category and sub category");
+      alert("Enter atleast one Category and subCategory");
       return;
+    }
+
+    for (i = 0; i < formData.category.length; i++) {
+      const catData = categoriesData.find(
+        (cat) => cat.name === formData.category[i]
+      );
+
+      console.log("Cat Data: ", catData);
+
+      if (
+        !catData.subcategories.some((subcat) =>
+          formData.sub_category.includes(subcat.name)
+        )
+      ) {
+        alert(`Enter atleast one subcategory for the category ${catData.name}`);
+        return;
+      }
     }
 
     console.log("Form Data: ", formData);
@@ -387,13 +467,16 @@ export default function AdminStores(props) {
     for (let i = 0; i < formData.sub_category.length; i++) {
       submission.append("sub_category[]", formData.sub_category[i]);
     }
+    for (let i = 0; i < formData.keywords.length; i++) {
+      submission.append("keywords[]", formData.keywords[i]);
+    }
 
     submission.append("images", formData.images);
     submission.append("link", formData.link);
     submission.append("description", formData.description);
     submission.append("id", update.id);
 
-    console.log("Form Data: ", formData);
+    console.log("Form Data Submission: ", formData);
     try {
       updateStore(submission).then((response) => {
         getAllStores(dataDispatch);

@@ -27,7 +27,8 @@ export default function AdminAdvertisements(props) {
     if (callDelete) {
       try {
         const response = deleteAdById({ id: callDelete }).then((response) => {
-          window.location.reload();
+          getAd(dataDispatch);
+          setCallDelete(false);
         });
       } catch (error) {}
     }

@@ -100,6 +100,22 @@ export default function DEStores(props) {
     }
   }, [storeCategory]);
 
+  const deleteCategory = (e) => {
+    const category = categoriesData.find(
+      (cat) => cat.name === e.target.innerHTML
+    );
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        category: formData.category.filter((cat) => cat !== e.target.innerHTML),
+        sub_category: formData.sub_category.filter(
+          (subcat) => !category.subcategories.find((sb) => sb.name === subcat)
+        ),
+      };
+    });
+  };
+
   const deleteSubCategory = (e) => {
     setFormData((prev) => {
       return {
@@ -112,10 +128,16 @@ export default function DEStores(props) {
   };
 
   const deleteKeywordBlock = (e) => {
-    setKeywordBlocks((prev) => {
-      return prev.filter((keyword) => keyword !== e.target.innerHTML);
+    setFormData((prev) => {
+      return {
+        ...prev,
+        keywords: prev.keywords.filter(
+          (keyword) => keyword !== e.target.innerHTML
+        ),
+      };
     });
   };
+
   var storesToShow = storesData;
 
   console.log("Store category: ", storeCategory);
@@ -184,7 +206,7 @@ export default function DEStores(props) {
         key={block}
         className="d-inline-flex bg-secondary border border-dark p-1 m-1 text-light categoryAdd"
       >
-        <span onClick={deleteSubCategory} className="bi bi-trash">
+        <span onClick={deleteCategory} className="bi bi-trash">
           {block}
         </span>
       </div>
@@ -285,8 +307,25 @@ export default function DEStores(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (formData.category.length === 0 || formData.sub_category.length === 0) {
-      alert("Enter atleast one Category and sub category");
+      alert("Enter atleast one Category and subCategory");
       return;
+    }
+
+    for (i = 0; i < formData.category.length; i++) {
+      const catData = categoriesData.find(
+        (cat) => cat.name === formData.category[i]
+      );
+
+      console.log("Cat Data: ", catData);
+
+      if (
+        !catData.subcategories.some((subcat) =>
+          formData.sub_category.includes(subcat.name)
+        )
+      ) {
+        alert(`Enter atleast one subcategory for the category ${catData.name}`);
+        return;
+      }
     }
 
     console.log("Form Data: ", formData);
