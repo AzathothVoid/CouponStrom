@@ -202,6 +202,8 @@ export default function DECategories(props) {
                 value={categoryName}
                 onChange={handleCategoryNameChange}
                 id="category"
+                minLength={1}
+                maxLength={30}
                 autoFocus
                 required
               />

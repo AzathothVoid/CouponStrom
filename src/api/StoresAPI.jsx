@@ -16,7 +16,11 @@ export const addStore = async (store) => {
 };
 
 export const updateStore = async (data) => {
-  const response = await ApiService.post("/update-store", data);
+  const response = await ApiService.post("/update-store", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
   if (response.status === 200) {
     return response.data;

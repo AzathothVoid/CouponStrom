@@ -4,7 +4,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Navigation from "../../Navigation";
-import { getSubCategoriesByCategory } from "../../../../api/CategoriesAPI";
+import {
+  getAllCategories,
+  getSubCategoriesByCategory,
+} from "../../../../api/CategoriesAPI";
 import {
   addStore,
   getAllStores,
@@ -19,6 +22,7 @@ import {
   useDataDispatch,
 } from "../../../../components/Data/DataContext";
 import loadImage from "../../../../utils/LoadImage";
+import { getAllCoupons } from "../../../../api/CouponsAPI";
 
 export default function AdminStores(props) {
   const dataState = useDataState();
@@ -34,6 +38,10 @@ export default function AdminStores(props) {
   const [storeSubCategory, setStoreSubCategory] = useState("");
   const [storesByCategory, setStoresByCategory] = useState();
   const [storesBySubCategory, setStoresBySubCategory] = useState();
+
+  const [storeBrowseCategory, setStoreBrowseCategory] = useState("");
+  const [storeBrowseSubCategory, setStoreBrowseSubCategory] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
     link: "",
@@ -42,6 +50,7 @@ export default function AdminStores(props) {
     sub_category: [],
     keywords: [],
     images: null,
+    imageLink: "",
   });
 
   const categoriesData = dataState.categories;
@@ -59,6 +68,7 @@ export default function AdminStores(props) {
       keywords: [],
       sub_category: [],
       images: "",
+      imageLink: "",
     });
     setShow(false);
     setUpdate(false);
@@ -68,16 +78,29 @@ export default function AdminStores(props) {
   };
 
   const handleUpdate = async (e, store) => {
-    const binaryData = await getImage(store.images[0].image);
+    const imageData = await getImage(store.images[0].image);
+
+    console.log("Store Data: ", store);
+
+    const binaryData = imageData.data;
+
+    console.log("Binary Data: ", binaryData);
 
     const uint8Array = new Uint8Array(binaryData.length);
+
     for (let i = 0; i < binaryData.length; i++) {
       uint8Array[i] = binaryData.charCodeAt(i);
     }
 
-    const blob = new Blob([uint8Array]);
+    const blob = new Blob([binaryData], {
+      type: imageData.headers["content-type"],
+    });
 
-    const file = new File([blob], "filename.png");
+    const file = new File([blob], "filename.png", {
+      type: imageData.headers["content-type"],
+    });
+
+    console.log("Files: ", file);
 
     const data = {
       name: store.name,
@@ -89,6 +112,7 @@ export default function AdminStores(props) {
       ),
       keywords: store.keywords ? store.keywords : [],
       images: file,
+      imageLink: store.images[0].image,
     };
     setUpdate(store);
     setFormData(data);
@@ -133,9 +157,12 @@ export default function AdminStores(props) {
   }, [storeSubCategory]);
 
   useEffect(() => {
-    if (storeCategory.length > 1) {
+    if (storeCategory.length > 1 || storeBrowseCategory.length > 1) {
+      console.log("Inside the mofo");
       const data = {
-        "category-id": storeCategory[1],
+        "category-id": storeCategory[1]
+          ? storeCategory[1]
+          : storeBrowseCategory[1],
       };
 
       try {
@@ -146,7 +173,7 @@ export default function AdminStores(props) {
     } else {
       setSubCategoriesData([]);
     }
-  }, [storeCategory]);
+  }, [storeCategory, storeBrowseCategory]);
 
   console.log("Categories Data: ", categoriesData);
   console.log("Subcategories Data: ", subCategoriesData);
@@ -256,6 +283,14 @@ export default function AdminStores(props) {
     );
   });
 
+  const categoryBrowseSelectElements = categoriesData.map((category) => {
+    return (
+      <option key={category.id} value={[category.name, category.id]}>
+        {category.name}
+      </option>
+    );
+  });
+
   const subCategorySelectElements = subCategoriesData.map((subCategory) => {
     return (
       <option key={subCategory.id} value={[subCategory.name, subCategory.id]}>
@@ -263,6 +298,16 @@ export default function AdminStores(props) {
       </option>
     );
   });
+
+  const subCategoryBrowseSelectElements = subCategoriesData.map(
+    (subCategory) => {
+      return (
+        <option key={subCategory.id} value={[subCategory.name, subCategory.id]}>
+          {subCategory.name}
+        </option>
+      );
+    }
+  );
 
   const blockElementsCategory = formData.category.map((block) => {
     return (
@@ -360,6 +405,15 @@ export default function AdminStores(props) {
     setStoreCategory(e.target.value.split(","));
   };
 
+  const handleStoreCatBrowseChange = (e) => {
+    setStoreBrowseSubCategory("");
+    setStoreBrowseCategory(e.target.value.split(","));
+  };
+
+  const handleStoreSubCatBrowseChange = (e) => {
+    setStoreBrowseSubCategory(e.target.value.split(","));
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -370,7 +424,7 @@ export default function AdminStores(props) {
 
   const handleFileChange = (e) => {
     setFormData((prev) => {
-      return { ...formData, images: e.target.files[0] };
+      return { ...formData, images: e.target.files[0], imageLink: "" };
     });
   };
 
@@ -419,7 +473,7 @@ export default function AdminStores(props) {
     submission.append("link", formData.link);
     submission.append("description", formData.description);
 
-    console.log("Form Data: ", formData);
+    console.log("Form Data Submission: ", formData);
     try {
       addStore(submission).then((response) => {
         getAllStores(dataDispatch);
@@ -476,10 +530,16 @@ export default function AdminStores(props) {
     submission.append("description", formData.description);
     submission.append("id", update.id);
 
+    if (formData.imageLink) {
+      submission.append("imageLink", formData.imageLink);
+    }
+
     console.log("Form Data Submission: ", formData);
     try {
       updateStore(submission).then((response) => {
         getAllStores(dataDispatch);
+        getAllCategories(dataDispatch);
+        getAllCoupons(dataDispatch);
       });
     } catch (error) {
       console.log("ERROR: ", error);
@@ -513,15 +573,15 @@ export default function AdminStores(props) {
                   name="stores"
                   className="mb-2"
                   id="storeCategory"
-                  value={storeCategory}
+                  value={storeBrowseCategory}
                   size="6"
-                  onChange={handleStoreCategoryChange}
+                  onChange={handleStoreCatBrowseChange}
                   placeholder="Select Category"
                 >
                   <option value="" selected>
                     Show all stores
                   </option>
-                  {categorySelectElements}
+                  {categoryBrowseSelectElements}
                 </Form.Select>
               </Form.Group>
 
@@ -531,15 +591,15 @@ export default function AdminStores(props) {
                   className="mb-2"
                   id="storeSubCategory"
                   size="6"
-                  value={storeSubCategory}
-                  onChange={handleStoreSubCategoryChange}
+                  value={storeBrowseSubCategory}
+                  onChange={handleStoreSubCatBrowseChange}
                   placeholder="Select SubCategory"
                 >
                   {" "}
                   <option value="" disabled selected>
                     Select a subcategory
                   </option>
-                  {subCategorySelectElements}
+                  {subCategoryBrowseSelectElements}
                 </Form.Select>
               </Form.Group>
             </div>

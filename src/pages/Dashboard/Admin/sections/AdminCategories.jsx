@@ -8,11 +8,15 @@ import {
   addCategory,
   getAllCategories,
   deleteCategoryById,
+  updateCategory,
 } from "../../../../api/CategoriesAPI";
 import {
   useDataState,
   useDataDispatch,
 } from "../../../../components/Data/DataContext";
+import { getImage } from "../../../../api/ImagesAPI";
+import { getAllCoupons } from "../../../../api/CouponsAPI";
+import { getAllStores } from "../../../../api/StoresAPI";
 
 export default function AdminCategories(props) {
   const useData = useDataState();
@@ -25,6 +29,9 @@ export default function AdminCategories(props) {
   const [categoryDescription, setCategoryDescription] = useState("");
   const [categoryImage, setCategoryImage] = useState(null);
   const [callDelete, setCallDelete] = useState(null);
+  const [imageLink, setImageLink] = useState("");
+
+  const [update, setUpdate] = useState(null);
 
   const categoriesData = useData.categories || [];
 
@@ -34,10 +41,43 @@ export default function AdminCategories(props) {
     setCategoryName("");
     setCategoryDescription("");
     setCategoryImage(null);
+    setImageLink("");
     setShow(false);
   };
 
   const handleShow = () => setShow(true);
+
+  const handleUpdate = async (e, category) => {
+    const imageData = await getImage(category.images[0].image);
+
+    console.log("CATEGORY DATA: ", category);
+
+    const binaryData = imageData.data;
+
+    const uint8Array = new Uint8Array(binaryData.length);
+
+    for (let i = 0; i < binaryData.length; i++) {
+      uint8Array[i] = binaryData.charCodeAt(i);
+    }
+
+    const blob = new Blob([binaryData], {
+      type: imageData.headers["content-type"],
+    });
+
+    const file = new File([blob], "filename.png", {
+      type: imageData.headers["content-type"],
+    });
+
+    setCategoryName(category.name);
+    setCategoryDescription(category.descripton);
+    setBlocks(category.subcategories.map((subcategory) => subcategory.name));
+    setKeywordBlocks(category.keywords ? category.keywords : []);
+    setCategoryImage(file);
+    setImageLink(category.images[0].image);
+
+    setUpdate(category);
+    handleShow();
+  };
 
   useEffect(() => {
     if (callDelete) {
@@ -98,13 +138,18 @@ export default function AdminCategories(props) {
             Number of Coupons : {category.total_coupons}
           </div>
         </div>
-        <div className="d-flex align-items-start justify-content-end p-2 container">
-          <button
-            onClick={(e) => deleteCategory(e, category.id)}
-            className="btn"
-          >
-            <i className="bi bi-trash-fill fs-2"></i>
-          </button>
+        <div className="col-1 container">
+          <div className="d-flex align-items-start justify-content-end p-2 ">
+            <button
+              onClick={(e) => deleteCategory(e, category.id)}
+              className="btn"
+            >
+              <i className="bi bi-trash-fill fs-2"></i>
+            </button>
+            <button onClick={(e) => handleUpdate(e, category)} className="btn">
+              <i className="bi bi-arrow-clockwise fs-2"></i>
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -140,6 +185,7 @@ export default function AdminCategories(props) {
 
   const handleFileChange = (e) => {
     setCategoryImage(e.target.files[0]);
+    setImageLink("");
   };
 
   const handleCategoryDescriptionChange = (e) =>
@@ -162,6 +208,49 @@ export default function AdminCategories(props) {
 
     if (keywordBlocks.find((block) => block === value)) return;
     setKeywordBlocks((curr) => [...curr, value]);
+  };
+
+  const updateCategoryData = async (event) => {
+    event.preventDefault();
+
+    if (blocks.length === 0) {
+      alert("Enter atleast one Category and sub category");
+      return;
+    }
+
+    try {
+      let formData = new FormData();
+
+      formData.append("name", categoryName);
+
+      for (let i = 0; i < blocks.length; i++) {
+        formData.append("sub_categories[]", blocks[i]);
+      }
+      for (let i = 0; i < keywordBlocks.length; i++) {
+        formData.append("keywords[]", keywordBlocks[i]);
+      }
+
+      formData.append("descripton", categoryDescription);
+      formData.append("images", categoryImage);
+      formData.append("id", update.id);
+
+      if (imageLink) {
+        formData.append("imageLink", imageLink);
+      }
+
+      console.log("Form Data: ", blocks);
+
+      updateCategory(formData).then((response) => {
+        getAllCategories(dispatchData);
+        getAllCoupons(dispatchData);
+        getAllStores(dispatchData);
+      });
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+
+    handleClose();
   };
 
   const handleSubmit = async (event) => {
@@ -235,6 +324,8 @@ export default function AdminCategories(props) {
                 value={categoryName}
                 onChange={handleCategoryNameChange}
                 id="category"
+                minLength={1}
+                maxLength={30}
                 autoFocus
                 required
               />
@@ -301,9 +392,19 @@ export default function AdminCategories(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" form="categoriesForm">
-            Submit
-          </Button>
+          {update ? (
+            <Button
+              variant="primary"
+              type="button"
+              onClick={updateCategoryData}
+            >
+              Update
+            </Button>
+          ) : (
+            <Button onClick={handleSubmit} variant="primary" type="button">
+              Submit
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>

@@ -6,7 +6,7 @@ export const getImage = async (path) => {
   });
 
   if (response.status === 200) {
-    return response.data;
+    return response;
   } else {
     throw response.data;
   }

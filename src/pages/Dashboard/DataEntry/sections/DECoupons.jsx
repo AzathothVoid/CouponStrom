@@ -11,7 +11,7 @@ import {
 } from "../../../../api/CouponsAPI";
 import {
   getCategoryByStore,
-  getSubCategoriesByCategory,
+  getSubCategoriesByStore,
 } from "../../../../api/CategoriesAPI";
 import {
   useDataState,
@@ -65,8 +65,8 @@ export default function DECoupons(props) {
 
   useEffect(() => {
     if (couponCategory) {
-      getSubCategoriesByCategory(setSubCategoriesData, {
-        "category-id": Number.parseInt(couponCategory[1]),
+      getSubCategoriesByStore(setSubCategoriesData, {
+        "store-id": Number.parseInt(formData.store[1]),
       });
     }
   }, [couponCategory]);
@@ -87,11 +87,19 @@ export default function DECoupons(props) {
     setShow(false);
   };
   const handleShow = () => setShow(true);
+
   const deleteCategory = (e) => {
+    const category = categoriesData.find(
+      (cat) => cat.name === e.target.innerHTML
+    );
+
     setFormData((prev) => {
       return {
         ...prev,
         category: formData.category.filter((cat) => cat !== e.target.innerHTML),
+        sub_category: formData.sub_category.filter(
+          (subcat) => !category.subcategories.find((sb) => sb.name === subcat)
+        ),
       };
     });
   };

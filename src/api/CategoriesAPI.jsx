@@ -62,7 +62,7 @@ export const getSubCategoriesByStore = async (setter, storeID) => {
   });
 
   if (response.status === 200) {
-    setter(response.data);
+    setter(response.data[0]);
   } else {
     throw response;
   }
@@ -71,6 +71,18 @@ export const getSubCategoriesByStore = async (setter, storeID) => {
 export const getSubCategoriesByCategory = async (setter, categoryID) => {
   const response = await ApiService.get("/get-subcat-catid", {
     params: categoryID,
+  });
+
+  if (response.status === 200) {
+    setter(response.data);
+  } else {
+    throw response;
+  }
+};
+
+export const getSubCatsByStoreAndCategory = async (setter, data) => {
+  const response = await ApiService.get("/get-subcat-by-catid-and-storeid", {
+    params: data,
   });
 
   if (response.status === 200) {

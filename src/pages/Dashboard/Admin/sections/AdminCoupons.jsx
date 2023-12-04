@@ -12,14 +12,16 @@ import {
   changeCouponRating,
 } from "../../../../api/CouponsAPI";
 import {
+  getAllCategories,
   getCategoryByStore,
-  getSubCategoriesByCategory,
+  getSubCatsByStoreAndCategory,
 } from "../../../../api/CategoriesAPI";
 import {
   useDataState,
   useDataDispatch,
 } from "../../../../components/Data/DataContext";
 import { formatDate } from "../../../../utils/DateUtils";
+import { getAllStores } from "../../../../api/StoresAPI";
 
 export default function AdminCoupons(props) {
   const useData = useDataState();
@@ -47,6 +49,8 @@ export default function AdminCoupons(props) {
   if (couponsData.length != couponsToShow.length && !showStoreId)
     setCouponsToShow(couponsData);
 
+  console.log("subcategories data: ", subCategoriesData);
+
   const [formData, setFormData] = useState({
     title: "",
     store: "",
@@ -70,7 +74,6 @@ export default function AdminCoupons(props) {
     if (callDelete) {
       try {
         deleteCouponById({ id: callDelete }).then((response) => {
-          console.log("Enter Inside");
           getAllCoupons(dataDispatch);
           setCallDelete(false);
         });
@@ -78,10 +81,13 @@ export default function AdminCoupons(props) {
     }
   }, [callDelete]);
 
+  console.log("Sub category Data: ", subCategoriesData);
   useEffect(() => {
     if (couponCategory) {
-      getSubCategoriesByCategory(setSubCategoriesData, {
+      console.log("Enter Inside");
+      getSubCatsByStoreAndCategory(setSubCategoriesData, {
         "category-id": Number.parseInt(couponCategory[1]),
+        "store-id": Number.parseInt(formData.store[1]),
       });
     }
   }, [couponCategory]);
@@ -124,10 +130,17 @@ export default function AdminCoupons(props) {
   };
 
   const deleteCategory = (e) => {
+    const category = categoriesData.find(
+      (cat) => cat.name === e.target.innerHTML
+    );
+
     setFormData((prev) => {
       return {
         ...prev,
         category: formData.category.filter((cat) => cat !== e.target.innerHTML),
+        sub_category: formData.sub_category.filter(
+          (subcat) => !category.subcategories.find((sb) => sb.name === subcat)
+        ),
       };
     });
   };
@@ -414,6 +427,8 @@ export default function AdminCoupons(props) {
     try {
       updateCoupon(submission).then((response) => {
         getAllCoupons(dataDispatch);
+        getAllCategories(dataDispatch);
+        getAllStores(dataDispatch);
       });
     } catch (error) {
       console.log(error);
@@ -471,6 +486,8 @@ export default function AdminCoupons(props) {
     try {
       addCoupon(submission).then((response) => {
         getAllCoupons(dataDispatch);
+        getAllCategories(dataDispatch);
+        getAllStores(dataDispatch);
       });
     } catch (error) {
       console.log(error);
